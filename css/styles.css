@@ -305,6 +305,7 @@
   width:min(560px,calc(100% - 40px));
   background:transparent;
   pointer-events:none;
+<<<<<<< HEAD
 }
 #passOverlay.game-overlay.active{
   display:block;
@@ -752,4 +753,150 @@
   .join-faq-heading h2{font-size:32px}
   .join-faq-list summary{font-size:18px;padding-right:38px}
   .join-faq-list details p{font-size:16px;padding-right:10px}
+=======
+>>>>>>> 2399b8b (Update styles.css)
 }
+#passOverlay.game-overlay.active{
+  display:block;
+}
+#passOverlay .overlay-box{
+  width:100%;
+  background:rgba(255,255,255,.97);
+  box-shadow:0 8px 22px rgba(0,0,0,.18);
+  pointer-events:auto;
+}
+#dealLayer{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:18;
+}
+.deal-card{
+  position:absolute;
+  width:104px;
+  height:148px;
+  border-radius:10px;
+  border:1.5px solid #111;
+  background:repeating-linear-gradient(45deg,#f9f0dc 0 7px,#8e4d35 7px 9px);
+  box-shadow:0 8px 16px rgba(0,0,0,.22);
+  transition:
+    left .78s cubic-bezier(.22,.76,.28,1),
+    top .78s cubic-bezier(.22,.76,.28,1),
+    transform .78s cubic-bezier(.22,.76,.28,1),
+    opacity .16s ease;
+}
+.deal-card.player-bound{transform:rotate(4deg)}
+.deal-card.cpu-bound{transform:rotate(-4deg)}
+@media(max-width:700px){
+  #passOverlay.game-overlay{
+    top:105px;
+    width:calc(100% - 24px);
+  }
+  .deal-card{
+    width:84px;
+    height:124px;
+  }
+}
+
+
+/* MCA Website v1.1 — approved Community and Resource Library additions */
+.community-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.community-card{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.community-card-wide{grid-column:1/-1}
+.card-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:auto}
+.community-panel{width:100%;border-top:1px solid var(--ink);padding-top:18px;margin-top:8px}
+.community-details{width:100%;margin:4px 0 10px}
+.community-details summary,.resource-card summary{cursor:pointer;font-weight:700;text-decoration:underline;text-underline-offset:4px}
+.community-details ul,.resource-card ul{padding-left:20px}
+.community-take-lead{justify-content:space-between}
+.placeholder-link{display:inline-block;text-decoration:none;margin-top:auto}
+.resource-tools{margin-bottom:30px}
+.resource-search-label{display:block;font-weight:700;margin-bottom:8px}
+.resource-search{width:100%;padding:14px 16px;font:inherit;margin-bottom:16px}
+.resource-filters{display:flex;gap:10px;flex-wrap:wrap}
+.resource-filter.active{background:var(--ink);color:var(--paper)}
+.resource-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.resource-card{padding:24px;min-height:320px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.resource-category{font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.resource-card details{width:100%;margin-bottom:8px}
+.resource-card.filtered-out{display:none}
+.resource-empty{text-align:center;padding:30px 0;margin:0}
+@media(max-width:700px){.community-grid,.resource-grid{grid-template-columns:1fr}.community-card-wide{grid-column:auto}}
+
+
+/* MCA Website v1.2 — exact Community and Field Guide mockups, monochrome */
+.community-overview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.community-overview-card,.community-entry,.community-role-card{padding:24px;background:#fff}
+.community-overview-card{min-height:220px;display:flex;flex-direction:column;align-items:flex-start}
+.community-overview-card p{flex:1}
+.community-tabbar,.resource-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.community-tab.active,.resource-filter.active{background:#111;color:#fff}
+.community-tabpanel{display:none}
+.community-tabpanel.active{display:block}
+.community-two-column{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.community-project-grid{margin-top:18px}
+.community-role-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:24px}
+.community-role-card .role-details{display:none;border-top:1px solid #111;margin-top:18px;padding-top:18px}
+.community-role-card.open .role-details{display:block}
+.community-expectations{border-top:1.5px solid #111;margin-top:34px;padding-top:30px}
+.community-expectations ul{padding-left:22px;margin-bottom:24px}
+.resource-control-grid{display:grid;grid-template-columns:2fr 1fr;gap:18px;align-items:end}
+.resource-control-grid label{display:block;font-weight:700}
+.resource-control-grid input,.resource-control-grid select{width:100%;margin-top:8px;border:1.5px solid #111;background:#fff;padding:13px;font:inherit;color:#111}
+.resource-filters{margin-top:22px;margin-bottom:0}
+.resource-category-section{margin-bottom:36px}
+.resource-category-heading{border-bottom:1.5px solid #111;padding-bottom:12px;margin-bottom:18px}
+.resource-category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.resource-card{padding:24px;background:#fff;display:flex;flex-direction:column;align-items:flex-start}
+.resource-card p{flex:1}
+.resource-card details{width:100%;border-top:1px solid #111;border-bottom:1px solid #111;margin:10px 0 18px;padding:12px 0}
+.resource-card summary{cursor:pointer;font-weight:700}
+.resource-card details ul{padding-left:22px}
+.resource-format-label{font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.resource-card.filtered-out,.resource-category-section.filtered-out{display:none}
+.resource-empty{padding:24px;border:1.5px dashed #111}
+@media(max-width:900px){.community-overview-grid,.community-two-column,.community-role-grid,.resource-category-grid,.resource-control-grid{grid-template-columns:1fr}}
+
+
+/* MCA Resource Library — approved monochrome layout */
+#resources{background:#fff}
+#resources .page-hero{border:0;border-bottom:1px solid #ddd;padding:44px 38px 38px;max-width:1040px;margin:0 auto}
+.resource-brandline{font-weight:700;font-size:19px;margin-bottom:14px}
+#resources .page-hero h1{font-size:46px;margin:10px 0 18px}
+#resources .page-hero p{max-width:960px;font-size:18px;line-height:1.55;color:#555}
+#resources .resource-library{border:0;padding:36px 38px 30px;max-width:1040px;margin:0 auto}
+.resource-control-grid{display:grid;grid-template-columns:1fr;gap:22px}
+.resource-control-grid label{font-weight:700;display:grid;gap:9px}
+.resource-control-grid input,.resource-control-grid select{width:100%;border:1px solid #ddd;border-radius:11px;padding:14px 15px;background:#fff;font:inherit;font-weight:400;color:#111}
+.resource-filters{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;padding-bottom:30px;border-bottom:1px solid #ddd}
+.resource-filter{border:1px solid #ddd;border-radius:10px;padding:11px 16px}
+.resource-filter.active{border-color:#111}
+#resources .resource-library-results{border:0;padding:18px 38px 48px;max-width:1040px;margin:0 auto}
+.resource-library-head{align-items:center;margin-bottom:32px}
+.resource-library-head h2{font-family:Arial,Helvetica,sans-serif;font-size:28px;margin:0 0 5px}
+.resource-category-section{margin-bottom:44px}
+.resource-category-heading{border-bottom:1px solid #ddd;padding-bottom:13px;margin-bottom:20px}
+.resource-category-heading h3{font-size:29px;margin:0 0 6px}
+.resource-category-heading p{color:#666;margin:0}
+.resource-category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.resource-card{border:1px solid #ddd!important;border-radius:16px;padding:26px;min-height:335px;display:flex;flex-direction:column;background:#fff}
+.resource-card .resource-meta{display:flex;justify-content:space-between;gap:14px;color:#666;margin-bottom:8px}
+.resource-card h3{font-size:25px;line-height:1.25;margin:0 0 14px}
+.resource-card .resource-status{color:#666;margin-bottom:14px}
+.resource-card>p{font-size:18px;line-height:1.55;color:#666;flex:1}
+.resource-card-actions{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-top:10px}
+.resource-card details{border:0;margin:0}
+.resource-card details summary{border:1px solid #ddd;border-radius:10px;padding:11px 14px;list-style:none;cursor:pointer}
+.resource-card details summary::-webkit-details-marker{display:none}
+.resource-card details summary::after{content:'⌄';font-size:12px;margin-left:12px}
+.resource-card details[open] summary::after{content:'⌃'}
+.resource-card details ul{margin:12px 0 0;padding:14px 18px 0 32px;border-top:1px solid #eee}
+.resource-card .btn{border:1px solid #ddd;border-radius:10px;padding:11px 15px;text-decoration:none}
+#resources>.section:last-of-type{border:0;border-top:1px solid #ddd;max-width:1040px;margin:0 auto;padding:44px 0}
+#resources>.section:last-of-type .community-two-column{gap:36px}
+#resources>.section:last-of-type .community-entry{border:0;padding:0;min-height:0}
+#resources>.section:last-of-type h2{font-family:Arial,Helvetica,sans-serif;font-size:28px}
+#resources>.section:last-of-type p{font-size:18px;color:#666;line-height:1.55}
+.filtered-out{display:none!important}
+@media(max-width:760px){.resource-category-grid{grid-template-columns:1fr}.resource-card{min-height:0}#resources .page-hero,#resources .resource-library,#resources .resource-library-results{padding-left:22px;padding-right:22px}}
