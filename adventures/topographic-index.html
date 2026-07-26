@@ -9,32 +9,29 @@
 <body>
 <x-dc>
 <helmet data-dc-atomics>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  html{scroll-snap-type:y proximity;background:#F4C6D0}
+  html{scroll-snap-type:y proximity;background:#f8f8f8}
   body{margin:0}
   ::selection{background:#2a2722;color:#ECE4D2}
 </style>
 </helmet>
-<div class="stage" ref="{{ stageRef }}" style="position:relative;font-family:'Bricolage Grotesque',system-ui,sans-serif;color:#2a2722;transition:color .35s ease">
-  <div ref="{{ bgRef }}" style="position:fixed;inset:0;z-index:0;background:#F4C6D0;transition:background-color .25s linear"></div>
+<div class="stage" ref="{{ stageRef }}" style="position:relative;font-family:Georgia,'Times New Roman',serif;color:#2a2722;transition:color .35s ease">
+  <div ref="{{ bgRef }}" style="position:fixed;inset:0;z-index:0;background:#f8f8f8;transition:background-color .25s linear"></div>
   <svg ref="{{ svgRef }}" viewBox="0 0 1000 9000" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:900vh;z-index:1;pointer-events:none">
     <path ref="{{ pathRef }}" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="0.5" vector-effect="non-scaling-stroke"></path>
   </svg>
 
-  <header style="position:fixed;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:22px 30px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;mix-blend-mode:difference;color:#fff">
+  <header style="position:fixed;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:22px 30px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;mix-blend-mode:difference;color:#fff">
     <span>A Topographic Index</span>
     <span>West · 2026</span>
   </header>
-  <div style="position:fixed;bottom:22px;right:30px;z-index:5;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.1em;mix-blend-mode:difference;color:#fff"><span ref="{{ idxRef }}">01</span> / 09</div>
-  <div ref="{{ hintRef }}" style="position:fixed;bottom:22px;left:30px;z-index:5;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;mix-blend-mode:difference;color:#fff;transition:opacity .4s">Scroll ↓</div>
+  <div style="position:fixed;bottom:22px;right:30px;z-index:5;font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.1em;mix-blend-mode:difference;color:#fff"><span ref="{{ idxRef }}">01</span> / 09</div>
+  <div ref="{{ hintRef }}" style="position:fixed;bottom:22px;left:30px;z-index:5;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;mix-blend-mode:difference;color:#fff;transition:opacity .4s">Scroll ↓</div>
 
   <sc-for list="{{ items }}" as="item" hint-placeholder-count="9">
     <section style="position:relative;z-index:2;height:100vh;scroll-snap-align:start;display:flex;align-items:center;justify-content:center;gap:clamp(32px,6vw,96px);padding:0 clamp(28px,7vw,120px);box-sizing:border-box;flex-wrap:wrap">
       <div class="flip" onMouseEnter="{{ item.onEnter }}" onMouseLeave="{{ onLeave }}" style="flex:none;height:68vh;aspect-ratio:2/3;position:relative;cursor:pointer">
-        <div style="position:absolute;inset:0;background:#fdfdfb;box-shadow:0 24px 60px -28px rgba(0,0,0,.45);background-image:repeating-linear-gradient(45deg,transparent 0 13px,rgba(0,0,0,.045) 13px 14px);display:flex;flex-direction:column;justify-content:space-between;padding:18px;box-sizing:border-box;font-family:'Space Mono',monospace;transition:opacity .55s ease;opacity:{{ item.frontOpacity }}">
+        <div style="position:absolute;inset:0;background:#fdfdfb;box-shadow:0 24px 60px -28px rgba(0,0,0,.45);background-image:repeating-linear-gradient(45deg,transparent 0 13px,rgba(0,0,0,.045) 13px 14px);display:flex;flex-direction:column;justify-content:space-between;padding:18px;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;transition:opacity .55s ease;opacity:{{ item.frontOpacity }}">
           <span style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#2a2722">{{ item.title }}</span>
           <div style="align-self:center;text-align:center;color:#2a2722">
             <div style="font-size:13px;letter-spacing:.1em">WHITE · 4×6</div>
@@ -42,7 +39,7 @@
           </div>
           <span style="font-size:10px;letter-spacing:.16em;color:#2a2722;opacity:.5">N°{{ item.num }}</span>
         </div>
-        <div style="position:absolute;inset:0;background:#121210;box-shadow:0 24px 60px -28px rgba(0,0,0,.6);background-image:repeating-linear-gradient(45deg,transparent 0 13px,rgba(255,255,255,.06) 13px 14px);display:flex;flex-direction:column;justify-content:space-between;padding:18px;box-sizing:border-box;font-family:'Space Mono',monospace;color:#efece2;transition:opacity .55s ease;opacity:{{ item.backOpacity }}">
+        <div style="position:absolute;inset:0;background:#121210;box-shadow:0 24px 60px -28px rgba(0,0,0,.6);background-image:repeating-linear-gradient(45deg,transparent 0 13px,rgba(255,255,255,.06) 13px 14px);display:flex;flex-direction:column;justify-content:space-between;padding:18px;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;color:#efece2;transition:opacity .55s ease;opacity:{{ item.backOpacity }}">
           <span style="font-size:10px;letter-spacing:.16em;text-transform:uppercase">{{ item.title }}</span>
           <div style="align-self:center;text-align:center">
             <div style="font-size:13px;letter-spacing:.1em">BLACK · 4×6</div>
@@ -53,11 +50,11 @@
       </div>
 
       <div style="flex:1 1 300px;max-width:440px;min-width:260px">
-        <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:inherit;opacity:.6">N°{{ item.num }} / 09</div>
+        <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:inherit;opacity:.6">N°{{ item.num }} / 09</div>
         <h2 style="font-size:clamp(38px,5.4vw,76px);line-height:.98;font-weight:600;margin:14px 0 0;letter-spacing:-.02em;text-wrap:balance;color:inherit">{{ item.title }}</h2>
         <div style="width:56px;height:2px;background:currentColor;margin:26px 0;opacity:.7"></div>
-        <p style="font-family:'Space Mono',monospace;font-size:13px;line-height:1.7;color:inherit;opacity:.75;margin:0;max-width:320px">{{ item.desc }}</p>
-        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:inherit;opacity:.45;margin-top:30px">↺ Hover to flip</div>
+        <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.7;color:inherit;opacity:.75;margin:0;max-width:320px">{{ item.desc }}</p>
+        <div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:inherit;opacity:.45;margin-top:30px">↺ Hover to flip</div>
       </div>
     </section>
   </sc-for>
@@ -74,7 +71,7 @@ class Component extends DCLogic {
   stageRef = React.createRef();
 
   titles = ["Mount Baldy","Grand Canyon","Mount Shasta","Mount Humphreys","Mount Whitney","Half Dome","Mount Langley","Ellingwood Peak","Blanca Peak"];
-  colors = ["#F4C6D0","#3FB8AD","#E8558C","#2E5D3B","#7A5236","#2E2E2E","#C63A2E","#3FB8AD","#F4C6D0"];
+  colors = ["#f8f8f8","#3FB8AD","#E8558C","#2E5D3B","#7A5236","#2E2E2E","#C63A2E","#3FB8AD","#f8f8f8"];
 
   buildD(){
     const S=9,H=1000,W0=170,W1=830,span=W1-W0,base=680;
