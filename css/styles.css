@@ -1,0 +1,22 @@
+/*
+  MCA WEBSITE PLACEHOLDER
+  Replace this file with the latest complete stylesheet.
+  Keep the filename and location: css/styles.css
+*/
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+}
+
+.setup-notice {
+  max-width: 760px;
+  margin: 80px auto;
+  padding: 32px;
+  border: 2px solid currentColor;
+}
