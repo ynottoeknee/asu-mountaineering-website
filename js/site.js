@@ -750,3 +750,20 @@ adventuresTabs.forEach((tab,index)=>{
     next.focus();
   });
 });
+
+const futureAdventuresFrame=document.querySelector('#futureAdventuresPanel .adventures-frame');
+window.addEventListener('message',event=>{
+  if(event.source!==futureAdventuresFrame?.contentWindow)return;
+  if(event.data?.type!=='mca-adventure-interest'||typeof event.data.trip!=='string')return;
+
+  const trip=event.data.trip.trim();
+  const adventureOption=[...simpleIdeaType.options].find(option=>option.textContent.trim()==='Adventure or trip');
+  if(adventureOption)simpleIdeaType.value=adventureOption.value;
+  simpleIdeaDetails.value=`I’m interested in joining the ${trip} adventure.`;
+
+  showPage('launchpad');
+  window.setTimeout(()=>{
+    simpleIdeaForm?.scrollIntoView({behavior:'smooth',block:'start'});
+    simpleIdeaName?.focus();
+  },350);
+});

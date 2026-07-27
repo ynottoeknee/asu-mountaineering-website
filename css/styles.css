@@ -1121,3 +1121,83 @@
     gap:5px;
   }
 }
+
+
+/* Standalone transparent logo on the original black-and-white homepage */
+.small-logo.logo-ready,
+.hero-logo-circle.logo-ready{
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  background-image:none !important;
+  box-shadow:none !important;
+  filter:none !important;
+  overflow:visible !important;
+}
+.small-logo.logo-ready{
+  width:86px;
+  height:86px;
+  flex:0 0 86px;
+}
+.hero-logo-circle.logo-ready{
+  width:min(96%,620px) !important;
+  aspect-ratio:auto !important;
+}
+.small-logo.logo-ready img,
+.hero-logo-circle.logo-ready img{
+  width:100% !important;
+  height:auto !important;
+  padding:0 !important;
+  object-fit:contain !important;
+  opacity:1 !important;
+}
+.hero-logo-large{
+  border:0;
+  background:#fff;
+  box-shadow:none;
+}
+
+/* Long-form About copy; the team section below remains unchanged */
+.about-narrative{
+  display:grid;
+  gap:56px;
+}
+.about-copy-block{
+  max-width:920px;
+}
+.about-copy-block + .about-copy-block{
+  padding-top:48px;
+  border-top:1px solid var(--border);
+}
+.about-copy-block h2{
+  margin-bottom:24px;
+}
+.about-copy-block p{
+  max-width:880px;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:19px;
+  line-height:1.75;
+}
+
+/* Keep the Adventure controls in the site's black-and-white visual system */
+.adventures-toggle-btn:focus-visible{
+  outline-color:var(--ink);
+}
+
+@media(max-width:640px){
+  .small-logo.logo-ready{
+    width:72px;
+    height:72px;
+    flex-basis:72px;
+  }
+  .about-narrative{
+    gap:38px;
+  }
+  .about-copy-block + .about-copy-block{
+    padding-top:36px;
+  }
+  .about-copy-block p{
+    font-size:17px;
+    line-height:1.68;
+  }
+}
