@@ -62,3 +62,25 @@ After the temporary `.pages.dev` site works, add these under the Pages project's
 
 - `asumountaineering.org`
 - `www.asumountaineering.org`
+
+## Past Adventures update
+
+The Past Adventures page is integrated at:
+
+```text
+adventures/topographic-index.html
+```
+
+The main `index.html` already opens this experience inside the Adventures page. The updated file includes all nine adventures, background line drawings, color transitions, and hover/tap photo flips.
+
+Adventure order:
+
+1. Mount Baldy
+2. Grand Canyon
+3. Mount Shasta
+4. Mount Humphreys
+5. Mount Whitney
+6. Half Dome
+7. Mount Langley
+8. Ellingwood & Blanca
+9. Great Sand Dunes
