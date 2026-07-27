@@ -422,7 +422,130 @@
   <section class="section wire-box"><h2>Meet the Team</h2><p>Space for current leaders, advisors, and team members.</p><div class="team-grid"><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/anabelle.jpg" alt="Anabelle"></div><h3>Anabelle</h3><p class="team-role">Team Member</p><p>[Short bio.]</p></article><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/zahrah.jpg" alt="Zahrah"></div><h3>Zahrah</h3><p class="team-role">Team Member</p><p>[Short bio.]</p></article><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/david-jacobs.jpg" alt="David Jacobs"></div><h3>David Jacobs</h3><p class="team-role">Advisor</p><p>[Short bio.]</p></article><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/louis.jpg" alt="Louis"></div><h3>Louis</h3><p class="team-role">Team Member</p><p>[Short bio.]</p></article><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/patt.jpg" alt="Patt"></div><h3>Patt</h3><p class="team-role">Team Member</p><p>[Short bio.]</p></article><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/ani.jpg" alt="Ani"></div><h3>Ani</h3><p class="team-role">Team Member</p><p>[Short bio.]</p></article><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/sienna.jpg" alt="Sienna"></div><h3>Sienna</h3><p class="team-role">Vice President</p><p>[Short bio.]</p></article><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/tony.jpg" alt="Tony"></div><h3>Tony</h3><p class="team-role">President</p><p>[Short bio.]</p></article><article class="simple-card wire-box"><h3>Team Member 9</h3><p>Trips Director</p><p>[Short bio.]</p></article><article class="simple-card wire-box"><h3>Team Member 10</h3><p>Training Director</p><p>[Short bio.]</p></article><article class="simple-card wire-box"><h3>Team Member 11</h3><p>Service Coordinator</p><p>[Short bio.]</p></article><article class="simple-card wire-box"><h3>Team Member 12</h3><p>Partnerships Director</p><p>[Short bio.]</p></article><article class="simple-card wire-box"><h3>Team Member 13</h3><p>Outreach Director</p><p>[Short bio.]</p></article><article class="simple-card wire-box"><h3>Team Member 14</h3><p>Social Media Lead</p><p>[Short bio.]</p></article><article class="simple-card wire-box"><h3>Team Member 15</h3><p>Team Lead</p><p>[Short bio.]</p></article></div></section>
 </section>
 
-    <section id="adventures" class="page"><section class="page-hero compact wire-box"><div class="eyebrow">Past Adventures</div><h1>Where we have been</h1><p>The scroll below is the landing page for past adventures. It preserves the topographic experience while the rest of the site stays intact.</p></section><section class="section wire-box adventures-embed-section"><iframe class="adventures-frame" src="adventures/topographic-index.html" title="MCA Past Adventures Landing Page"></iframe></section></section>
+    <section id="adventures" class="page">
+      <section class="page-hero compact wire-box adventures-hero">
+        <div class="eyebrow">Adventure Index</div>
+        <div class="adventures-hero-layout">
+          <div class="adventures-heading-copy">
+            <h1 id="adventuresViewTitle">Where we have been</h1>
+            <p id="adventuresViewDescription">"I dont need to know where i'm going I just need to know where i've been" - Tow Mator</p>
+          </div>
+          <div class="adventures-controls">
+            <div class="adventures-toggle" role="tablist" aria-label="Choose past or future adventures">
+              <button id="pastAdventuresTab" class="adventures-toggle-btn active" type="button" role="tab" aria-selected="true" aria-controls="pastAdventuresPanel" data-adventures-view="past">Past Adventures</button>
+              <button id="futureAdventuresTab" class="adventures-toggle-btn" type="button" role="tab" aria-selected="false" aria-controls="futureAdventuresPanel" data-adventures-view="future">Future Adventures</button>
+            </div>
+            <button class="btn nav-link propose-adventure-btn" data-page="launchpad" data-idea-type="Adventure or trip" type="button">Propose an Adventure</button>
+          </div>
+        </div>
+      </section>
+
+      <div id="pastAdventuresPanel" class="adventures-panel active" role="tabpanel" aria-labelledby="pastAdventuresTab">
+        <section class="section wire-box adventures-embed-section">
+          <iframe class="adventures-frame" src="adventures/topographic-index.html" title="MCA Past Adventures Landing Page"></iframe>
+        </section>
+      </div>
+
+      <div id="futureAdventuresPanel" class="adventures-panel" role="tabpanel" aria-labelledby="futureAdventuresTab" hidden>
+        <section class="section wire-box future-adventures-section">
+          <div class="future-adventures-intro">
+            <div>
+              <div class="eyebrow">Open Objectives</div>
+              <h2>Find the trip that pulls you forward.</h2>
+            </div>
+            <div class="availability-key"><span aria-hidden="true"></span> Accepting people</div>
+          </div>
+          <p class="future-adventures-note">These trips are in the planning stage. “Accepting people” means the interest list is open; the final roster depends on the route, conditions, preparation, and each trip’s readiness requirements.</p>
+
+          <div class="future-adventures-grid">
+            <details class="future-adventure-card">
+              <summary>
+                <span class="future-card-topline"><span>Grand Canyon · Arizona</span><span class="adventure-status accepting"><i aria-hidden="true"></i>Accepting people</span></span>
+                <span class="future-card-title">Rim to Rim to Rim</span>
+                <span class="future-card-preview">A full-canyon endurance objective built around preparation, pacing, and a team that can keep moving together.</span>
+                <span class="future-card-open">View trip details <b aria-hidden="true">+</b></span>
+              </summary>
+              <div class="future-card-details">
+                <dl>
+                  <div><dt>Planning stage</dt><dd>Date and route plan in development</dd></div>
+                  <div><dt>Trip type</dt><dd>High-endurance canyon travel</dd></div>
+                  <div><dt>Readiness</dt><dd>Long-day hiking fitness, sustained climbing and descending, and completion of the team training plan</dd></div>
+                </dl>
+                <p>Members can join the interest list now. The team will build toward the objective through progressive long hikes, stair sessions, and trip-specific safety planning.</p>
+              </div>
+            </details>
+
+            <details class="future-adventure-card">
+              <summary>
+                <span class="future-card-topline"><span>White Mountains · Arizona</span><span class="adventure-status accepting"><i aria-hidden="true"></i>Accepting people</span></span>
+                <span class="future-card-title">Mount Baldy</span>
+                <span class="future-card-preview">A high-country Arizona objective with forest, elevation, and a route selected around access and conditions.</span>
+                <span class="future-card-open">View trip details <b aria-hidden="true">+</b></span>
+              </summary>
+              <div class="future-card-details">
+                <dl>
+                  <div><dt>Planning stage</dt><dd>Date and exact route to be announced</dd></div>
+                  <div><dt>Trip type</dt><dd>Mountain hiking and conditioning</dd></div>
+                  <div><dt>Readiness</dt><dd>Comfort hiking at elevation, carrying personal day gear, and moving with the group</dd></div>
+                </dl>
+                <p>The final route and turnaround point will be set after MCA reviews weather, access, land closures, and current trail conditions.</p>
+              </div>
+            </details>
+
+            <details class="future-adventure-card">
+              <summary>
+                <span class="future-card-topline"><span>Sierra Nevada · California</span><span class="adventure-status accepting"><i aria-hidden="true"></i>Accepting people</span></span>
+                <span class="future-card-title">Mount Whitney</span>
+                <span class="future-card-preview">A high-altitude Sierra objective and a major step for members building experience on bigger mountains.</span>
+                <span class="future-card-open">View trip details <b aria-hidden="true">+</b></span>
+              </summary>
+              <div class="future-card-details">
+                <dl>
+                  <div><dt>Planning stage</dt><dd>Season, route, and permit plan in development</dd></div>
+                  <div><dt>Trip type</dt><dd>High-altitude mountain objective</dd></div>
+                  <div><dt>Readiness</dt><dd>Strong hiking base, demonstrated altitude awareness, and route-specific skills once the objective is selected</dd></div>
+                </dl>
+                <p>The final team, route, and schedule will depend on permits, seasonal conditions, and the preparation pathway chosen by trip leadership.</p>
+              </div>
+            </details>
+
+            <details class="future-adventure-card">
+              <summary>
+                <span class="future-card-topline"><span>Lamoille Canyon · Nevada</span><span class="adventure-status accepting"><i aria-hidden="true"></i>Accepting people</span></span>
+                <span class="future-card-title">Terminal Cancer</span>
+                <span class="future-card-preview">A steep, condition-dependent couloir objective for a small team with the required snow-travel preparation.</span>
+                <span class="future-card-open">View trip details <b aria-hidden="true">+</b></span>
+              </summary>
+              <div class="future-card-details">
+                <dl>
+                  <div><dt>Planning stage</dt><dd>Condition window and technical plan to be confirmed</dd></div>
+                  <div><dt>Trip type</dt><dd>Technical snow couloir</dd></div>
+                  <div><dt>Readiness</dt><dd>Trip-lead approval plus the snow travel, ice axe, crampon, self-arrest, and rope skills required by the final plan</dd></div>
+                </dl>
+                <p>The interest list is open, but this will be a screened, small-team objective. Participation will depend on conditions, training, and demonstrated readiness.</p>
+              </div>
+            </details>
+
+            <details class="future-adventure-card">
+              <summary>
+                <span class="future-card-topline"><span>Mexico</span><span class="adventure-status accepting"><i aria-hidden="true"></i>Accepting people</span></span>
+                <span class="future-card-title">Pico de Orizaba</span>
+                <span class="future-card-preview">A multi-day international expedition centered on acclimatization, shared responsibility, and careful preparation.</span>
+                <span class="future-card-open">View trip details <b aria-hidden="true">+</b></span>
+              </summary>
+              <div class="future-card-details">
+                <dl>
+                  <div><dt>Planning stage</dt><dd>Dates, budget, guide, and travel plan in development</dd></div>
+                  <div><dt>Trip type</dt><dd>High-altitude international expedition</dd></div>
+                  <div><dt>Readiness</dt><dd>Progressive altitude experience, expedition fitness, required travel documents, and completion of the final skills plan</dd></div>
+                </dl>
+                <p>Members can express interest now. The final plan will include acclimatization, equipment, transportation, cost, emergency planning, and any guide requirements.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+      </div>
+    </section>
 
 <section id="calendar" class="page">
   <section class="page-hero compact wire-box">

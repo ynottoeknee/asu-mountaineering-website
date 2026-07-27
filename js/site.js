@@ -701,3 +701,52 @@ prepareIdeaRequestBtn?.addEventListener('click',()=>window.setTimeout(()=>initia
 document.getElementById('prepareAdaptiveIntakeBtn')?.addEventListener('click',()=>window.setTimeout(()=>initializeMcaCalendly(document.querySelector('.adaptive-calendly'),{
   name:document.getElementById('adaptiveContactName')?.value.trim()||'',email:document.getElementById('adaptiveContactEmail')?.value.trim()||''
 }),80));
+
+
+/* Past / future adventures */
+const adventuresTabs=[...document.querySelectorAll('.adventures-toggle-btn')];
+const adventuresPanels={
+  past:document.getElementById('pastAdventuresPanel'),
+  future:document.getElementById('futureAdventuresPanel')
+};
+const adventuresViewTitle=document.getElementById('adventuresViewTitle');
+const adventuresViewDescription=document.getElementById('adventuresViewDescription');
+const adventuresCopy={
+  past:{
+    title:'Where we have been',
+    description:`"I dont need to know where i'm going I just need to know where i've been" - Tow Mator`
+  },
+  future:{
+    title:'Where we are going',
+    description:'The next objective starts as an idea, then becomes a team, a plan, and something worth preparing for.'
+  }
+};
+
+function openAdventuresView(view){
+  if(!adventuresPanels[view])return;
+  adventuresTabs.forEach(tab=>{
+    const active=tab.dataset.adventuresView===view;
+    tab.classList.toggle('active',active);
+    tab.setAttribute('aria-selected',String(active));
+    tab.tabIndex=active?0:-1;
+  });
+  Object.entries(adventuresPanels).forEach(([name,panel])=>{
+    const active=name===view;
+    panel.hidden=!active;
+    panel.classList.toggle('active',active);
+  });
+  adventuresViewTitle.textContent=adventuresCopy[view].title;
+  adventuresViewDescription.textContent=adventuresCopy[view].description;
+}
+
+adventuresTabs.forEach((tab,index)=>{
+  tab.addEventListener('click',()=>openAdventuresView(tab.dataset.adventuresView));
+  tab.addEventListener('keydown',event=>{
+    if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;
+    event.preventDefault();
+    const direction=event.key==='ArrowRight'?1:-1;
+    const next=adventuresTabs[(index+direction+adventuresTabs.length)%adventuresTabs.length];
+    openAdventuresView(next.dataset.adventuresView);
+    next.focus();
+  });
+});
