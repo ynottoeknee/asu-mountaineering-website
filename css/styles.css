@@ -313,6 +313,23 @@
 .calendar-day-number{
   font-weight:700;
 }
+.calendar-event{
+  display:grid;
+  gap:4px;
+  margin-top:8px;
+  padding:8px;
+  border:1.5px solid var(--ink);
+  background:var(--ink);
+  color:var(--paper);
+  line-height:1.25;
+  overflow-wrap:anywhere;
+}
+.calendar-event strong{
+  font-size:12px;
+}
+.calendar-event span{
+  font-size:11px;
+}
 .calendar-help{
   margin-top:15px;
   color:var(--muted);

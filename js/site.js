@@ -158,6 +158,14 @@ const calendarNext = document.getElementById('calendarNext');
 
 const today = new Date();
 let calendarView = new Date(today.getFullYear(), today.getMonth(), 1);
+const calendarEvents = [
+  {
+    date:'2026-08-18',
+    title:'Volunteering with Valley of the Sun',
+    time:'10–11 AM',
+    description:'Building heat relief kits for those in need.'
+  }
+];
 
 function renderCalendar(){
   if(!calendarGrid) return;
@@ -205,6 +213,38 @@ function renderCalendar(){
     if(isToday) day.classList.add('today');
 
     day.innerHTML = `<span class="calendar-day-number">${number}</span>`;
+
+    if(!day.classList.contains('empty')){
+      const dateKey = [
+        normalized.getFullYear(),
+        String(normalized.getMonth() + 1).padStart(2, '0'),
+        String(normalized.getDate()).padStart(2, '0')
+      ].join('-');
+
+      calendarEvents
+        .filter(calendarEvent => calendarEvent.date === dateKey)
+        .forEach(calendarEvent => {
+          const eventCard = document.createElement('article');
+          eventCard.className = 'calendar-event';
+          eventCard.setAttribute(
+            'aria-label',
+            `${calendarEvent.title}, ${calendarEvent.time}. ${calendarEvent.description}`
+          );
+
+          const eventTitle = document.createElement('strong');
+          eventTitle.textContent = calendarEvent.title;
+
+          const eventTime = document.createElement('span');
+          eventTime.textContent = calendarEvent.time;
+
+          const eventDescription = document.createElement('span');
+          eventDescription.textContent = calendarEvent.description;
+
+          eventCard.append(eventTitle, eventTime, eventDescription);
+          day.appendChild(eventCard);
+        });
+    }
+
     calendarGrid.appendChild(day);
   }
 }
@@ -718,7 +758,7 @@ const adventuresCopy={
   },
   future:{
     title:'Where we are going',
-    description:'The next objective starts as an idea, then becomes a team, a plan, and something worth preparing for.'
+    description:'“The most difficult thing is the decision to act, the rest is merely tenacity. The fears are paper tigers. You can do anything you decide to do. You can act to change and control your life; and the procedure, the process is its own reward.” ― Amelia Earhart'
   }
 };
 
