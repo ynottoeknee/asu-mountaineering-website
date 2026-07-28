@@ -288,36 +288,63 @@ renderCalendar();
 
 /* MCA Website v1.2 — Community tabs and MCA Field Guide Library */
 const MCA_LINKS = {
-  partnerWithUs: '#',
-  proposeProject: '#',
-  leadershipInterest: '#',
-  requestResource: '#',
-  contributeResource: '#',
-  gettingStarted: '#',
-  howTripsWork: '#',
-  gearNeeded: '#',
-  dayHikePacking: '#',
-  overnightPacking: '#',
-  routePlanning: '#',
-  weatherConditions: '#',
-  firstAidKits: '#',
-  emergencyPlanning: '#',
-  lightningMonsoon: '#',
-  navigationFundamentals: '#',
-  conditioning: '#',
-  affordableGear: '#',
-  gearLibrary: '#',
-  scholarshipsAssistance: '#',
-  constitution: '#',
-  waiver: '#',
-  tripProposal: '#',
-  incidentReport: '#'
+  partnerWithUs: 'https://docs.google.com/forms/d/e/1FAIpQLSfFo8v3ExGk2biSkB9yuKXN0HSot7lwCsf1ZZ-WeQDTBA3IDw/viewform',
+  proposeProject: 'https://docs.google.com/forms/d/e/1FAIpQLScisP8m11F36UPZruDZyJ_ACejUVF4sFChR10qxmw_SZl-qfQ/viewform',
+  leadershipInterest: 'https://docs.google.com/forms/d/e/1FAIpQLScwABbJ4oK8ECNFaadgg6wInFrCv6v5L1jAMJK3QoVz_5dLPQ/viewform',
+  requestResource: 'https://docs.google.com/forms/d/e/1FAIpQLScisP8m11F36UPZruDZyJ_ACejUVF4sFChR10qxmw_SZl-qfQ/viewform',
+  contributeResource: 'https://docs.google.com/forms/d/e/1FAIpQLScisP8m11F36UPZruDZyJ_ACejUVF4sFChR10qxmw_SZl-qfQ/viewform',
+  gettingStarted: 'https://docs.google.com/document/d/1iyvPT_0jVQM79v9BW8sLnW0A9tHTIOwPgdrqBTKjN88/edit',
+  howTripsWork: 'https://docs.google.com/document/d/1EW-xJA-nhTQKKxnAsnOy6eF-XiBxkkiG7fp7TFDMc7w/edit',
+  gearNeeded: 'https://docs.google.com/document/d/1lklmVB1qwZ2LYnj0iWe9TS4PHX5ixKEBt2oKiwQhlTQ/edit',
+  dayHikePacking: 'https://docs.google.com/document/d/16d0bjoAbZnyY70-nbCjksgY2r0_vRItu9OFe1aF9_uI/edit',
+  overnightPacking: 'https://docs.google.com/document/d/18Fs0I9JtgUpstacpHU8p2y7Aq6rONk3j_PeKbZTABSE/edit',
+  coldWeatherPacking: 'https://docs.google.com/document/d/1QiioNCP8PwYVO4g-S3Vta_xKFll-R3eDD0wrlzwrzgo/edit',
+  routePlanning: 'https://docs.google.com/document/d/1ZsIwkE0-JpCJqDq5_pZXe69Q0_cojJsvFO-CkbFnNQQ/edit',
+  weatherConditions: 'https://docs.google.com/document/d/1wwYA1YKpIbCd41NeeHyJPBuLhlqQcEdhfi6PrEPUqzk/edit',
+  foodWaterPlanning: 'https://docs.google.com/document/d/1hloCcERTZgPOVcHE6uoqTgxN3ZF8yS2PiLVr8uGMIWM/edit',
+  firstAidKits: 'https://docs.google.com/document/d/1dInPiqbgRtvvkn47O_Rs4YlEq652kL33R_dfTAfqRSI/edit',
+  emergencyPlanning: 'https://docs.google.com/document/d/10Ff-PHs2YTKdBE_nF4gASR-Cv0frZsZ3JVMqgbCAUx0/edit',
+  altitude: 'https://docs.google.com/document/d/1CS3yIbBsn7h8nKSfZpygZHkSVqy9c8if1oiQ0FsYrhA/edit',
+  lightningMonsoon: 'https://docs.google.com/document/d/1ekVatplP6z_ANAyyqUooaFbCkL4e4GwLNoEBLJbLg-4/edit',
+  bearsWildlife: 'https://docs.google.com/document/d/1DxxD6_tGOO-1AUI9Lq-puzVG-jmtDVYcvgaxA3aiGz4/edit',
+  navigationFundamentals: 'https://docs.google.com/document/d/1PYbjOi406Vhimr0l-2KmM0lSK9XZqD6uwpYzEitaOPc/edit',
+  campSystems: 'https://docs.google.com/document/d/1EAA8iH9WX7qY2W-1wyLRcCh5OZ0ITF0qHdVxCR5V8Fg/edit',
+  snowTravel: 'https://docs.google.com/document/d/1u24Wd9roSsbO79fvcBSXEp4tGCBHWySGoTSHR0tbDKw/edit',
+  knots: 'https://docs.google.com/document/d/1wkILIZyWx062wdCPqbo89Q6xVtkf8ryZKTcAEa-utI8/edit',
+  conditioning: 'https://docs.google.com/document/d/1uIcI7ic7a8-_LD0OMCoFA3tqIzyCUyPXbxnLyI4CWWc/edit',
+  affordableGear: 'https://docs.google.com/document/d/1YbOAuy8emdMEQjsbYHOYvIrhcH_tI7qxpgjBU84ogrc/edit',
+  gearLibrary: 'https://docs.google.com/document/d/19H5Di9ReYR2KANJsRlbXe3HdcbmUhiu-j5vdUPfMOR8/edit',
+  scholarshipsAssistance: 'https://docs.google.com/document/d/1MNXwByno4O0LG7DbH0Hg9PjMJKISHVvPFudXrf1PID4/edit',
+  partnerDiscounts: 'https://docs.google.com/document/d/1kz_xM5VM10HtKq0nZc0DmXLCT4DvZNT2Y8zY55aw32w/edit',
+  arizonaCivicAction: 'https://docs.google.com/document/d/19z_7Q1aKePjMDAfCpwi0muZ5Vj9vtdSLXEz-xR7eDro/edit',
+  constitution: 'https://docs.google.com/document/d/1CTrwiLUBKHr0SxZPUCPeQbCh45u8hpWcBWShdq6ydSM/edit',
+  waiver: 'https://docs.google.com/forms/d/e/1FAIpQLSd4Gn1_2n7BNehhSDihJeCeeRhdeQPstRWg77FqujOd-I4yVg/viewform',
+  tripProposal: 'https://docs.google.com/forms/d/e/1FAIpQLSfa3PwYcBNhHrtHhdyaxgrIhiI9j1WC9Z_GboJ0CpGYczOuQg/viewform',
+  incidentReport: 'https://docs.google.com/forms/d/e/1FAIpQLSdgbqslJTZc2p0m4LLWMK3l_jlnk4k8HSR4kEQ3tAP3sirtWg/viewform',
+  leadershipDocuments: 'https://docs.google.com/document/d/1nYMEkqNmFcDHtN1hLQNmzkUR9fhEULRBH5ks_-FsvvU/edit'
+};
+
+const MCA_FORMS = {
+  adaptiveIntake: 'https://docs.google.com/forms/d/e/1FAIpQLSflhhXBluaJpCH7oF0CvyTLfLEFPGu7BVs5WRywqhO6j9ssww/viewform',
+  adaptiveRequest: 'https://docs.google.com/forms/d/e/1FAIpQLSdnR2fiO_G0EvS7XL2Y2T6scRDxzQPUWdbLHglYBOfTQVeGCw/viewform',
+  partner: 'https://docs.google.com/forms/d/e/1FAIpQLSfFo8v3ExGk2biSkB9yuKXN0HSot7lwCsf1ZZ-WeQDTBA3IDw/viewform',
+  leadership: 'https://docs.google.com/forms/d/e/1FAIpQLScwABbJ4oK8ECNFaadgg6wInFrCv6v5L1jAMJK3QoVz_5dLPQ/viewform',
+  idea: 'https://docs.google.com/forms/d/e/1FAIpQLScisP8m11F36UPZruDZyJ_ACejUVF4sFChR10qxmw_SZl-qfQ/viewform',
+  tripProposal: 'https://docs.google.com/forms/d/e/1FAIpQLSfa3PwYcBNhHrtHhdyaxgrIhiI9j1WC9Z_GboJ0CpGYczOuQg/viewform',
+  incidentReport: 'https://docs.google.com/forms/d/e/1FAIpQLSdgbqslJTZc2p0m4LLWMK3l_jlnk4k8HSR4kEQ3tAP3sirtWg/viewform',
+  waiver: 'https://docs.google.com/forms/d/e/1FAIpQLSd4Gn1_2n7BNehhSDihJeCeeRhdeQPstRWg77FqujOd-I4yVg/viewform'
 };
 
 function wirePlaceholderLinks(){
   document.querySelectorAll('[data-link-key]').forEach(link => {
     const destination=MCA_LINKS[link.dataset.linkKey];
-    if(destination && destination !== '#') link.href=destination;
+    if(destination && destination !== '#'){
+      link.href=destination;
+      if(/^https?:\/\//.test(destination)){
+        link.target='_blank';
+        link.rel='noopener';
+      }
+    }
     link.addEventListener('click', event => {
       if(!destination || destination === '#'){
         event.preventDefault();
@@ -371,6 +398,7 @@ const resources=[
   {category:'Gear and Access',title:'MCA Gear Library',format:'Website Guide',status:'Program in Development',description:'A future catalog of club-owned equipment available for members to borrow or reserve.',included:['Available equipment','Reservation process','Care and return'],button:'View Gear Library',link:'gearLibrary'},
   {category:'Gear and Access',title:'Scholarships and Financial Assistance',format:'Website Guide',status:'Program in Development',description:'Information about trip support, gear access, training assistance, and other developing affordability programs.',included:['Trip support','Gear access','Training assistance'],button:'Learn More',link:'scholarshipsAssistance'},
   {category:'Gear and Access',title:'Partner Discounts',format:'Website Guide',status:'Program in Development',description:'A future directory of member discounts, rentals, equipment support, and training opportunities offered by club partners.',included:['Discount directory','Rental support','Partner opportunities'],button:'View Discounts',link:'partnerDiscounts'},
+  {category:'Community Action',title:'Arizona Civic Action: Contact Representatives & Verify Petitions',format:'Field Guide',status:'Current Official Links',description:'Official tools for finding Arizona state and federal representatives, contacting public offices, and checking initiative or petition information before signing.',included:['Find state and federal representatives','Contact-message template','Official petition and ballot-measure verification'],button:'Open Guide',link:'arizonaCivicAction'},
   {category:'Club Documents',title:'MCA Constitution',format:'PDF',status:'Current Version',description:'The governing document describing the club’s purpose, leadership structure, responsibilities, membership, elections, and continuity.',included:['Purpose and values','Leadership structure','Membership and governance'],button:'View Constitution',link:'constitution'},
   {category:'Club Documents',title:'Participation and Liability Waiver',format:'Form',status:'Pending Legal Review',description:'The required participation document describing outdoor risks, individual responsibilities, emergency care, and releases.',included:['Risk acknowledgement','Participant responsibilities','Emergency information'],button:'Open Waiver',link:'waiver'},
   {category:'Club Documents',title:'Trip Proposal Form',format:'Form',status:'Planned for Fall 2026',description:'A form for members or leaders proposing an adventure, expedition, training outing, or member-led trip.',included:['Objective and route','Readiness and logistics','Safety plan'],button:'Propose a Trip',link:'tripProposal'},
@@ -384,6 +412,7 @@ const categoryDescriptions={
  'Safety':'Foundational risk information and links to trusted instruction.',
  'Skills':'Introductions, references, and preparation materials for club training.',
  'Gear and Access':'Affordable equipment guidance and developing member-support programs.',
+ 'Community Action':'Official civic tools for contacting representatives and checking public petitions.',
  'Club Documents':'Official policies, forms, governance documents, and internal tools.'
 };
 const resourceCategories=[...new Set(resources.map(r=>r.category))];
@@ -741,6 +770,45 @@ prepareIdeaRequestBtn?.addEventListener('click',()=>window.setTimeout(()=>initia
 document.getElementById('prepareAdaptiveIntakeBtn')?.addEventListener('click',()=>window.setTimeout(()=>initializeMcaCalendly(document.querySelector('.adaptive-calendly'),{
   name:document.getElementById('adaptiveContactName')?.value.trim()||'',email:document.getElementById('adaptiveContactEmail')?.value.trim()||''
 }),80));
+
+/* Google Forms are embedded in the existing form locations so responses are
+   collected in the club's Google account while the surrounding MCA pages,
+   context, and scheduling links remain available. */
+function embedMcaGoogleForm(formId,url,title,{schedule=false}={}){
+  const currentForm=document.getElementById(formId);
+  if(!currentForm)return;
+
+  const container=document.createElement('div');
+  container.id=formId;
+  container.className='google-form-embed';
+
+  const iframe=document.createElement('iframe');
+  iframe.className='google-form-frame';
+  iframe.src=`${url}?embedded=true`;
+  iframe.title=title;
+  iframe.loading='lazy';
+  iframe.setAttribute('frameborder','0');
+  iframe.setAttribute('marginheight','0');
+  iframe.setAttribute('marginwidth','0');
+  iframe.textContent='Loading form…';
+
+  const actions=document.createElement('div');
+  actions.className='google-form-actions';
+  actions.innerHTML=`<a class="btn" href="${url}" target="_blank" rel="noopener">Open ${title} in a New Tab</a>`;
+  if(schedule){
+    actions.insertAdjacentHTML('beforeend','<a class="btn" href="https://calendly.com/afishe54-asu/30min" target="_blank" rel="noopener">Schedule a Conversation</a>');
+  }
+
+  container.append(iframe,actions);
+  currentForm.replaceWith(container);
+}
+
+embedMcaGoogleForm('adaptiveIntakeForm',MCA_FORMS.adaptiveIntake,'Adaptive Opportunities Intake',{schedule:true});
+embedMcaGoogleForm('adaptiveWaiverForm',MCA_FORMS.waiver,'Participation and Liability Waiver');
+embedMcaGoogleForm('adaptiveRequestForm',MCA_FORMS.adaptiveRequest,'Adaptive Request or Feedback');
+embedMcaGoogleForm('simpleIdeaForm',MCA_FORMS.idea,'Bring an Idea or Project',{schedule:true});
+embedMcaGoogleForm('partnerRequestForm',MCA_FORMS.partner,'Partner With MCA',{schedule:true});
+embedMcaGoogleForm('leadershipInterestForm',MCA_FORMS.leadership,'Leadership Interest',{schedule:true});
 
 
 /* Past / future adventures */
