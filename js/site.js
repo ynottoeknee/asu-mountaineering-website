@@ -163,7 +163,8 @@ const calendarEvents = [
     date:'2026-08-18',
     title:'Volunteering with Valley of the Sun',
     time:'10–11 AM',
-    description:'Building heat relief kits for those in need.'
+    description:'Building heat relief kits for those in need.',
+    category:'service'
   }
 ];
 
@@ -225,10 +226,11 @@ function renderCalendar(){
         .filter(calendarEvent => calendarEvent.date === dateKey)
         .forEach(calendarEvent => {
           const eventCard = document.createElement('article');
-          eventCard.className = 'calendar-event';
+          const eventCategory = calendarEvent.category || 'club';
+          eventCard.className = `calendar-event calendar-event-${eventCategory}`;
           eventCard.setAttribute(
             'aria-label',
-            `${calendarEvent.title}, ${calendarEvent.time}. ${calendarEvent.description}`
+            `${eventCategory} event: ${calendarEvent.title}, ${calendarEvent.time}. ${calendarEvent.description}`
           );
 
           const eventTitle = document.createElement('strong');
