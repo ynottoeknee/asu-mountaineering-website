@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mountaineering Club at ASU | Mountains, Community, Action</title>
 
-  <link rel="stylesheet" href="css/styles-20260801.css?v=20260802-4">
+  <link rel="stylesheet" href="css/styles-20260801.css?v=20260802-5">
   <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 </head>
 <body>
@@ -392,12 +392,15 @@
     </section>
 
 <section id="calendar" class="page">
-  <section class="page-hero compact wire-box">
-    <div class="eyebrow">Calendar</div>
-    <h1>Club and member events</h1>
+  <section class="calendar-photo-banner" aria-labelledby="calendarPageTitle">
+    <img src="assets/images/calendar-club-banner.webp" alt="Five MCA members sitting together among large boulders" loading="lazy" decoding="async">
+    <div class="calendar-banner-copy">
+      <div class="eyebrow">Calendar</div>
+      <h1 id="calendarPageTitle">Club and member events</h1>
+    </div>
   </section>
 
-  <section class="section wire-box">
+  <section class="section wire-box calendar-main-section">
     <div class="calendar-toolbar">
       <button id="calendarPrev" class="btn" aria-label="Previous month">← Previous</button>
       <h2 id="calendarMonthLabel" aria-live="polite"></h2>
@@ -425,9 +428,10 @@
     </div>
   </section>
 
-  <section class="section wire-box">
-    <h2>Submit a Member Trip</h2>
-    <p>[Explanation of which informal member trips may appear on the calendar.]</p>
+  <section class="section wire-box calendar-submit-section">
+    <div class="eyebrow">Member-led events</div>
+    <h2>Put something worth doing on the calendar.</h2>
+    <p>Bring MCA an adventure, training day, service project, workshop, or gathering. A rough idea is enough to begin.</p>
     <button class="btn nav-link" data-page="launchpad" data-idea-type="Adventure or trip">Submit Event</button>
   </section>
 </section>
