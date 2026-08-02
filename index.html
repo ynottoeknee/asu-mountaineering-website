@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mountaineering Club at ASU | Mountains, Community, Action</title>
 
-  <link rel="stylesheet" href="css/styles-20260801.css">
+  <link rel="stylesheet" href="css/styles-20260801.css?v=20260802-2">
   <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 </head>
 <body>
@@ -376,13 +376,17 @@
 
       <div id="pastAdventuresPanel" class="adventures-panel active" role="tabpanel" aria-labelledby="pastAdventuresTab">
         <section class="section wire-box adventures-embed-section">
-          <iframe class="adventures-frame" src="adventures/topographic-index.html" title="MCA Past Adventures Landing Page"></iframe>
+          <div class="adventures-flow-shell" data-adventure-source="adventures/topographic-index.html" data-adventure-kind="past" aria-busy="true">
+            <p class="adventure-flow-loading">Loading past adventures…</p>
+          </div>
         </section>
       </div>
 
       <div id="futureAdventuresPanel" class="adventures-panel" role="tabpanel" aria-labelledby="futureAdventuresTab" hidden>
         <section class="section wire-box adventures-embed-section">
-          <iframe class="adventures-frame" src="adventures/future-index.html" title="MCA Future Adventures"></iframe>
+          <div class="adventures-flow-shell" data-adventure-source="adventures/future-index.html" data-adventure-kind="future" aria-busy="true">
+            <p class="adventure-flow-loading">Loading future adventures…</p>
+          </div>
         </section>
       </div>
     </section>
@@ -1008,7 +1012,7 @@
 
 
   <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" defer></script>
-  <script src="js/site.js?v=20260731-1"></script>
+  <script src="js/site.js?v=20260802-2"></script>
   <script src="js/calendar-events-20260801.js"></script>
   <script src="js/adaptive-ascents-20260801.js"></script>
 </body>

@@ -1490,7 +1490,7 @@ body:has(#adaptive.active) .topbar button:hover{color:#eacf38}
 .hero-logo-large{background:transparent}
 @media(max-width:640px){.site-shell{padding:0}}
 
-/* Let the adventure slides live directly in the full-page flow. */
+/* Let the adventure slides live directly in one continuous page flow. */
 #adventures .adventures-panel{
   margin:0;
   background:transparent;
@@ -1504,24 +1504,24 @@ body:has(#adaptive.active) .topbar button:hover{color:#eacf38}
   background:transparent;
   box-shadow:none;
 }
-#adventures .adventures-frame{
+#adventures .adventures-flow-shell{
   display:block;
   width:100%;
-  height:100vh;
   min-height:680px;
   margin:0;
-  border:0;
-  border-radius:0;
   background:transparent;
-  box-shadow:none;
 }
-@supports (height:100dvh){
-  #adventures .adventures-frame{height:100dvh}
+#adventures .adventure-flow-loading{
+  min-height:100vh;
+  margin:0;
+  display:grid;
+  place-items:center;
+  background:#f4c6d0;
+  font:12px "Courier New",monospace;
+  letter-spacing:.14em;
+  text-transform:uppercase;
 }
 @media(max-width:640px){
   #adventures .adventures-embed-section{padding:0}
-  #adventures .adventures-frame{height:100vh;min-height:620px}
-  @supports (height:100dvh){
-    #adventures .adventures-frame{height:100dvh}
-  }
+  #adventures .adventures-flow-shell{min-height:620px}
 }

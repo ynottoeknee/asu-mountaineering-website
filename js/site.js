@@ -859,12 +859,9 @@ adventuresTabs.forEach((tab,index)=>{
   });
 });
 
-const futureAdventuresFrame=document.querySelector('#futureAdventuresPanel .adventures-frame');
-window.addEventListener('message',event=>{
-  if(event.source!==futureAdventuresFrame?.contentWindow)return;
-  if(event.data?.type!=='mca-adventure-interest'||typeof event.data.trip!=='string')return;
-
-  const trip=event.data.trip.trim();
+document.addEventListener('mca-adventure-interest',event=>{
+  if(typeof event.detail?.trip!=='string')return;
+  const trip=event.detail.trip.trim();
   const adventureOption=[...simpleIdeaType.options].find(option=>option.textContent.trim()==='Adventure or trip');
   if(adventureOption)simpleIdeaType.value=adventureOption.value;
   simpleIdeaDetails.value=`I’m interested in joining the ${trip} adventure.`;
@@ -875,3 +872,110 @@ window.addEventListener('message',event=>{
     simpleIdeaName?.focus();
   },350);
 });
+
+function scopeAdventureStyles(css){
+  return css
+    .replace(/:root/g,':host')
+    .replace(/\bhtml\b(?=\s*\{)/g,':host')
+    .replace(/\bbody\b(?=\s*\{)/g,'.adventure-flow-root');
+}
+
+function setupPastAdventureFlow(container,shadow){
+  const backgrounds=['#F4C6D0','#3FB8AD','#E8558C','#2E5D3B','#7A5236','#2E2E2E','#C63A2E','#3FB8AD','#F4C6D0'];
+  const lineColors=['#175E58','#7B2447','#173F2A','#F7C7D4','#B9DDF4','#F4E1BC','#BFE9E2','#7B2447','#175E58'];
+  const cards=[...shadow.querySelectorAll('.photo-card')];
+  const page=container.closest('.page');
+  const hexToRgb=hex=>[parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)];
+  const mix=(a,b,fraction)=>{
+    const first=hexToRgb(a);
+    const second=hexToRgb(b);
+    return first.map((value,index)=>Math.round(value+(second[index]-value)*fraction));
+  };
+  const rgb=value=>`rgb(${value[0]},${value[1]},${value[2]})`;
+  const luminance=value=>(.299*value[0]+.587*value[1]+.114*value[2])/255;
+
+  cards.forEach(card=>{
+    card.addEventListener('click',()=>{
+      const flipped=card.classList.toggle('is-flipped');
+      card.setAttribute('aria-pressed',String(flipped));
+    });
+    card.addEventListener('keydown',event=>{
+      if(event.key!=='Escape')return;
+      card.classList.remove('is-flipped');
+      card.setAttribute('aria-pressed','false');
+    });
+  });
+
+  let ticking=false;
+  const update=()=>{
+    ticking=false;
+    if(!page?.classList.contains('active'))return;
+    const viewportHeight=Math.max(1,window.innerHeight);
+    const position=Math.min(8,Math.max(0,-container.getBoundingClientRect().top/viewportHeight));
+    const index=Math.floor(position);
+    const fraction=position-index;
+    const nextIndex=Math.min(8,index+1);
+    const background=mix(backgrounds[index],backgrounds[nextIndex],fraction);
+    const line=mix(lineColors[index],lineColors[nextIndex],fraction);
+    container.style.setProperty('--bg',rgb(background));
+    container.style.setProperty('--line',rgb(line));
+    container.style.setProperty('--text',luminance(background)<.48?'#fffaf0':'#27231f');
+  };
+  const requestUpdate=()=>{
+    if(ticking)return;
+    ticking=true;
+    window.requestAnimationFrame(update);
+  };
+  window.addEventListener('scroll',requestUpdate,{passive:true});
+  window.addEventListener('resize',requestUpdate,{passive:true});
+  update();
+}
+
+function setupFutureAdventureFlow(container,shadow){
+  shadow.querySelectorAll('.interest-button').forEach(button=>{
+    button.addEventListener('click',()=>{
+      container.dispatchEvent(new CustomEvent('mca-adventure-interest',{
+        bubbles:true,
+        composed:true,
+        detail:{trip:button.dataset.trip||''}
+      }));
+    });
+  });
+}
+
+async function mountAdventureFlow(container){
+  try{
+    const response=await fetch(container.dataset.adventureSource);
+    if(!response.ok)throw new Error(`Adventure page returned ${response.status}`);
+    const source=await response.text();
+    const sourceDocument=new DOMParser().parseFromString(source,'text/html');
+    const shadow=container.attachShadow({mode:'open'});
+    const style=document.createElement('style');
+    const sourceStyles=[...sourceDocument.querySelectorAll('head style')].map(node=>node.textContent).join('\n');
+    style.textContent=`${scopeAdventureStyles(sourceStyles)}
+      :host{display:block;position:relative;width:100%;overflow:clip}
+      .adventure-flow-root{position:relative;width:100%;margin:0;overflow:clip}
+      .adventure-flow-root>.background{position:absolute!important;inset:0!important;z-index:0!important}
+      .adventure-flow-root>.grain{position:absolute!important;inset:0!important;z-index:3!important}
+      .adventure-flow-root>.stage,.adventure-flow-root>main{position:relative;z-index:1}
+      .scene{width:100%}
+    `;
+
+    const root=document.createElement('div');
+    root.className='adventure-flow-root';
+    root.innerHTML=sourceDocument.body.innerHTML;
+    root.querySelectorAll('script,.site-header,.counter,.scroll-hint').forEach(node=>node.remove());
+    shadow.append(style,root);
+
+    if(container.dataset.adventureKind==='past')setupPastAdventureFlow(container,shadow);
+    if(container.dataset.adventureKind==='future')setupFutureAdventureFlow(container,shadow);
+    container.setAttribute('aria-busy','false');
+  }catch(error){
+    container.setAttribute('aria-busy','false');
+    const message=container.querySelector('.adventure-flow-loading');
+    if(message)message.textContent='The adventure index could not load. Please refresh the page and try again.';
+    console.error(error);
+  }
+}
+
+document.querySelectorAll('.adventures-flow-shell').forEach(mountAdventureFlow);
