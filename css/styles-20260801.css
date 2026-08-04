@@ -1857,36 +1857,24 @@ body:has(#adaptive.active) .topbar button:hover{color:#eacf38}
   .event-card-logo img{padding:38px 30px}
 }
 
-/* Minimal homepage mission + botanical Adaptive Ascents art direction */
-.hero-mission-simple{
-  align-items:flex-start;
-  justify-content:center;
-}
-.hero-mission-simple h2{
-  max-width:none;
-  margin:0;
-  font-family:Georgia,'Times New Roman',serif;
-  font-size:clamp(58px,8vw,128px);
-  font-weight:500;
-  line-height:.86;
-  letter-spacing:-.055em;
-}
-.hero-mission-simple>[hidden]{
-  display:none !important;
-}
-
+/* White-field botanical Adaptive Ascents art direction */
 .adaptive-ascents-page{
+  --aa-cream:#fff;
+  --aa-wood:#fff;
+  --aa-wood-light:#fff;
   position:relative;
   isolation:isolate;
   overflow:hidden;
+  background:#fff;
 }
 .aa-botanical-flow{
   position:absolute;
   z-index:0;
   top:0;
-  right:clamp(-145px,-7vw,-40px);
-  width:min(72vw,887px);
+  right:clamp(-80px,-3vw,-20px);
+  width:min(74vw,864px);
   pointer-events:none;
+  mix-blend-mode:multiply;
 }
 .aa-botanical-flow img{
   display:block;
@@ -1895,13 +1883,19 @@ body:has(#adaptive.active) .topbar button:hover{color:#eacf38}
 }
 .aa-hero,
 .aa-section-nav,
-.aa-options-section{
+.aa-options-section,
+.aa-event-section{
   position:relative;
   z-index:1;
 }
 .aa-hero{
-  background:linear-gradient(90deg,#faf9f5 0%,rgba(250,249,245,.98) 38%,rgba(250,249,245,.82) 61%,rgba(250,249,245,.18) 100%);
+  background:transparent;
   color:var(--aa-ink);
+}
+.aa-hero-copy{
+  position:relative;
+  z-index:2;
+  text-shadow:0 0 22px #fff,0 0 22px #fff;
 }
 .aa-hero h1{
   color:var(--aa-grape);
@@ -1910,21 +1904,81 @@ body:has(#adaptive.active) .topbar button:hover{color:#eacf38}
   align-self:stretch;
   min-height:0;
   margin:clamp(28px,4vw,64px) clamp(24px,4vw,62px) clamp(28px,4vw,64px) 0;
-  border:1px solid rgba(36,17,54,.78);
-  background:rgba(250,249,245,.88);
+  border:1px solid rgba(36,17,54,.72);
+  border-top:8px solid var(--aa-orange);
+  background:rgba(255,255,255,.88);
   color:var(--aa-ink);
   box-shadow:0 20px 60px rgba(36,17,54,.12);
   backdrop-filter:blur(3px);
 }
 .aa-section-nav{
-  background:rgba(250,249,245,.95);
+  background:rgba(255,255,255,.95);
 }
 .aa-options-section{
-  background:linear-gradient(180deg,rgba(250,249,245,.72),#faf9f5 78%);
+  background:linear-gradient(180deg,rgba(255,255,255,.58),rgba(255,255,255,.9) 78%,#fff 100%);
+}
+.aa-path-card{
+  background:rgba(255,255,255,.82);
+}
+.aa-event-section{
+  background:rgba(255,255,255,.9);
+  border-top:10px solid var(--aa-pink-soft);
+}
+.aa-support-section{
+  position:relative;
+  z-index:1;
+  overflow:hidden;
+  background:#fff;
+  color:var(--aa-ink);
+}
+.aa-botanical-section-art{
+  position:absolute;
+  z-index:0;
+  top:-8%;
+  right:-4%;
+  width:min(76vw,948px);
+  pointer-events:none;
+  mix-blend-mode:multiply;
+}
+.aa-botanical-section-art img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+.aa-support-section>:not(.aa-botanical-section-art){
+  position:relative;
+  z-index:1;
+}
+.aa-support-section .aa-section-intro h2,
+.aa-process-section .aa-section-intro h2{
+  color:var(--aa-grape);
+}
+.aa-support-list{
+  border-color:rgba(36,17,54,.35);
+}
+.aa-support-list article{
+  border-color:rgba(36,17,54,.35);
+  background:linear-gradient(90deg,rgba(255,255,255,.94),rgba(255,255,255,.72));
+}
+.aa-activity-line{
+  padding:24px;
+  background:rgba(255,255,255,.86);
+}
+.aa-form-section{
+  background:#fff;
+  border-top:10px solid var(--aa-gold);
+}
+.aa-process-section{
+  background:#fff;
+  border-top:10px solid var(--aa-blue);
+}
+.aa-contact-section{
+  background:var(--aa-ink);
+  color:#fff;
 }
 body:has(#adaptive.active) .topbar{
   background:#33216d;
-  color:#faf9f5;
+  color:#fff;
   border-color:#241136;
 }
 body:has(#adaptive.active) .topbar button:hover{
@@ -1933,30 +1987,35 @@ body:has(#adaptive.active) .topbar button:hover{
 
 @media(max-width:900px){
   .aa-botanical-flow{
-    right:-34vw;
-    width:128vw;
-    opacity:.8;
+    right:-42vw;
+    width:138vw;
+    opacity:.76;
   }
   .aa-hero{
-    background:linear-gradient(180deg,rgba(250,249,245,.98) 0%,rgba(250,249,245,.9) 58%,rgba(250,249,245,.52) 100%);
+    background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.54));
   }
   .aa-event-flag{
     margin:0 22px 38px;
     border:1px solid rgba(36,17,54,.78);
+    border-top:8px solid var(--aa-orange);
+  }
+  .aa-botanical-section-art{
+    right:-58vw;
+    width:168vw;
+    opacity:.72;
   }
 }
 
 @media(max-width:640px){
-  .hero-mission-simple{
-    min-height:210px;
-  }
-  .hero-mission-simple h2{
-    font-size:clamp(52px,18vw,78px);
-  }
   .aa-botanical-flow{
-    right:-52vw;
-    width:164vw;
-    opacity:.68;
+    right:-70vw;
+    width:190vw;
+    opacity:.65;
+  }
+  .aa-botanical-section-art{
+    right:-96vw;
+    width:220vw;
+    opacity:.58;
   }
 }
 @media(max-width:640px){
