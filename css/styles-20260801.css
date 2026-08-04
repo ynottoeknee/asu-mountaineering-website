@@ -1724,6 +1724,138 @@ body:has(#adaptive.active) .topbar button:hover{color:#eacf38}
   background:#fff;
   color:var(--calendar-charcoal);
 }
+
+/* August 2026 homepage content pass */
+.hero-mission{
+  align-self:stretch;
+}
+.hero-mission .hero-actions [hidden]{
+  display:none !important;
+}
+.hero-mission h2{
+  max-width:11ch;
+}
+.hero-mission-copy{
+  max-width:560px;
+}
+.hero-mission-copy p{
+  margin:0 0 18px;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:17px;
+  line-height:1.62;
+}
+.hero-mission-copy p:last-child{
+  margin-bottom:0;
+}
+
+.home-events-section{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+.home-events-section::before,
+.home-events-section::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+.home-events-section::before{
+  z-index:0;
+  background:url('../assets/images/decor/arizona-pressed-botanicals.webp') center / cover no-repeat;
+  opacity:.42;
+  filter:saturate(.85) contrast(.93);
+}
+.home-events-section::after{
+  z-index:0;
+  background:radial-gradient(ellipse at center,rgba(255,255,255,.88) 0 48%,rgba(255,255,255,.52) 78%,rgba(255,255,255,.24) 100%);
+}
+.home-events-section>.section-head,
+.home-events-section>.event-grid{
+  position:relative;
+  z-index:1;
+}
+.home-events-section .event-grid{
+  align-items:stretch;
+}
+.home-events-section .event-card{
+  min-width:0;
+  padding:0;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  background:rgba(255,255,255,.94);
+  border-color:rgba(17,17,17,.72);
+}
+.event-card-media{
+  height:240px;
+  overflow:hidden;
+  border-bottom:1.5px solid var(--border);
+  background:#e9e4db;
+}
+.event-card-media img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+.event-card-logo{
+  display:grid;
+  place-items:center;
+  background:#fff;
+}
+.event-card-logo img{
+  object-fit:contain;
+  padding:42px 34px;
+}
+.event-card-copy{
+  display:flex;
+  flex:1;
+  flex-direction:column;
+  padding:24px;
+}
+.event-card-copy small{
+  display:block;
+  margin-bottom:13px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.1em;
+}
+.event-card-copy h3{
+  margin:0 0 12px;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(22px,2vw,30px);
+  line-height:1.08;
+}
+.event-card-copy p{
+  margin:auto 0 0;
+  padding-top:12px;
+  line-height:1.55;
+}
+
+.about-copy-block--philosophy{
+  max-width:1040px;
+}
+.about-copy-block--philosophy .eyebrow{
+  margin-bottom:10px;
+}
+.about-philosophy-copy{
+  max-width:960px;
+}
+
+@media(max-width:960px){
+  .event-card-media{height:220px}
+}
+@media(max-width:640px){
+  .hero-mission h2{max-width:none}
+  .hero-mission-copy p{font-size:16px}
+  .home-events-section::before{
+    background-size:auto 100%;
+    opacity:.3;
+  }
+  .event-card-media{height:215px}
+  .event-card-logo img{padding:38px 30px}
+}
 @media(max-width:640px){
   .calendar-photo-banner{
     min-height:380px;

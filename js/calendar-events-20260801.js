@@ -26,10 +26,17 @@
     },
     {
       date:'2026-09-12',
-      title:'Adaptive Ascents Sunrise Hike',
+      title:'Adaptive Ascents Sunrise Walk',
       time:'6:00 AM',
-      description:'Introductory small-group hike at Papago Park. Interest form requested by September 5.',
+      description:'Introductory small-group walk at Papago Park. Interest form requested by September 5.',
       category:'adaptive'
+    },
+    {
+      date:'2026-09-16',
+      title:'Opening Meeting + Journal Making',
+      time:'6:00 PM',
+      description:'MCA’s opening meeting and a journal-making night. Location to be announced.',
+      category:'community'
     }
   ];
 

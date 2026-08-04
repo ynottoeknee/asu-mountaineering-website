@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mountaineering Club at ASU | Mountains, Community, Action</title>
 
-  <link rel="stylesheet" href="css/styles-20260801.css?v=20260802-5">
+  <link rel="stylesheet" href="css/styles-20260801.css?v=20260804-1">
   <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 </head>
 <body>
@@ -42,18 +42,14 @@
     </button>
     <div class="hero-logo-large"><div><div class="hero-logo-circle logo-ready"><img src="assets/images/mca-line-logo-transparent.png" alt="MCA logo"></div><div class="hero-motto">Mountains · Community · Action</div></div></div>
   </div>
-  <aside class="hero-philosophy">
-    <div class="eyebrow">Our Philosophy</div><h2>Wild places have inherent value.</h2>
-    <div id="philosophyCopy" class="hero-philosophy-copy collapsed">
-      <p>We believe that wild places possess inherent value and that every living being possesses inherent worth. Because something possesses inherent value, it deserves our care, respect, and stewardship.</p>
-      <p>We believe that people flourish through purpose, meaningful challenge, strong community, and time spent in nature. These experiences cultivate resilience, deepen relationships, strengthen character, and foster a lasting sense of responsibility.</p>
-      <p>We also believe that caring for others and caring for ourselves are not opposing goals—they reinforce one another. Likewise, the well-being of people and the well-being of the places they inhabit are deeply connected. When we improve the world around us, we also shape the kind of people we become.</p>
-      <p>Therefore, we seek experiences that simultaneously strengthen people and strengthen their relationship with the natural world.</p>
-      <p>We believe mountaineering provides one of the richest environments in which to cultivate these values. Time spent in the backcountry asks us to rely on one another, embrace meaningful challenge, act with responsibility, and experience the beauty and fragility of wild places firsthand. Through shared challenge, shared responsibility, and shared accomplishment, we build stronger communities while developing a deeper appreciation for the landscapes that sustain us.</p>
-      <p>If contributing to something larger than ourselves gives life meaning, then when we have the ability to improve something, we should. Every expedition is an opportunity to leave a trail cleaner, teach a new skill, support a teammate, protect a wild place, or strengthen the community around us. These actions are not separate from mountaineering—they are part of it.</p>
-      <p>The Mountaineering Club exists to turn these beliefs into action. We climb not simply to reach summits, but to become healthier, more capable, and more connected people. Through adventure, stewardship, and service, we strive to leave every person, every place, and every community better than we found it.</p>
+  <aside class="hero-philosophy hero-mission">
+    <div class="eyebrow">Our Mission</div><h2>Develop people. Strengthen communities and wild places.</h2>
+    <div id="philosophyCopy" class="hero-mission-copy">
+      <p>MCA exists to develop people while strengthening the communities and wild places around us. Through meaningful challenge, service, stewardship, and community, we create opportunities for people to learn, lead, and act.</p>
+      <p>Mountaineering is not the end goal; it is one of the environments where this work comes to life—where people rely on one another, discover what they are capable of, and take responsibility for something beyond themselves.</p>
+      <p>We believe personal growth and community impact go hand in hand: people become better by helping make the world around them better.</p>
     </div>
-    <div class="hero-actions"><button id="readMoreBtn" class="btn">Read More</button><button class="btn nav-link" data-page="join">Join MCA</button></div>
+    <div class="hero-actions"><button id="readMoreBtn" type="button" hidden aria-hidden="true"></button><button class="btn nav-link" data-page="join">Join MCA</button></div>
   </aside>
 </section>
 
@@ -97,15 +93,24 @@
         </div>
       </section>
 
-      <section class="section wire-box">
+      <section class="section wire-box home-events-section">
         <div class="section-head">
           <div><div class="eyebrow">What's Happening</div><h2>Upcoming events</h2></div>
           <button class="btn nav-link" data-page="calendar">View Full Calendar</button>
         </div>
         <div class="event-grid">
-          <article class="event-card wire-box"><small>SERVICE · DATE</small><h3>Papago Cleanup</h3></article>
-          <article class="event-card wire-box"><small>COMMUNITY · DATE</small><h3>Opening Meeting + Journal Making</h3></article>
-          <article class="event-card wire-box"><small>TRAINING · DATE</small><h3>First-Aid Kit Making</h3></article>
+          <article class="event-card wire-box">
+            <div class="event-card-media event-card-logo"><img src="assets/images/events/st-marys-food-bank-logo.svg" alt="St. Mary’s Food Bank logo"></div>
+            <div class="event-card-copy"><small>SERVICE · <time datetime="2026-08-12T13:00">AUG 12 · 1:00 PM</time></small><h3>St. Mary’s Emergency Food Box Packing</h3><p>Volunteer with MCA to pack emergency food boxes for Arizona families.</p></div>
+          </article>
+          <article class="event-card wire-box">
+            <div class="event-card-media"><img src="assets/images/events/papago-climbing-view.webp" alt="A climber overlooking Papago Park"></div>
+            <div class="event-card-copy"><small>STEWARDSHIP · <time datetime="2026-08-18T05:00">AUG 18 · 5:00 AM</time></small><h3>Papago Park Stewardship: Graffiti Cleanup</h3><p>An early-morning cleanup focused on graffiti and care for the park.</p></div>
+          </article>
+          <article class="event-card wire-box">
+            <div class="event-card-media"><img src="assets/images/calendar-club-banner.webp" alt="MCA members together among desert rocks"></div>
+            <div class="event-card-copy"><small>ADAPTIVE ASCENTS · <time datetime="2026-09-12T06:00">SEPT 12 · 6:00 AM</time></small><h3>Adaptive Ascents Sunrise Walk</h3><p>A small-group introduction to Adaptive Ascents at Papago Park.</p></div>
+          </article>
         </div>
       </section>
 
@@ -125,9 +130,9 @@
       </div>
       <p class="aa-trust-line">Led by staff with direct-care experience and CPR/First Aid certification.</p>
     </div>
-    <aside class="aa-event-flag" aria-label="Introductory sunrise hike details">
+    <aside class="aa-event-flag" aria-label="Introductory sunrise walk details">
       <span>First opportunity</span>
-      <strong>Sunrise hike</strong>
+      <strong>Sunrise walk</strong>
       <time datetime="2026-09-12T06:00">Sat · Sept 12 · 6:00 a.m.</time>
       <p>Papago Park<br>625 N Galvin Pkwy<br>Phoenix, AZ 85008</p>
       <small>Interest form requested by September 5</small>
@@ -136,7 +141,7 @@
 
   <nav class="aa-section-nav" aria-label="Adaptive Ascents page sections">
     <button class="adaptive-jump" type="button" data-adaptive-target="adaptive-options">Your starting point</button>
-    <button class="adaptive-jump" type="button" data-adaptive-target="adaptive-first-event">Sunrise hike</button>
+    <button class="adaptive-jump" type="button" data-adaptive-target="adaptive-first-event">Sunrise walk</button>
     <button class="adaptive-jump" type="button" data-adaptive-target="adaptive-supports">What we plan for</button>
     <button class="adaptive-jump" type="button" data-adaptive-target="adaptive-interest">Interest form</button>
   </nav>
@@ -145,13 +150,13 @@
     <div class="aa-section-intro">
       <div class="eyebrow">There is more than one way in</div>
       <h2>Choose the starting point that fits.</h2>
-      <p>The first hike is one option. You can plan for that day, stay connected for another date, or tell us that a different outdoor experience may be a better fit.</p>
+      <p>The first walk is one option. You can plan for that day, stay connected for another date, or tell us that a different outdoor experience may be a better fit.</p>
     </div>
     <div class="aa-path-grid">
-      <button class="aa-path-card" type="button" data-adaptive-path="I am interested in the September 12 sunrise hike">
-        <span>01</span><strong>I can make the sunrise hike</strong><small>Start planning for September 12.</small>
+      <button class="aa-path-card" type="button" data-adaptive-path="I am interested in the September 12 sunrise walk">
+        <span>01</span><strong>I can make the sunrise walk</strong><small>Start planning for September 12.</small>
       </button>
-      <button class="aa-path-card" type="button" data-adaptive-path="I am interested, but I cannot make the September 12 hike">
+      <button class="aa-path-card" type="button" data-adaptive-path="I am interested, but I cannot make the September 12 walk">
         <span>02</span><strong>Interested, but I can’t make it</strong><small>Join the list for another date or format.</small>
       </button>
       <button class="aa-path-card" type="button" data-adaptive-path="I am interested, but hikes are not the right fit">
@@ -205,8 +210,8 @@
       <fieldset>
         <legend><span>01</span> Choose a starting point</legend>
         <div class="aa-radio-grid">
-          <label><input type="radio" name="adaptivePath" value="I am interested in the September 12 sunrise hike" required><span>I can make the September 12 sunrise hike</span></label>
-          <label><input type="radio" name="adaptivePath" value="I am interested, but I cannot make the September 12 hike"><span>I’m interested, but I cannot make that date</span></label>
+          <label><input type="radio" name="adaptivePath" value="I am interested in the September 12 sunrise walk" required><span>I can make the September 12 sunrise walk</span></label>
+          <label><input type="radio" name="adaptivePath" value="I am interested, but I cannot make the September 12 walk"><span>I’m interested, but I cannot make that date</span></label>
           <label><input type="radio" name="adaptivePath" value="I am interested, but hikes are not the right fit"><span>I’m interested, but hikes are not the right fit</span></label>
           <label><input type="radio" name="adaptivePath" value="I am not sure yet"><span>I’m not sure yet</span></label>
         </div>
@@ -240,7 +245,7 @@
         <legend><span>03</span> Interests, preferences, and goals</legend>
         <p class="aa-field-help">Choose any activities that may be of interest. No prior outdoor experience is required.</p>
         <div class="aa-check-grid">
-          <label><input type="checkbox" name="activityInterest" value="Sunrise hike">Sunrise hike</label>
+          <label><input type="checkbox" name="activityInterest" value="Sunrise walk">Sunrise walk</label>
           <label><input type="checkbox" name="activityInterest" value="Nature walk or outing">Nature walk or outing</label>
           <label><input type="checkbox" name="activityInterest" value="Bouldering">Bouldering</label>
           <label><input type="checkbox" name="activityInterest" value="Climbing">Climbing</label>
@@ -346,11 +351,18 @@
        <p>Then, as “I” became “we,” a lot of new passions got thrown in—and that became our common ground. That passion is what continues to drive us forward.</p>
        <p>So, we are becoming a network of driven people trying to make a difference, while helping one another make the differences each of us wants to see.</p>
      </article>
-     <article class="about-copy-block">
-       <h2>Our Mission</h2>
-       <p>MCA exists to develop people while strengthening the communities and wild places around us. Through meaningful challenge, service, stewardship, and community, we create opportunities for people to learn, lead, and act.</p>
-       <p>Mountaineering is not the end goal; it is one of the environments where this work comes to life—where people rely on one another, discover what they are capable of, and take responsibility for something beyond themselves.</p>
-       <p>We believe personal growth and community impact go hand in hand: people become better by helping make the world around them better.</p>
+     <article class="about-copy-block about-copy-block--philosophy">
+       <div class="eyebrow">Our Philosophy</div>
+       <h2>Wild places have inherent value.</h2>
+       <div class="about-philosophy-copy">
+         <p>We believe that wild places possess inherent value and that every living being possesses inherent worth. Because something possesses inherent value, it deserves our care, respect, and stewardship.</p>
+         <p>We believe that people flourish through purpose, meaningful challenge, strong community, and time spent in nature. These experiences cultivate resilience, deepen relationships, strengthen character, and foster a lasting sense of responsibility.</p>
+         <p>We also believe that caring for others and caring for ourselves are not opposing goals—they reinforce one another. Likewise, the well-being of people and the well-being of the places they inhabit are deeply connected. When we improve the world around us, we also shape the kind of people we become.</p>
+         <p>Therefore, we seek experiences that simultaneously strengthen people and strengthen their relationship with the natural world.</p>
+         <p>We believe mountaineering provides one of the richest environments in which to cultivate these values. Time spent in the backcountry asks us to rely on one another, embrace meaningful challenge, act with responsibility, and experience the beauty and fragility of wild places firsthand. Through shared challenge, shared responsibility, and shared accomplishment, we build stronger communities while developing a deeper appreciation for the landscapes that sustain us.</p>
+         <p>If contributing to something larger than ourselves gives life meaning, then when we have the ability to improve something, we should. Every expedition is an opportunity to leave a trail cleaner, teach a new skill, support a teammate, protect a wild place, or strengthen the community around us. These actions are not separate from mountaineering—they are part of it.</p>
+         <p>The Mountaineering Club exists to turn these beliefs into action. We climb not simply to reach summits, but to become healthier, more capable, and more connected people. Through adventure, stewardship, and service, we strive to leave every person, every place, and every community better than we found it.</p>
+       </div>
      </article>
    </section>
   <section class="section wire-box"><h2>Meet the Team</h2><p>Space for current leaders, advisors, and team members.</p><div class="team-grid"><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/anabelle.jpg" alt="Anabelle"></div><h3>Anabelle</h3><p class="team-role">Team Member</p><p>[Short bio.]</p></article><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/zahrah.jpg" alt="Zahrah"></div><h3>Zahrah</h3><p class="team-role">Team Member</p><p>[Short bio.]</p></article><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/david-jacobs.jpg" alt="David Jacobs"></div><h3>David Jacobs</h3><p class="team-role">Advisor</p><p>[Short bio.]</p></article><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/louis.jpg" alt="Louis"></div><h3>Louis</h3><p class="team-role">Team Member</p><p>[Short bio.]</p></article><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/patt.jpg" alt="Patt"></div><h3>Patt</h3><p class="team-role">Team Member</p><p>[Short bio.]</p></article><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/ani.jpg" alt="Ani"></div><h3>Ani</h3><p class="team-role">Team Member</p><p>[Short bio.]</p></article><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/sienna.jpg" alt="Sienna"></div><h3>Sienna</h3><p class="team-role">Vice President</p><p>[Short bio.]</p></article><article class="simple-card wire-box team-member-card"><div class="team-photo"><img src="assets/images/team/tony.jpg" alt="Tony"></div><h3>Tony</h3><p class="team-role">President</p><p>[Short bio.]</p></article><article class="simple-card wire-box"><h3>Team Member 9</h3><p>Trips Director</p><p>[Short bio.]</p></article><article class="simple-card wire-box"><h3>Team Member 10</h3><p>Training Director</p><p>[Short bio.]</p></article><article class="simple-card wire-box"><h3>Team Member 11</h3><p>Service Coordinator</p><p>[Short bio.]</p></article><article class="simple-card wire-box"><h3>Team Member 12</h3><p>Partnerships Director</p><p>[Short bio.]</p></article><article class="simple-card wire-box"><h3>Team Member 13</h3><p>Outreach Director</p><p>[Short bio.]</p></article><article class="simple-card wire-box"><h3>Team Member 14</h3><p>Social Media Lead</p><p>[Short bio.]</p></article><article class="simple-card wire-box"><h3>Team Member 15</h3><p>Team Lead</p><p>[Short bio.]</p></article></div></section>
@@ -1022,8 +1034,8 @@
 
 
   <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" defer></script>
-  <script src="js/site.js?v=20260802-4"></script>
-  <script src="js/calendar-events-20260801.js"></script>
+  <script src="js/site.js?v=20260804-1"></script>
+  <script src="js/calendar-events-20260801.js?v=20260804-1"></script>
   <script src="js/adaptive-ascents-20260801.js"></script>
 </body>
 </html>
