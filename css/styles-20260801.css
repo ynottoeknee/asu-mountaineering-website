@@ -598,6 +598,87 @@ body:has(#adaptive.active) .topbar button:hover{color:#eacf38}
   .aa-contact-section{padding:70px 22px}
 }
 
+/* Repeating Adaptive Ascents doodle pattern */
+.aa-hero,
+.adaptive-ascents-page .aa-section,
+.adaptive-ascents-page .aa-contact-section{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+.aa-hero>*,
+.adaptive-ascents-page .aa-section>*,
+.adaptive-ascents-page .aa-contact-section>*{
+  position:relative;
+  z-index:2;
+}
+.aa-hero::before,
+.aa-hero::after,
+.adaptive-ascents-page .aa-section::before,
+.adaptive-ascents-page .aa-section::after,
+.adaptive-ascents-page .aa-contact-section::before,
+.adaptive-ascents-page .aa-contact-section::after{
+  content:"";
+  position:absolute;
+  z-index:1;
+  width:clamp(180px,25vw,430px);
+  aspect-ratio:1;
+  pointer-events:none;
+  background-image:url('../assets/images/adaptive/adaptive-ascents-doodle.jpeg');
+  background-repeat:no-repeat;
+  background-position:center 47%;
+  background-size:118% auto;
+  opacity:.12;
+  filter:saturate(.88) contrast(.94);
+  mix-blend-mode:multiply;
+  -webkit-mask-image:radial-gradient(ellipse at center,#000 46%,rgba(0,0,0,.82) 62%,transparent 78%);
+  mask-image:radial-gradient(ellipse at center,#000 46%,rgba(0,0,0,.82) 62%,transparent 78%);
+}
+.aa-hero::before{top:-8%;left:-5%;transform:rotate(-13deg)}
+.aa-hero::after{right:4%;bottom:-15%;transform:rotate(19deg)}
+.aa-options-section::before{top:-12%;right:-4%;transform:rotate(12deg)}
+.aa-options-section::after{left:8%;bottom:-18%;transform:rotate(-24deg)}
+.aa-event-section::before{top:8%;left:-9%;transform:rotate(-17deg)}
+.aa-event-section::after{right:3%;bottom:-17%;transform:rotate(28deg)}
+.aa-support-section::before{top:-10%;right:8%;transform:rotate(8deg)}
+.aa-support-section::after{left:-5%;bottom:-12%;transform:rotate(-20deg)}
+.aa-form-section::before{top:4%;right:-7%;transform:rotate(-11deg)}
+.aa-form-section::after{left:4%;bottom:3%;transform:rotate(17deg)}
+.aa-process-section::before{top:-13%;left:18%;transform:rotate(21deg)}
+.aa-process-section::after{right:-4%;bottom:-18%;transform:rotate(-8deg)}
+.aa-contact-section::before{top:-45%;left:-3%;transform:rotate(-18deg)}
+.aa-contact-section::after{right:8%;bottom:-58%;transform:rotate(23deg)}
+.aa-hero::before,
+.aa-hero::after,
+.aa-support-section::before,
+.aa-support-section::after,
+.aa-contact-section::before,
+.aa-contact-section::after{
+  opacity:.14;
+  filter:saturate(.75) brightness(1.18) contrast(.9);
+  mix-blend-mode:screen;
+}
+
+@media(max-width:640px){
+  .aa-hero::before,
+  .aa-hero::after,
+  .adaptive-ascents-page .aa-section::before,
+  .adaptive-ascents-page .aa-section::after,
+  .adaptive-ascents-page .aa-contact-section::before,
+  .adaptive-ascents-page .aa-contact-section::after{
+    width:240px;
+    opacity:.09;
+  }
+  .aa-hero::after,
+  .aa-options-section::after,
+  .aa-event-section::after,
+  .aa-support-section::after,
+  .aa-process-section::after,
+  .aa-contact-section::after{
+    display:none;
+  }
+}
+
 
 /* Hearts passing and dealing refinements */
 #passOverlay.game-overlay{
