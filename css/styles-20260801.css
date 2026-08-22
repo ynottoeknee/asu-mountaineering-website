@@ -679,6 +679,101 @@ body:has(#adaptive.active) .topbar button:hover{color:#eacf38}
   }
 }
 
+/* Neutral Adaptive Ascents treatment: the doodle supplies the only color. */
+.adaptive-ascents-page{
+  --aa-ink:#111;
+  --aa-cream:#fff;
+  --aa-pink:#111;
+  --aa-pink-soft:#fff;
+  --aa-green:#fff;
+  --aa-blue:#fff;
+  --aa-grape:#fff;
+  --aa-burnt:#333;
+  --aa-orange:#fff;
+  --aa-rose:#111;
+  --aa-gold:#777;
+  --aa-wood:#fff;
+  --aa-wood-light:#fff;
+  --aa-line:rgba(17,17,17,.38);
+  background:#fff;
+  color:#111;
+}
+body:has(#adaptive.active) .topbar{
+  background:#fff;
+  color:#111;
+  border-color:#111;
+}
+body:has(#adaptive.active) .topbar button:hover{color:#555}
+.aa-hero,
+.aa-event-flag,
+.aa-event-section,
+.aa-support-section,
+.aa-form-section,
+.aa-process-section,
+.aa-contact-section{
+  background:transparent;
+  color:#111;
+}
+.aa-hero h1{color:#111}
+.aa-button-light{
+  background:#fff;
+  border-color:#111;
+  color:#111;
+}
+.aa-button-light:hover,
+.aa-path-card:hover,
+.aa-path-card.selected,
+.aa-section-nav button:hover{
+  background:#111;
+  border-color:#111;
+  color:#fff;
+}
+.aa-button-dark{background:#111;border-color:#111;color:#fff}
+.aa-button-dark:hover{background:#333;border-color:#333}
+.aa-text-button:hover,.aa-contact-links a:hover{color:#555}
+.aa-section-nav{background:rgba(255,255,255,.96);border-color:#111}
+.aa-path-card:focus-visible{outline-color:#666}
+.aa-support-list{border-color:rgba(17,17,17,.55)}
+.aa-support-list article{border-color:rgba(17,17,17,.55)}
+.aa-activity-line,.aa-form-heading p{border-color:#111}
+.aa-interest-form input[type="text"],
+.aa-interest-form input[type="email"],
+.aa-interest-form input[type="tel"],
+.aa-interest-form select,
+.aa-interest-form textarea{
+  background:rgba(255,255,255,.82);
+}
+.aa-interest-form input:focus,
+.aa-interest-form select:focus,
+.aa-interest-form textarea:focus{outline-color:#777}
+.aa-radio-grid input,
+.aa-check-grid input,
+.aa-acknowledgments input{accent-color:#111}
+.aa-form-status.success,.aa-form-status.error{color:#111}
+.aa-contact-links{border-color:#111}
+.aa-contact-links a{border-color:#111}
+.aa-hero::before,
+.aa-hero::after,
+.aa-support-section::before,
+.aa-support-section::after,
+.aa-contact-section::before,
+.aa-contact-section::after{
+  opacity:.15;
+  filter:saturate(.9) contrast(.94);
+  mix-blend-mode:multiply;
+}
+
+@media(max-width:640px){
+  .aa-hero::before,
+  .aa-hero::after,
+  .adaptive-ascents-page .aa-section::before,
+  .adaptive-ascents-page .aa-section::after,
+  .adaptive-ascents-page .aa-contact-section::before,
+  .adaptive-ascents-page .aa-contact-section::after{
+    opacity:.11;
+  }
+}
+
 
 /* Hearts passing and dealing refinements */
 #passOverlay.game-overlay{
