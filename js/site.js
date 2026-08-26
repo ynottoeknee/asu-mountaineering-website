@@ -158,15 +158,7 @@ const calendarNext = document.getElementById('calendarNext');
 
 const today = new Date();
 let calendarView = new Date(today.getFullYear(), today.getMonth(), 1);
-const calendarEvents = [
-  {
-    date:'2026-08-18',
-    title:'Volunteering with Valley of the Sun',
-    time:'10–11 AM',
-    description:'Building heat relief kits for those in need.',
-    category:'service'
-  }
-];
+const calendarEvents = [];
 
 function renderCalendar(){
   if(!calendarGrid) return;
