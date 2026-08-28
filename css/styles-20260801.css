@@ -779,6 +779,149 @@ body:has(#adaptive.active) .topbar button:hover{color:#555}
   }
 }
 
+/* Adaptive Ascents community artwork: one drawing per edge, with the original
+   doodle retained as a recurring visual anchor. */
+.aa-hero::before,
+.aa-hero::after,
+.adaptive-ascents-page .aa-section::before,
+.adaptive-ascents-page .aa-section::after,
+.adaptive-ascents-page .aa-contact-section::before,
+.adaptive-ascents-page .aa-contact-section::after{
+  inset:auto;
+  width:clamp(300px,38vw,680px);
+  aspect-ratio:1;
+  background-position:center;
+  background-size:contain;
+  opacity:.4;
+  filter:saturate(1.18) contrast(1.03);
+  mix-blend-mode:multiply;
+  -webkit-mask-image:radial-gradient(ellipse at center,#000 70%,rgba(0,0,0,.96) 84%,transparent 100%);
+  mask-image:radial-gradient(ellipse at center,#000 70%,rgba(0,0,0,.96) 84%,transparent 100%);
+}
+
+.aa-hero::before{
+  top:-12%;
+  left:-8%;
+  background-image:url('../assets/images/adaptive/adaptive-ascents-doodle.jpeg');
+  background-size:112% auto;
+  transform:rotate(-13deg);
+}
+.aa-hero::after{
+  right:-7%;
+  bottom:-10%;
+  width:clamp(340px,43vw,760px);
+  background-image:url('../assets/images/adaptive/adaptive-art-heart.webp');
+  transform:rotate(12deg);
+}
+.aa-options-section::before{
+  top:-9%;
+  right:-6%;
+  background-image:url('../assets/images/adaptive/adaptive-art-pink-bows.webp');
+  transform:rotate(8deg);
+}
+.aa-options-section::after{
+  left:-9%;
+  bottom:-19%;
+  width:clamp(330px,40vw,700px);
+  background-image:url('../assets/images/adaptive/adaptive-art-blue-figure.webp');
+  transform:rotate(-12deg);
+}
+.aa-event-section::before{
+  top:2%;
+  left:-8%;
+  width:clamp(310px,36vw,620px);
+  background-image:url('../assets/images/adaptive/adaptive-art-pink-character.webp');
+  transform:rotate(-9deg);
+}
+.aa-event-section::after{
+  right:-5%;
+  bottom:-14%;
+  width:clamp(360px,42vw,740px);
+  background-image:url('../assets/images/adaptive/adaptive-art-profile.webp');
+  transform:rotate(10deg);
+  opacity:.46;
+}
+.aa-support-section::before{
+  top:-6%;
+  right:-8%;
+  width:clamp(350px,43vw,760px);
+  background-image:url('../assets/images/adaptive/adaptive-art-red-green-character.webp');
+  transform:rotate(6deg);
+  opacity:.34;
+}
+.aa-support-section::after{
+  left:-7%;
+  bottom:-12%;
+  width:clamp(320px,39vw,690px);
+  background-image:url('../assets/images/adaptive/adaptive-art-popsicle-character.webp');
+  transform:rotate(-10deg);
+  opacity:.36;
+}
+.aa-form-section::before,
+.aa-form-section::after{
+  width:clamp(165px,20vw,310px);
+  height:clamp(680px,82vw,1120px);
+  aspect-ratio:auto;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 8%,#000 92%,transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0,#000 8%,#000 92%,transparent 100%);
+}
+.aa-form-section::before{
+  top:1%;
+  right:-2%;
+  background-image:url('../assets/images/adaptive/adaptive-art-blue-marks-sun-a.webp');
+  transform:rotate(-4deg);
+  opacity:.42;
+}
+.aa-form-section::after{
+  left:-1%;
+  bottom:1%;
+  background-image:url('../assets/images/adaptive/adaptive-art-blue-marks-sun-b.webp');
+  transform:rotate(4deg);
+  opacity:.42;
+}
+.aa-process-section::before{
+  top:-13%;
+  left:-6%;
+  background-image:url('../assets/images/adaptive/adaptive-ascents-doodle.jpeg');
+  background-size:112% auto;
+  transform:rotate(16deg);
+}
+.aa-process-section::after{
+  right:-7%;
+  bottom:-17%;
+  background-image:url('../assets/images/adaptive/adaptive-art-pink-bows.webp');
+  transform:rotate(-11deg);
+}
+.aa-contact-section::before{
+  top:-38%;
+  left:-6%;
+  background-image:url('../assets/images/adaptive/adaptive-art-heart.webp');
+  transform:rotate(-12deg);
+  opacity:.34;
+}
+.aa-contact-section::after{
+  right:-4%;
+  bottom:-55%;
+  background-image:url('../assets/images/adaptive/adaptive-ascents-doodle.jpeg');
+  background-size:112% auto;
+  transform:rotate(18deg);
+}
+
+@media(max-width:640px){
+  .aa-hero::before,
+  .adaptive-ascents-page .aa-section::before,
+  .adaptive-ascents-page .aa-contact-section::before{
+    width:clamp(300px,92vw,440px);
+    opacity:.3;
+  }
+  .aa-form-section::before{
+    width:170px;
+    height:690px;
+    right:-42px;
+    opacity:.32;
+  }
+}
+
 
 /* Hearts passing and dealing refinements */
 #passOverlay.game-overlay{
