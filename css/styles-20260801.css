@@ -688,7 +688,8 @@ body:has(#adaptive.active) .topbar button:hover{color:#555}
 .aa-form-status.success,.aa-form-status.error{color:#111}
 .aa-contact-links{border-color:#111}
 .aa-contact-links a{border-color:#111}
-/* Frame-free, individually positioned artwork. Every source image appears once. */
+/* Adaptive Ascents artwork system: two full-bleed backgrounds, then saturated
+   cutouts fitted into the open shapes of cards, rows, and form gutters. */
 .aa-artwork-layer{
   position:absolute;
   inset:0;
@@ -701,85 +702,129 @@ body:has(#adaptive.active) .topbar button:hover{color:#555}
   display:block;
   max-width:none;
   height:auto;
-  opacity:.82;
-  filter:saturate(1.16) contrast(1.04);
+  opacity:1;
+  filter:saturate(1.2) contrast(1.06);
   transform-origin:center;
 }
 
-.aa-art--original{
-  top:4%;
-  right:3%;
-  width:clamp(270px,29vw,500px);
-  transform:rotate(7deg);
+/* Background anchors */
+.aa-art--original-bg{
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 44%;
+  opacity:.17;
+  filter:saturate(1.12) contrast(1.06);
 }
-.aa-art--heart{
-  right:28%;
-  bottom:-12%;
-  width:clamp(310px,34vw,590px);
-  transform:rotate(-9deg);
+.aa-event-flag{position:relative;isolation:isolate;overflow:hidden;background:rgba(255,255,255,.74)}
+.aa-event-flag-art{
+  position:absolute;
+  z-index:0;
+  inset:-7%;
+  width:114%;
+  height:114%;
+  object-fit:cover;
+  object-position:center;
+  opacity:.3;
+  filter:saturate(1.15) contrast(1.04);
 }
-.aa-art--bows{
-  top:2%;
-  right:-1%;
-  width:clamp(220px,24vw,410px);
-  transform:rotate(8deg);
+.aa-event-flag>:not(.aa-event-flag-art){position:relative;z-index:1}
+
+/* Artwork fills the intentionally empty upper half of each starting card. */
+.aa-path-card{position:relative;isolation:isolate;overflow:hidden}
+.aa-path-card>:not(.aa-path-card-art){position:relative;z-index:1}
+.aa-path-card-art{
+  position:absolute;
+  z-index:0;
+  top:22px;
+  right:18px;
+  display:block;
+  width:auto;
+  height:auto;
+  max-width:48%;
+  max-height:48%;
+  object-fit:contain;
+  opacity:1;
+  filter:saturate(1.2) contrast(1.06);
 }
-.aa-art--blue-figure{
-  left:1%;
-  bottom:-5%;
-  width:clamp(210px,24vw,410px);
-  transform:rotate(-11deg);
-}
-.aa-art--pink-character{
-  top:5%;
+.aa-path-card-art--bows{width:155px;transform:rotate(6deg)}
+.aa-path-card-art--figure{width:135px;transform:rotate(-6deg)}
+.aa-path-card-art--red-green{width:175px;transform:rotate(4deg)}
+
+/* Tall character in the open date column; wide profile in the horizontal gap. */
+.aa-art--event-pink{
   left:2%;
-  width:clamp(210px,23vw,390px);
-  transform:rotate(-8deg);
+  bottom:4%;
+  width:clamp(185px,18vw,310px);
+  transform:rotate(-7deg);
 }
-.aa-art--profile{
-  right:1%;
-  bottom:2%;
-  width:clamp(330px,38vw,650px);
-  transform:rotate(7deg);
-  opacity:.88;
-}
-.aa-art--red-green{
-  top:1%;
-  right:-1%;
-  width:clamp(270px,31vw,530px);
-  transform:rotate(6deg);
-}
-.aa-art--popsicle{
-  left:1%;
-  bottom:1%;
-  width:clamp(220px,25vw,420px);
-  transform:rotate(-8deg);
-}
-.aa-art--blue-marks-a{
-  top:2%;
-  right:1%;
-  width:clamp(135px,15vw,245px);
-  transform:rotate(-3deg);
-}
-.aa-art--blue-marks-b{
-  top:56%;
-  left:1%;
-  width:clamp(125px,14vw,230px);
-  transform:rotate(4deg);
+.aa-event-inline-art{
+  display:block;
+  width:min(560px,68%);
+  max-height:230px;
+  margin:-12px 0 24px auto;
+  object-fit:contain;
+  opacity:1;
+  filter:saturate(1.2) contrast(1.06);
+  transform:rotate(2deg);
 }
 
+/* Repeated characters occupy the unused right side of explanatory rows. */
+.aa-support-list article{
+  grid-template-columns:80px minmax(0,1fr) minmax(150px,250px);
+  align-items:center;
+}
+.aa-support-art,
+.aa-process-art{
+  display:block;
+  width:100%;
+  max-width:230px;
+  max-height:195px;
+  object-fit:contain;
+  justify-self:end;
+  opacity:1;
+  filter:saturate(1.2) contrast(1.06);
+}
+.aa-support-art--red-green{transform:rotate(4deg)}
+.aa-support-art--popsicle{max-width:170px;transform:rotate(-5deg)}
+.aa-support-art--figure{max-width:165px;transform:rotate(5deg)}
+.aa-support-art--pink{max-width:170px;transform:rotate(-6deg)}
+.aa-support-art--bows{max-width:205px;transform:rotate(7deg)}
+
+/* The long sun-and-mark drawings repeat down the form's narrow side gutters. */
+.aa-art--form-mark-1,
+.aa-art--form-mark-2,
+.aa-art--form-mark-3,
+.aa-art--form-mark-4{width:clamp(82px,7vw,125px)}
+.aa-art--form-mark-1{top:2%;right:0;transform:rotate(-3deg)}
+.aa-art--form-mark-2{top:27%;left:0;transform:rotate(4deg)}
+.aa-art--form-mark-3{top:53%;right:0;transform:rotate(3deg)}
+.aa-art--form-mark-4{top:78%;left:0;transform:rotate(-4deg)}
+
+.aa-process-list li{
+  grid-template-columns:80px minmax(0,1fr) minmax(140px,220px);
+  align-items:center;
+}
+.aa-process-art--profile{max-width:220px;transform:rotate(3deg)}
+.aa-process-art--red-green{max-width:190px;transform:rotate(-4deg)}
+.aa-process-art--popsicle{max-width:145px;transform:rotate(5deg)}
+.aa-process-art--bows{max-width:190px;transform:rotate(-6deg)}
+
 @media(max-width:640px){
-  .aa-art{opacity:.64;filter:saturate(1.18) contrast(1.05)}
-  .aa-art--original{top:1%;right:-12%;width:190px}
-  .aa-art--heart{right:-8%;bottom:1%;width:220px}
-  .aa-art--bows{top:1%;right:-8%;width:165px}
-  .aa-art--blue-figure{left:-8%;bottom:1%;width:155px}
-  .aa-art--pink-character{top:2%;left:-7%;width:155px}
-  .aa-art--profile{right:-20%;bottom:1%;width:230px}
-  .aa-art--red-green{top:1%;right:-10%;width:190px}
-  .aa-art--popsicle{left:-7%;bottom:1%;width:165px}
-  .aa-art--blue-marks-a{top:1%;right:-28px;width:100px}
-  .aa-art--blue-marks-b{top:56%;left:-28px;width:96px}
+  .aa-art--original-bg{opacity:.13;object-position:58% center}
+  .aa-event-flag-art{opacity:.28}
+  .aa-path-card-art{top:15px;right:14px;max-width:42%;max-height:45%}
+  .aa-path-card-art--bows{width:135px}
+  .aa-path-card-art--figure{width:115px}
+  .aa-path-card-art--red-green{width:145px}
+  .aa-art--event-pink{left:-8%;bottom:3%;width:155px}
+  .aa-event-inline-art{width:100%;max-height:180px;margin:10px 0 20px auto}
+  .aa-support-list article,.aa-process-list li{grid-template-columns:48px minmax(0,1fr)}
+  .aa-support-art,.aa-process-art{grid-column:2;width:145px;max-height:150px;margin-top:12px}
+  .aa-art--form-mark-1,.aa-art--form-mark-2,.aa-art--form-mark-3,.aa-art--form-mark-4{width:72px}
+  .aa-art--form-mark-1,.aa-art--form-mark-3{right:-28px}
+  .aa-art--form-mark-2,.aa-art--form-mark-4{left:-28px}
 }
 
 
