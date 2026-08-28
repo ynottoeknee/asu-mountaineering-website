@@ -29,16 +29,14 @@
     const participant=field('participantName');
     const lines=[
       'ADAPTIVE ASCENTS — GENERAL INTEREST','',
-      'STARTING POINT',field('adaptivePath'),'',
+      'OUTING INTEREST',field('adaptivePath'),'',
       'PARTICIPANT',
       `Preferred name: ${participant}`,
       `Age or age range: ${field('participantAge')}`,
-      `Pronouns: ${field('participantPronouns')}`,
-      `Participant involvement: ${field('participantInvolvement')}`,'',
+      `Pronouns: ${field('participantPronouns')}`,'',
       'CONTACT',
       `Contact name: ${field('contactName')}`,
       `Completing as: ${field('contactRole')}`,
-      `Relationship: ${field('relationship')}`,
       `Email: ${field('contactEmail')}`,
       `Phone: ${field('contactPhone')}`,
       `Preferred contact: ${field('contactMethod')}`,'',
@@ -48,7 +46,7 @@
       `What tends to help an activity go well: ${field('goodDay')}`,
       `Activities, environments, or approaches that may be uncomfortable or unhelpful: ${field('avoid')}`,'',
       'COMMUNICATION AND SUPPORT',
-      `Communication approaches: ${checked('communicationSupport')}`,
+      `Communication approaches: ${field('communicationSupport')}`,
       `How they show interest, comfort, discomfort, choice, or a need for a break: ${field('communicationDetails')}`,
       `Sensory, transition, or emotional supports: ${field('sensorySupports')}`,
       `Pace, mobility, terrain, or rest considerations: ${field('mobilitySupports')}`,
@@ -71,16 +69,6 @@
   function mailto(subject,lines){
     return `mailto:${ADAPTIVE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
   }
-
-  document.querySelectorAll('.aa-path-card').forEach(button=>{
-    button.addEventListener('click',()=>{
-      const choice=[...form.querySelectorAll('input[name="adaptivePath"]')].find(input=>input.value===button.dataset.adaptivePath);
-      if(choice)choice.checked=true;
-      document.querySelectorAll('.aa-path-card').forEach(card=>card.classList.toggle('selected',card===button));
-      document.getElementById('adaptive-interest')?.scrollIntoView({behavior:'smooth',block:'start'});
-      window.setTimeout(()=>document.getElementById('aaParticipantName')?.focus(),450);
-    });
-  });
 
   document.getElementById('prepareAdaptiveInterestBtn')?.addEventListener('click',()=>{
     if(!validate())return;
