@@ -2436,16 +2436,16 @@ body:has(#adaptive.active) .topbar button:hover{color:#555}
 #home .hero-logo-large{
   position:relative;
   min-height:620px;
-  margin:-70px 0 -160px -90px;
+  margin:-70px 0 -120px;
 }
 #home .hero-logo-circle.logo-ready{
   position:absolute;
-  top:100%;
+  top:50%;
   left:50%;
-  width:clamp(1080px,99vw,1455px) !important;
+  width:min(96%,1200px) !important;
   height:auto !important;
   aspect-ratio:1 !important;
-  transform:translate(-52%,-50%);
+  transform:translate(-50%,-50%);
   filter:none !important;
 }
 #home .hero-logo-circle.logo-ready img{
@@ -2482,21 +2482,21 @@ body:has(#adaptive.active) .topbar button:hover{color:#555}
   }
   #home .hero-logo-large{
     min-height:560px;
-    margin:-55px -36px -90px -70px;
+    margin:-55px 0 -70px;
   }
   #home .hero-logo-circle.logo-ready{
-    width:min(170vw,1160px) !important;
-    transform:translate(-52%,-50%);
+    width:min(96%,1000px) !important;
+    transform:translate(-50%,-50%);
   }
 }
 @media(max-width:640px){
   #home .hero-logo-large{
     min-height:405px;
-    margin:-42px -40px -34px -58px;
+    margin:-42px 0 -20px;
   }
   #home .hero-logo-circle.logo-ready{
-    width:min(185vw,780px) !important;
-    transform:translate(-52%,-50%);
+    width:min(98%,740px) !important;
+    transform:translate(-50%,-50%);
   }
 }
 
