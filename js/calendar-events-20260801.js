@@ -91,3 +91,19 @@
 
   renderCalendar();
 })();
+
+/* Past Adventures: remove the first slide's small description/index block. */
+(()=>{
+  let attempts=0;
+  const timer=window.setInterval(()=>{
+    attempts+=1;
+    const shell=document.querySelector('.adventures-flow-shell[data-adventure-kind="past"]');
+    const firstMeta=shell?.shadowRoot?.querySelector('.scene-1 .index-panel');
+    if(firstMeta){
+      firstMeta.remove();
+      window.clearInterval(timer);
+      return;
+    }
+    if(attempts>=120)window.clearInterval(timer);
+  },250);
+})();
