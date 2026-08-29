@@ -1328,7 +1328,6 @@ body:has(#adaptive.active) .topbar button:hover{color:#555}
   .join-faq-list details p{font-size:16px;padding-right:10px}
 }
 
-
 /* MCA line-art logo */
 .small-logo.logo-ready,
 .hero-logo-circle.logo-ready{
@@ -2497,5 +2496,43 @@ body:has(#adaptive.active) .topbar button:hover{color:#555}
   #home .hero-logo-circle.logo-ready{
     width:min(185vw,780px) !important;
     transform:translate(-52%,-50%);
+  }
+}
+
+/* Quiet, centered About-page dedication */
+#about > .wire-box{
+  border-top:0;
+  border-bottom:0;
+}
+#about .about-copy-block + .about-copy-block{
+  border-top:0;
+}
+#about .about-dedication-hero{
+  min-height:0;
+  padding:clamp(38px,4.5vw,68px) clamp(24px,5vw,72px) clamp(44px,5vw,78px);
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+#about .about-dedication-hero .eyebrow{
+  margin:0 0 16px;
+}
+#about .about-dedication-hero h1{
+  width:auto;
+  max-width:1200px;
+  font-size:clamp(40px,5.2vw,76px);
+  line-height:1.08;
+  letter-spacing:-.025em;
+  font-weight:400;
+  text-align:center;
+}
+@media(max-width:640px){
+  #about .about-dedication-hero{
+    min-height:0;
+    padding:36px 20px 44px;
+  }
+  #about .about-dedication-hero h1{
+    font-size:clamp(38px,12vw,58px);
+    white-space:normal;
   }
 }
