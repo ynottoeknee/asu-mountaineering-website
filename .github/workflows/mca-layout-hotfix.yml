@@ -1,0 +1,166 @@
+name: MCA launchpad layout hotfix
+
+on:
+  push:
+    paths:
+      - '.github/workflows/mca-layout-hotfix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Simplify launchpad and resize homepage logo
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          index_path = Path('index.html')
+          css_path = Path('css/styles-20260829-6.css')
+
+          html = index_path.read_text(encoding='utf-8')
+          css = css_path.read_text(encoding='utf-8')
+
+          # Make the large homepage logo just a little smaller at each breakpoint.
+          replacements = {
+              'width:min(96%,1200px) !important;': 'width:min(91%,1120px) !important;',
+              'width:min(96%,1000px) !important;': 'width:min(92%,940px) !important;',
+              'width:min(98%,740px) !important;': 'width:min(94%,700px) !important;',
+          }
+          for old, new in replacements.items():
+              if old not in css:
+                  raise SystemExit(f'Missing expected CSS rule: {old}')
+              css = css.replace(old, new, 1)
+
+          # Keep the Bring an Idea page self-explanatory: title, actions, form, calendar.
+          hero_pattern = re.compile(
+              r'  <section class="page-hero compact wire-box idea-help-hero">.*?  </section>\n\n  <section class="section wire-box idea-details-section">',
+              re.S,
+          )
+          hero_replacement = '''  <section class="page-hero compact wire-box idea-help-hero">
+    <div class="idea-help-copy">
+      <div class="eyebrow">Bring an Idea to MCA</div>
+      <h1>Bring us what you’re thinking.</h1>
+    </div>
+  </section>
+
+  <section class="section wire-box idea-details-section">'''
+          html, count = hero_pattern.subn(hero_replacement, html, count=1)
+          if count != 1:
+              raise SystemExit('Could not simplify the launchpad hero')
+
+          old_details_header = '''    <div class="section-head">
+      <div>
+        <div class="eyebrow">Step 1</div>
+        <h2>Tell us about your idea.</h2>
+        <p>A few sentences are all we need before we meet.</p>
+      </div>
+    </div>
+
+'''
+          if old_details_header not in html:
+              raise SystemExit('Could not find launchpad Step 1 header')
+          html = html.replace(old_details_header, '''    <div class="launchpad-actions" aria-label="Bring an idea actions">
+      <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLScisP8m11F36UPZruDZyJ_ACejUVF4sFChR10qxmw_SZl-qfQ/viewform" target="_blank" rel="noopener">Open Idea Form</a>
+      <a class="btn" href="#ideaScheduleSection">Schedule a Conversation</a>
+    </div>
+
+''', 1)
+
+          schedule_pattern = re.compile(
+              r'  <section id="ideaScheduleSection" class="section wire-box idea-schedule-section" hidden>.*?  </section>\n\n  <section id="ideaFinishSection"',
+              re.S,
+          )
+          schedule_replacement = '''  <section id="ideaScheduleSection" class="section wire-box idea-schedule-section">
+    <div class="section-head idea-schedule-heading">
+      <div>
+        <div class="eyebrow">Schedule</div>
+        <h2>Pick a time to meet.</h2>
+      </div>
+    </div>
+
+    <div
+      class="calendly-inline-widget mca-calendly"
+      data-url="https://calendly.com/afishe54-asu/30min?hide_gdpr_banner=1&background_color=ffffff&text_color=111111&primary_color=111111"
+      aria-label="Schedule a 30-minute meeting with MCA"
+    ></div>
+  </section>
+
+  <section id="ideaFinishSection"'''
+          html, count = schedule_pattern.subn(schedule_replacement, html, count=1)
+          if count != 1:
+              raise SystemExit('Could not expose the inline Calendly section')
+
+          css += r'''
+
+/* August 29 launchpad clarity pass */
+#launchpad .idea-help-hero{
+  min-height:0;
+  padding:34px 56px 26px;
+}
+#launchpad .idea-help-copy h1{
+  max-width:900px;
+  margin:14px 0 0;
+}
+#launchpad .idea-details-section{
+  padding-top:28px;
+}
+#launchpad .launchpad-actions{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-bottom:20px;
+}
+#launchpad .launchpad-actions .btn{
+  text-decoration:none;
+}
+#launchpad #simpleIdeaForm.google-form-embed{
+  gap:0;
+}
+#launchpad #simpleIdeaForm .google-form-actions{
+  display:none;
+}
+#launchpad .google-form-frame{
+  min-height:760px;
+}
+#launchpad .idea-schedule-section{
+  padding-top:42px;
+}
+#launchpad .idea-schedule-heading{
+  margin-bottom:20px;
+}
+#launchpad .mca-calendly{
+  height:760px;
+}
+@media(max-width:640px){
+  #launchpad .idea-help-hero{padding:28px 22px 20px}
+  #launchpad .idea-details-section{padding-top:22px}
+  #launchpad .launchpad-actions{display:grid;grid-template-columns:1fr;margin-bottom:16px}
+  #launchpad .launchpad-actions .btn{text-align:center}
+  #launchpad .google-form-frame{min-height:820px}
+  #launchpad .mca-calendly{height:800px}
+}
+'''
+
+          index_path.write_text(html, encoding='utf-8')
+          css_path.write_text(css, encoding='utf-8')
+          PY
+
+      - name: Commit the site changes and remove this one-shot workflow
+        shell: bash
+        run: |
+          rm -f .github/workflows/mca-layout-hotfix.yml
+          git config user.name "MCA site updater"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html css/styles-20260829-6.css .github/workflows/mca-layout-hotfix.yml
+          git commit -m "Simplify idea page and resize logo [skip ci]"
+          git push origin HEAD:main
