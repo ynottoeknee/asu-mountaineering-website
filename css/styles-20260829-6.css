@@ -61,6 +61,43 @@
   background:#fff;
 }
 
+/* Between Peaks — hard fallback so the real photos are visible even before JS swaps the placeholders. */
+#between > .page-hero{
+  display:none !important;
+}
+#between .photo-placeholder{
+  color:transparent !important;
+  font-size:0 !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+  border:0 !important;
+  overflow:hidden;
+}
+#between .photo-row .photo-placeholder:nth-child(1){
+  background-image:url('../assets/images/between-peaks/belay-dog.webp?v=20260829-3') !important;
+}
+#between .photo-row .photo-placeholder:nth-child(2){
+  background-image:url('../assets/images/between-peaks/sunset-group.webp?v=20260829-3') !important;
+}
+#between .photo-row .photo-placeholder:nth-child(3){
+  background-image:url('../assets/images/between-peaks/forest-pack.webp?v=20260829-3') !important;
+}
+#between .game-shell > .side-rail:first-child .photo-placeholder{
+  background-image:url('../assets/images/between-peaks/snow-camp.webp?v=20260829-3') !important;
+}
+#between .game-shell > .side-rail:last-child .photo-placeholder{
+  background-image:url('../assets/images/between-peaks/sunset-group.webp?v=20260829-3') !important;
+}
+#between .between-photo-real{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:220px !important;
+  object-fit:cover !important;
+  border:0 !important;
+}
+
 @media(max-width:960px){
   #home .hero-logo-circle.logo-ready{
     width:min(92%,940px) !important;
