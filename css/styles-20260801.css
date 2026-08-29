@@ -2398,3 +2398,69 @@ body:has(#adaptive.active) .topbar button:hover{color:#555}
   .aa-event-form-note{display:block}
   .aa-event-form-note .aa-text-button{margin-top:16px}
 }
+
+/* August 29 homepage visual corrections */
+#home .adaptive-home-entry{
+  border-color:#f44c0c;
+  background:#f44c0c;
+  color:#fffdf7;
+}
+#home .adaptive-home-entry small,
+#home .adaptive-home-arrow{color:#432c1c}
+#home .adaptive-home-entry strong{color:#fffdf7}
+
+#home .hero{
+  border-bottom:0;
+}
+#home #pieces{border-top:0}
+#home .hero-logo-large{
+  min-height:620px;
+  margin:-70px 0 -160px -90px;
+}
+#home .hero-logo-circle.logo-ready{
+  width:clamp(720px,66vw,970px) !important;
+  transform:translateX(-5%);
+  filter:none !important;
+}
+#home .hero-logo-circle.logo-ready img{
+  filter:brightness(0) contrast(1.35);
+}
+
+#home .hero-mission .eyebrow{color:#7a484d}
+#home .hero-mission-copy p:nth-child(1),
+#home .hero-mission-copy p:nth-child(2),
+#home .hero-mission-copy p:nth-child(3){color:#111}
+#home .hero-mission .btn{border-color:#111;color:#111}
+#home .hero-mission .btn:hover,
+#home .hero-mission .btn:focus-visible{border-color:#7a484d;background:#7a484d;color:#fff}
+
+#home .home-events-section .eyebrow,
+#home .home-events-section h2,
+#home .home-events-section .event-card small,
+#home .home-events-section .event-card h3,
+#home .home-events-section .event-card p{color:#111 !important}
+#home .home-events-section .btn{border-color:#111;color:#111}
+#home .home-events-section .btn:hover,
+#home .home-events-section .btn:focus-visible{background:#111;color:#fff}
+.event-card-belay img{object-position:center 25%}
+
+@media(max-width:960px){
+  #home .hero-logo-large{
+    min-height:560px;
+    margin:-55px -36px -90px -70px;
+  }
+  #home .hero-logo-circle.logo-ready{
+    width:min(132vw,860px) !important;
+    transform:translateX(-4%);
+  }
+}
+@media(max-width:640px){
+  #home .hero-logo-large{
+    min-height:405px;
+    margin:-42px -40px -34px -58px;
+  }
+  #home .hero-logo-circle.logo-ready{
+    width:min(145vw,600px) !important;
+    transform:translateX(-3%);
+  }
+}
