@@ -149,25 +149,47 @@
   },250);
 })();
 
-/* Between Peaks: replace the empty photo placeholders with member trip photos. */
+/* Between Peaks: remove the old intro banner and render the four member trip photos directly. */
 (()=>{
   const photos=[
-    ['assets/images/between-peaks/belay-dog.webp','Climber belaying beside a dog at a rocky crag'],
-    ['assets/images/between-peaks/sunset-group.webp','MCA members gathered on a rocky overlook at sunset'],
-    ['assets/images/between-peaks/forest-pack.webp','Backpackers hiking through a forest'],
-    ['assets/images/between-peaks/snow-camp.webp','Tent and climbing gear in snowy mountain conditions']
+    ['assets/images/between-peaks/belay-dog.webp?v=20260829-2','Climber belaying beside a dog at a rocky crag'],
+    ['assets/images/between-peaks/sunset-group.webp?v=20260829-2','MCA members gathered on a rocky overlook at sunset'],
+    ['assets/images/between-peaks/forest-pack.webp?v=20260829-2','Backpackers hiking through a forest'],
+    ['assets/images/between-peaks/snow-camp.webp?v=20260829-2','Tent and climbing gear in snowy mountain conditions']
   ];
-  const placeholders=[...document.querySelectorAll('#between .photo-placeholder')];
-  photos.forEach(([src,alt],index)=>{
-    const placeholder=placeholders[index];
-    if(!placeholder)return;
-    const img=document.createElement('img');
-    img.src=src;
-    img.alt=alt;
-    img.loading='lazy';
-    img.decoding='async';
-    img.className='between-photo-real';
-    img.style.cssText='display:block;width:100%;height:100%;min-height:220px;object-fit:cover;';
-    placeholder.replaceWith(img);
-  });
+
+  const ensureBetweenPeaks=()=>{
+    const page=document.getElementById('between');
+    if(!page)return false;
+
+    const oldHero=page.querySelector(':scope > .page-hero');
+    if(oldHero)oldHero.remove();
+
+    const existing=[...page.querySelectorAll('.between-photo-real')];
+    const placeholders=[...page.querySelectorAll('.photo-placeholder')];
+
+    photos.forEach(([src,alt],index)=>{
+      let img=existing[index];
+      if(!img && placeholders[index]){
+        img=document.createElement('img');
+        placeholders[index].replaceWith(img);
+      }
+      if(!img)return;
+      img.src=src;
+      img.alt=alt;
+      img.decoding='async';
+      img.className='between-photo-real';
+      img.style.cssText='display:block;width:100%;height:100%;min-height:220px;object-fit:cover;border:0;';
+    });
+
+    return page.querySelectorAll('.between-photo-real').length>=4;
+  };
+
+  ensureBetweenPeaks();
+  let tries=0;
+  const timer=window.setInterval(()=>{
+    tries+=1;
+    const done=ensureBetweenPeaks();
+    if(done || tries>=40)window.clearInterval(timer);
+  },250);
 })();
