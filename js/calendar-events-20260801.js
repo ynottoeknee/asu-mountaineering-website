@@ -92,18 +92,59 @@
   renderCalendar();
 })();
 
-/* Past Adventures: remove the first slide's small description/index block. */
+/* Past Adventures: keep the mountain names, remove every slide number and description. */
 (()=>{
+  const numberPattern=/^N\s*[°º]\s*\d+\s*\/\s*\d+$/i;
   let attempts=0;
   const timer=window.setInterval(()=>{
     attempts+=1;
     const shell=document.querySelector('.adventures-flow-shell[data-adventure-kind="past"]');
-    const firstMeta=shell?.shadowRoot?.querySelector('.scene-1 .index-panel');
-    if(firstMeta){
-      firstMeta.remove();
-      window.clearInterval(timer);
+    const shadow=shell?.shadowRoot;
+    if(!shadow){
+      if(attempts>=160)window.clearInterval(timer);
       return;
     }
-    if(attempts>=120)window.clearInterval(timer);
+
+    const scenes=[...shadow.querySelectorAll('.scene')];
+    if(!scenes.length){
+      if(attempts>=160)window.clearInterval(timer);
+      return;
+    }
+
+    scenes.forEach(scene=>{
+      const heading=scene.querySelector('h1,h2,h3,h4');
+      const textLeaves=[...scene.querySelectorAll('*')].filter(node=>
+        node.children.length===0 && node.textContent.trim()
+      );
+      const numberNodes=textLeaves.filter(node=>numberPattern.test(node.textContent.trim()));
+
+      let panel=heading?.parentElement||scene;
+      if(heading && numberNodes.length){
+        let candidate=heading.parentElement;
+        while(candidate && candidate!==scene){
+          if(numberNodes.some(node=>candidate.contains(node))){
+            panel=candidate;
+            break;
+          }
+          candidate=candidate.parentElement;
+        }
+      }
+
+      numberNodes.forEach(node=>node.remove());
+
+      panel.querySelectorAll('p').forEach(node=>{
+        if(!node.closest('.photo-card'))node.remove();
+      });
+
+      [...panel.querySelectorAll('*')].forEach(node=>{
+        if(node.children.length!==0 || !node.textContent.trim())return;
+        if(heading?.contains(node))return;
+        if(node.closest('.photo-card'))return;
+        const text=node.textContent.trim();
+        if(numberPattern.test(text) || (text.length>18 && /[A-Za-z]/.test(text)))node.remove();
+      });
+    });
+
+    window.clearInterval(timer);
   },250);
 })();
