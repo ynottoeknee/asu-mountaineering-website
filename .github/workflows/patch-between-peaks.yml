@@ -42,27 +42,27 @@ jobs:
           ]
           placeholder = '<div class="photo-placeholder dash-box">Photo space</div>'
           for filename, alt in top_photos:
-              replacement = f'<img class="between-photo-real" src="assets/images/between-peaks/{filename}?v=20260829-7" alt="{alt}" loading="eager" decoding="async">'
+              replacement = f'<img class="between-photo-real" src="assets/images/between-peaks/{filename}?v=20260829-8" alt="{alt}" loading="eager" decoding="async">'
               if placeholder not in section:
                   raise SystemExit(f'Expected top photo placeholder missing before {filename}')
               section = section.replace(placeholder, replacement, 1)
 
           member_placeholder = '<div class="photo-placeholder dash-box">Member photo</div>'
-          member_img = '<img class="between-photo-real" src="assets/images/between-peaks/snow-camp.webp?v=20260829-7" alt="Tent and climbing gear in snowy mountain conditions" loading="eager" decoding="async">'
+          member_img = '<img class="between-photo-real" src="assets/images/between-peaks/snow-camp.webp?v=20260829-8" alt="Tent and climbing gear in snowy mountain conditions" loading="eager" decoding="async">'
           if member_placeholder not in section:
               raise SystemExit('Expected member photo placeholder not found')
           section = section.replace(member_placeholder, member_img, 1)
 
           trip_placeholder = '<div class="photo-placeholder dash-box">Trip photo</div>'
-          trip_img = '<img class="between-photo-real" src="assets/images/between-peaks/belay-dog.webp?v=20260829-7" alt="Climber belaying beside a dog at a rocky crag" loading="eager" decoding="async">'
+          trip_img = '<img class="between-photo-real" src="assets/images/between-peaks/belay-dog.webp?v=20260829-8" alt="Climber belaying beside a dog at a rocky crag" loading="eager" decoding="async">'
           if trip_placeholder not in section:
               raise SystemExit('Expected trip photo placeholder not found')
           section = section.replace(trip_placeholder, trip_img, 1)
 
           text = text[:start] + section + text[end:]
-          text = text.replace('href="css/styles-20260829-6.css"', 'href="css/styles-20260829-6.css?v=20260829-7"', 1)
-          text = text.replace('src="js/site.js?v=20260825-1"', 'src="js/site.js?v=20260829-7"', 1)
-          text = text.replace('src="js/calendar-events-20260801.js?v=20260825-1"', 'src="js/calendar-events-20260801.js?v=20260829-7"', 1)
+          text = text.replace('href="css/styles-20260829-6.css"', 'href="css/styles-20260829-6.css?v=20260829-8"', 1)
+          text = text.replace('src="js/site.js?v=20260825-1"', 'src="js/site.js?v=20260829-8"', 1)
+          text = text.replace('src="js/calendar-events-20260801.js?v=20260825-1"', 'src="js/calendar-events-20260801.js?v=20260829-8"', 1)
 
           path.write_text(text, encoding='utf-8')
           PY
