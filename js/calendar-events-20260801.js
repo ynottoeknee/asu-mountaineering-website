@@ -148,3 +148,26 @@
     window.clearInterval(timer);
   },250);
 })();
+
+/* Between Peaks: replace the empty photo placeholders with member trip photos. */
+(()=>{
+  const photos=[
+    ['assets/images/between-peaks/belay-dog.webp','Climber belaying beside a dog at a rocky crag'],
+    ['assets/images/between-peaks/sunset-group.webp','MCA members gathered on a rocky overlook at sunset'],
+    ['assets/images/between-peaks/forest-pack.webp','Backpackers hiking through a forest'],
+    ['assets/images/between-peaks/snow-camp.webp','Tent and climbing gear in snowy mountain conditions']
+  ];
+  const placeholders=[...document.querySelectorAll('#between .photo-placeholder')];
+  photos.forEach(([src,alt],index)=>{
+    const placeholder=placeholders[index];
+    if(!placeholder)return;
+    const img=document.createElement('img');
+    img.src=src;
+    img.alt=alt;
+    img.loading='lazy';
+    img.decoding='async';
+    img.className='between-photo-real';
+    img.style.cssText='display:block;width:100%;height:100%;min-height:220px;object-fit:cover;';
+    placeholder.replaceWith(img);
+  });
+})();
