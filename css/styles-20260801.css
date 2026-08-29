@@ -2138,7 +2138,7 @@ body:has(#adaptive.active) .topbar button:hover{color:#555}
   max-width:1040px;
 }
 .about-copy-block--philosophy .eyebrow{
-  margin-bottom:10px;
+  margin-bottom:28px;
 }
 .about-philosophy-copy{
   max-width:960px;
@@ -2343,19 +2343,33 @@ body:has(#adaptive.active) .topbar button:hover{color:#555}
 #home .home-challenge-section h2{color:var(--home-green)}
 #home .home-challenge-section p{color:var(--home-coffee)}
 
-.about-dedication{
-  min-height:250px;
+.about-dedication-hero{
+  min-height:clamp(300px,38vw,560px);
   display:flex;
-  align-items:center;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:flex-end;
+  padding:clamp(46px,6vw,90px);
 }
-.about-dedication p{
-  max-width:1000px;
+.about-dedication-hero .eyebrow{
+  margin-bottom:18px;
+}
+.about-dedication-hero h1{
+  width:100%;
+  max-width:none;
   margin:0;
   font-family:Georgia,'Times New Roman',serif;
-  font-size:clamp(42px,6.4vw,96px);
-  line-height:1;
-  letter-spacing:-.035em;
+  font-size:clamp(58px,6.6vw,126px);
+  line-height:.92;
+  letter-spacing:-.05em;
   color:#432c1c;
+  white-space:nowrap;
+}
+@media(max-width:960px){
+  .about-dedication-hero h1{
+    font-size:clamp(58px,10vw,96px);
+    white-space:normal;
+  }
 }
 
 .aa-event-form-note{
@@ -2394,7 +2408,11 @@ body:has(#adaptive.active) .topbar button:hover{color:#555}
       drop-shadow(-8px -8px 0 rgba(132,153,216,.88))
       drop-shadow(16px -3px 0 rgba(244,76,12,.58)) !important;
   }
-  .about-dedication{min-height:190px}
+  .about-dedication-hero{
+    min-height:300px;
+    padding:44px 22px;
+  }
+  .about-dedication-hero h1{font-size:clamp(50px,15vw,76px)}
   .aa-event-form-note{display:block}
   .aa-event-form-note .aa-text-button{margin-top:16px}
 }
