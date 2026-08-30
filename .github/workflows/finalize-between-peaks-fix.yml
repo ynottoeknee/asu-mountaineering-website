@@ -1,0 +1,30 @@
+name: Finalize Between Peaks repair
+on:
+  push:
+    branches: [fix-between-peaks-images]
+    paths: ['.github/workflows/finalize-between-peaks-fix.yml']
+permissions:
+  contents: write
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix-between-peaks-images
+          fetch-depth: 0
+      - name: Bust caches and clean duplicate override
+        run: |
+          sed -i 's#css/styles-20260829-6.css?v=20260830-1#css/styles-20260829-6.css?v=20260830-2#g' index.html
+          sed -i 's#belay-dog.webp?v=20260829-7#belay-dog.webp?v=20260830-2#g' index.html
+          sed -i 's#forest-pack.webp?v=20260829-7#forest-pack.webp?v=20260830-2#g' index.html
+          python -c "from pathlib import Path; p=Path('css/styles-20260829-6.css'); s=p.read_text(); m='/* Between Peaks image repair — full artwork, no crop */'; a=s.find(m); b=s.find(m,a+1); p.write_text((s[:b].rstrip()+'\n') if b>=0 else s)"
+      - name: Commit final repair
+        run: |
+          rm .github/workflows/finalize-between-peaks-fix.yml
+          git config user.name 'MCA Website Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Finalize Between Peaks image repair'
+          git push origin HEAD:fix-between-peaks-images
