@@ -1,13 +1,12 @@
 @import url('./styles-20260829-6-base.css');
 
-/* August 29, 2026 — homepage logo + Bring an Idea clarity pass */
+/* August 30, 2026 — sponsor-facing final polish */
 
-/* Keep the homepage logo large, but give it a little more breathing room. */
 #home .hero-logo-circle.logo-ready{
   width:min(91%,1120px) !important;
 }
 
-/* The idea page should explain itself through the form and scheduling UI. */
+/* Bring-an-Idea remains intentionally direct. */
 #launchpad .idea-help-hero{
   min-height:0;
   padding:34px 56px 24px;
@@ -25,8 +24,6 @@
   padding-top:26px;
   padding-bottom:34px;
 }
-
-/* Put the two useful actions above the embedded Google Form instead of below it. */
 #launchpad #simpleIdeaForm.google-form-embed{
   display:flex;
   flex-direction:column;
@@ -40,8 +37,6 @@
   order:0;
   min-height:760px;
 }
-
-/* Keep Calendly visible directly on the MCA page; no extra explanatory step required. */
 #launchpad #ideaScheduleSection[hidden]{
   display:block !important;
 }
@@ -61,134 +56,322 @@
   background:#fff;
 }
 
-/* Between Peaks — hard fallback so the real photos are visible even before JS swaps the placeholders. */
-#between > .page-hero{
+/* Sponsor pathway — quiet, equal to Join rather than a sales banner. */
+#home .home-partner-btn{
+  background:#fff;
+}
+
+/* Between Peaks — finished scrapbook / clubroom composition. */
+#between{
+  background:#f7f4ec;
+}
+#between > .page-hero,
+#between h3,
+#between .table-label{
   display:none !important;
 }
-#between .photo-placeholder{
-  color:transparent !important;
-  font-size:0 !important;
-  background-size:cover !important;
-  background-position:center !important;
-  background-repeat:no-repeat !important;
+#between .between-layout{
+  padding:48px 34px 82px !important;
   border:0 !important;
-  overflow:hidden;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  background:
+    radial-gradient(circle at 12% 8%,rgba(67,52,32,.035),transparent 22%),
+    radial-gradient(circle at 88% 32%,rgba(67,52,32,.028),transparent 24%),
+    #f7f4ec !important;
+  overflow:visible !important;
 }
-#between .photo-row .photo-placeholder:nth-child(1){
-  background-image:url('../assets/images/between-peaks/belay-dog.webp?v=20260829-3') !important;
-}
-#between .photo-row .photo-placeholder:nth-child(2){
-  background-image:url('../assets/images/between-peaks/sunset-group.webp?v=20260829-3') !important;
-}
-#between .photo-row .photo-placeholder:nth-child(3){
-  background-image:url('../assets/images/between-peaks/forest-pack.webp?v=20260829-3') !important;
-}
-#between .game-shell > .side-rail:first-child .photo-placeholder{
-  background-image:url('../assets/images/between-peaks/snow-camp.webp?v=20260829-3') !important;
-}
-#between .game-shell > .side-rail:last-child .photo-placeholder{
-  background-image:url('../assets/images/between-peaks/sunset-group.webp?v=20260829-3') !important;
-}
-#between .between-photo-real{
-  display:block !important;
-  width:100% !important;
-  height:100% !important;
-  min-height:220px !important;
-  object-fit:cover !important;
-  border:0 !important;
-}
-
-/* Between Peaks — photos should feel physically pinned to the table, not placed in cards around it. */
 #between .between-top{
-  grid-template-columns:190px minmax(0,1fr) 190px !important;
-  gap:0 !important;
-  margin-bottom:0 !important;
+  display:grid !important;
+  grid-template-columns:minmax(235px,.72fr) minmax(0,1.35fr) !important;
+  gap:22px !important;
   align-items:end !important;
+  margin:0 0 -54px !important;
+  position:relative;
+  z-index:5;
 }
-#between .between-top > .poem-space{
-  grid-column:1;
-}
-#between .between-top > .photo-space{
-  grid-column:2;
-}
-#between .game-shell{
-  grid-template-columns:190px minmax(0,1fr) 190px !important;
-  gap:0 !important;
-  align-items:start;
-}
-#between .side-rail{
-  gap:0 !important;
-}
-
-/* Strip the photo-card treatment and the photo heading/description. */
+#between .poem-space,
+#between .photo-space,
+#between .poem-space.wire-box,
 #between .photo-space.wire-box{
-  padding:0 !important;
-  min-height:0 !important;
   border:0 !important;
   border-radius:0 !important;
   box-shadow:none !important;
   background:transparent !important;
+}
+#between .poem-space{
+  min-height:0 !important;
+  padding:0 !important;
+}
+#between .between-poem{
+  position:relative;
+  font-family:Georgia,'Times New Roman',serif;
+  color:#17130f;
+}
+#between .between-poem p{
+  margin:0;
+  white-space:normal;
+}
+#between .between-poem-one{
+  max-width:275px;
+  padding:10px 12px 42px 8px !important;
+  font-size:15px;
+  line-height:1.42;
+  transform:rotate(-.35deg);
+}
+#between .between-poem-two{
+  max-width:260px;
+  margin:46px 0 0 10px;
+  padding:0 8px 0 18px !important;
+  font-size:15px;
+  line-height:1.45;
+  transform:rotate(.25deg);
+}
+#between .between-poem .poem-credit{
+  display:block;
+  margin-top:16px;
+  max-width:245px;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:10.5px;
+  line-height:1.45;
+  letter-spacing:.015em;
+  color:#5e5549;
+  font-style:normal;
+}
+#between .between-poem .poem-indent{
+  display:inline-block;
+  padding-left:20px;
+}
+#between .between-top > .photo-space{
+  padding:0 !important;
+  min-height:0 !important;
   overflow:visible !important;
 }
-#between .between-top > .photo-space > h3{
-  display:none !important;
-}
-#between .between-photo-real{
-  display:block !important;
-  width:100% !important;
-  height:auto !important;
-  min-height:0 !important;
-  max-height:none !important;
-  object-fit:contain !important;
-  border:0 !important;
-  border-radius:0 !important;
-  color:transparent !important;
-  font-size:0 !important;
-  line-height:0 !important;
-}
-
-/* Keep the top photos at their real proportions while lining their bottom edges up with the table. */
 #between .photo-row{
   display:flex !important;
   align-items:flex-end !important;
+  justify-content:center !important;
   gap:0 !important;
   margin:0 !important;
+  padding:0 4px !important;
+  overflow:visible !important;
+}
+#between .between-photo-real{
+  display:block !important;
+  height:auto !important;
+  min-height:0 !important;
+  object-fit:cover !important;
+  border:0 !important;
+  border-radius:2px !important;
+  background:#fff;
+  box-shadow:0 9px 22px rgba(38,29,20,.16) !important;
+  position:relative;
 }
 #between .photo-row .between-photo-real{
-  flex:1 1 0 !important;
-  width:33.333333% !important;
-  max-width:33.333333% !important;
-  height:auto !important;
+  flex:0 1 34% !important;
+  width:34% !important;
+  max-width:255px !important;
 }
-
-/* A square table edge makes the surrounding photos actually meet it instead of floating off rounded corners. */
+#between .photo-row .between-photo-real:nth-child(1){
+  transform:rotate(-2.4deg) translate(12px,24px);
+  z-index:2;
+}
+#between .photo-row .between-photo-real:nth-child(2){
+  transform:rotate(.8deg) translateY(-2px);
+  z-index:4;
+}
+#between .photo-row .between-photo-real:nth-child(3){
+  transform:rotate(2.1deg) translate(-12px,18px);
+  z-index:3;
+}
+#between .game-shell{
+  display:grid !important;
+  grid-template-columns:168px minmax(520px,748px) 220px !important;
+  justify-content:center;
+  gap:0 !important;
+  align-items:start !important;
+  position:relative;
+  z-index:2;
+}
+#between .side-rail{
+  display:flex !important;
+  flex-direction:column;
+  gap:0 !important;
+  position:relative;
+}
+#between .game-shell > .side-rail:first-child{
+  padding-top:126px;
+  margin-right:-34px;
+  z-index:6;
+}
+#between .game-shell > .side-rail:last-child{
+  padding-top:56px;
+  margin-left:-34px;
+  z-index:6;
+}
+#between .side-rail .photo-space{
+  padding:0 !important;
+  min-height:0 !important;
+  overflow:visible !important;
+}
+#between .game-shell > .side-rail:first-child .between-photo-real{
+  width:174px !important;
+  max-width:174px !important;
+  transform:rotate(-2.6deg);
+}
+#between .game-shell > .side-rail:last-child .between-photo-real{
+  width:218px !important;
+  max-width:218px !important;
+  transform:rotate(1.8deg);
+  box-shadow:none !important;
+  background:transparent !important;
+}
 #between .wood-table{
-  border-radius:0 !important;
+  position:relative;
+  width:100% !important;
+  max-width:748px !important;
+  min-height:610px !important;
+  padding:18px !important;
+  border:1px solid rgba(49,27,15,.78) !important;
+  border-radius:10px !important;
+  overflow:hidden !important;
+  z-index:3;
+  box-shadow:0 13px 30px rgba(46,27,14,.18),inset 0 0 42px rgba(45,20,7,.28) !important;
+}
+#between .scoreboard{
+  right:14px !important;
+  top:12px !important;
+  padding:7px 9px !important;
+  font-size:10.5px !important;
+}
+#between .game-status{
+  top:17% !important;
+  min-width:250px !important;
+  max-width:55% !important;
+  padding:8px 10px !important;
+  font-size:13px !important;
+}
+#between .computer-hand,
+#between .player-hand{
+  width:84% !important;
+}
+#between .computer-hand{
+  top:52px !important;
+  height:158px !important;
+}
+#between .player-hand{
+  bottom:28px !important;
+  height:176px !important;
+}
+#between .center-trick{
+  top:49% !important;
+  width:270px !important;
+  height:184px !important;
+  gap:20px !important;
+}
+#between .playing-card{
+  width:88px !important;
+  height:127px !important;
+  padding:7px !important;
+}
+#between .player-hand .playing-card{margin-left:-48px !important}
+#between .player-hand .playing-card:first-child{margin-left:0 !important}
+#between .computer-hand .playing-card{margin-left:-51px !important}
+#between .computer-hand .playing-card:first-child{margin-left:0 !important}
+#between .draw-pile{
+  left:18px !important;
+  width:72px !important;
+  height:104px !important;
+  font-size:12px !important;
+}
+#between .capture-pile{
+  right:18px !important;
+  width:72px !important;
+  height:102px !important;
+  font-size:9.5px !important;
+}
+#between .capture-pile.cpu{top:78px !important}
+#between .capture-pile.you{bottom:52px !important}
+#between .game-controls{
+  bottom:7px !important;
+}
+#between .game-controls .btn{
+  padding:9px 13px !important;
+  font-size:12px !important;
+}
+#between .overlay-box{
+  max-width:420px;
 }
 
 @media(max-width:960px){
   #home .hero-logo-circle.logo-ready{
     width:min(92%,940px) !important;
   }
-
-  /* On smaller screens, return to a simple stacked layout while keeping photos undistorted. */
+  #between .between-layout{
+    padding:34px 20px 58px !important;
+  }
   #between .between-top{
-    grid-template-columns:1fr !important;
+    grid-template-columns:minmax(190px,.72fr) 1.28fr !important;
+    margin-bottom:18px !important;
   }
-  #between .between-top > .poem-space,
-  #between .between-top > .photo-space{
-    grid-column:1;
+  #between .game-shell{
+    grid-template-columns:145px minmax(430px,1fr) 180px !important;
   }
+  #between .game-shell > .side-rail:first-child{
+    margin-right:-24px;
+  }
+  #between .game-shell > .side-rail:last-child{
+    margin-left:-24px;
+  }
+  #between .game-shell > .side-rail:first-child .between-photo-real{
+    width:150px !important;
+  }
+  #between .game-shell > .side-rail:last-child .between-photo-real{
+    width:180px !important;
+  }
+}
+
+@media(max-width:780px){
+  #between .between-top,
   #between .game-shell{
     grid-template-columns:1fr !important;
   }
-  #between .photo-row{
-    display:grid !important;
-    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  #between .between-top{
+    gap:18px !important;
   }
-  #between .photo-row .between-photo-real{
-    width:100% !important;
+  #between .between-poem-one,
+  #between .between-poem-two{
+    max-width:330px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  #between .photo-row{
+    margin:0 auto 20px !important;
+  }
+  #between .game-shell > .side-rail:first-child,
+  #between .game-shell > .side-rail:last-child{
+    margin:0 !important;
+    padding:0 !important;
+  }
+  #between .game-shell > .side-rail:first-child{
+    align-items:flex-start;
+    margin-bottom:-44px !important;
+    z-index:6;
+  }
+  #between .game-shell > .side-rail:last-child{
+    display:grid !important;
+    grid-template-columns:180px minmax(0,1fr);
+    align-items:start;
+    gap:12px !important;
+    margin-top:-34px !important;
+  }
+  #between .wood-table{
     max-width:100% !important;
+    min-height:590px !important;
+  }
+  #between .between-poem-two{
+    margin-top:58px;
+    padding-left:0 !important;
   }
 }
 
@@ -221,7 +404,56 @@
   #launchpad .mca-calendly{
     height:800px;
   }
+  #between .between-layout{
+    padding:28px 12px 44px !important;
+  }
+  #between .between-poem-one,
+  #between .between-poem-two{
+    font-size:14px;
+    line-height:1.4;
+  }
   #between .photo-row{
-    grid-template-columns:1fr !important;
+    width:108%;
+    margin-left:-4% !important;
+  }
+  #between .photo-row .between-photo-real{
+    width:36% !important;
+    flex-basis:36% !important;
+  }
+  #between .game-shell > .side-rail:first-child .between-photo-real{
+    width:132px !important;
+  }
+  #between .game-shell > .side-rail:last-child{
+    grid-template-columns:132px minmax(0,1fr);
+  }
+  #between .game-shell > .side-rail:last-child .between-photo-real{
+    width:142px !important;
+  }
+  #between .wood-table{
+    min-height:560px !important;
+  }
+  #between .playing-card{
+    width:72px !important;
+    height:104px !important;
+    padding:5px !important;
+  }
+  #between .player-hand .playing-card{margin-left:-42px !important}
+  #between .computer-hand .playing-card{margin-left:-44px !important}
+  #between .center-trick{
+    width:210px !important;
+    height:150px !important;
+    gap:12px !important;
+  }
+  #between .draw-pile,
+  #between .capture-pile{
+    width:58px !important;
+    height:84px !important;
+  }
+  #between .game-status{
+    min-width:200px !important;
+    font-size:11px !important;
+  }
+  #between .scoreboard{
+    font-size:9px !important;
   }
 }
