@@ -605,3 +605,30 @@
     transform:none;
   }
 }
+
+/* Home upcoming events — steeper diagonal editorial staircase */
+#home .home-events-section{
+  padding-bottom:220px;
+}
+#home .home-events-section .event-card:nth-child(2){
+  transform:translateY(100px);
+}
+#home .home-events-section .event-card:nth-child(3){
+  transform:translateY(200px);
+}
+@media(max-width:1000px){
+  #home .home-events-section{
+    padding-bottom:150px;
+  }
+  #home .home-events-section .event-card:nth-child(2){transform:translateY(70px)}
+  #home .home-events-section .event-card:nth-child(3){transform:translateY(140px)}
+}
+@media(max-width:720px){
+  #home .home-events-section{
+    padding-bottom:34px;
+  }
+  #home .home-events-section .event-card:nth-child(2),
+  #home .home-events-section .event-card:nth-child(3){
+    transform:none;
+  }
+}
