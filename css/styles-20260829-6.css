@@ -457,3 +457,65 @@
     font-size:9px !important;
   }
 }
+
+/* === Final Between Peaks composition — 2026-08-30 === */
+#between{background:#f3efe7;overflow:hidden}
+#between .between-layout{position:relative;min-height:1540px;padding:44px 28px 82px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+#between .between-top,#between .game-shell{display:contents!important}
+#between .between-top>.photo-space,#between .side-rail>.photo-space,#between .side-rail>.between-drawing-slot,#between .between-poem{position:absolute;margin:0!important;border:0!important;background:#fff!important;box-shadow:0 12px 28px rgba(32,25,18,.13)!important;overflow:visible!important;z-index:4}
+#between .between-top>.photo-space,#between .side-rail>.photo-space,#between .side-rail>.between-drawing-slot{padding:7px!important;min-height:0!important}
+#between .between-top>.photo-space>h3,#between .poem-space>h3,#between .table-label{display:none!important}
+#between .photo-row{display:contents!important}
+#between .between-photo-real,#between .between-drawing-slot img{display:block!important;width:100%!important;height:100%!important;min-height:0!important;max-height:none!important;object-fit:cover!important;border:0!important;border-radius:0!important}
+#between .between-top>.photo-space{inset:22px 22px auto auto;width:58%;height:315px;background:transparent!important;box-shadow:none!important;padding:0!important}
+#between .photo-row .between-photo-real{position:absolute!important;padding:7px!important;background:#fff;box-shadow:0 12px 28px rgba(32,25,18,.13);object-fit:cover!important}
+#between .photo-row .between-photo-real:nth-child(1){left:0;top:58px;width:31%!important;height:232px!important;transform:rotate(-2.2deg);z-index:3}
+#between .photo-row .between-photo-real:nth-child(2){left:23%;top:0;width:48%!important;height:276px!important;transform:rotate(.7deg);z-index:4}
+#between .photo-row .between-photo-real:nth-child(3){right:0;top:72px;width:33%!important;height:224px!important;transform:rotate(1.8deg);z-index:2}
+#between .between-poem{padding:27px 25px!important;font-family:Georgia,'Times New Roman',serif;line-height:1.55}
+#between .between-poem-one{left:22px;top:36px;width:34%;transform:rotate(-.7deg)}
+#between .between-poem-two{right:22px;top:1030px;width:31%;transform:rotate(.8deg)}
+#between .between-poem-text{font-size:clamp(18px,2vw,25px);line-height:1.55}
+#between .between-poem-credit{margin:24px 0 0!important;padding-top:12px;border-top:1px solid #d8d1c5;font-family:Arial,Helvetica,sans-serif;font-size:11px!important;line-height:1.4;color:#555}
+#between .side-rail:first-of-type>.between-drawing-slot{left:28px;top:440px;width:25%;height:345px;transform:rotate(-1.5deg)}
+#between .side-rail:first-of-type>.photo-space{left:25px;top:825px;width:27%;height:355px;transform:rotate(1.6deg)}
+#between .side-rail:last-of-type>.photo-space{display:none!important}
+#between .between-game-wrap,#between .wood-table{z-index:2}
+#between .wood-table{position:absolute!important;left:25%;top:455px;width:59%!important;min-height:680px!important;height:680px!important;padding:18px!important;border-radius:5px!important;transform:rotate(-.25deg);box-shadow:0 16px 34px rgba(45,20,7,.18),inset 0 0 44px rgba(45,20,7,.18)!important;overflow:hidden!important}
+#between .computer-hand{top:56px!important;height:158px!important}
+#between .player-hand{bottom:18px!important;height:174px!important}
+#between .center-trick{width:270px!important;height:190px!important}
+#between .game-status{top:18%!important;min-width:250px!important;max-width:65%;font-size:12px}
+#between .scoreboard{top:12px!important;right:12px!important;font-size:11px!important}
+#between .draw-pile{left:16px!important}
+#between .capture-pile.cpu{right:15px!important}
+#between .capture-pile.you{right:15px!important}
+#between .game-controls{bottom:12px!important}
+#between .between-spacer{display:none!important}
+@media(max-width:900px){
+ #between .between-layout{min-height:0;padding:26px 16px 52px!important}
+ #between .between-top,#between .game-shell{display:grid!important;grid-template-columns:1fr 1fr!important;gap:18px!important;align-items:start!important}
+ #between .between-top{margin-bottom:18px!important}
+ #between .between-top>.photo-space,#between .side-rail>.photo-space,#between .side-rail>.between-drawing-slot,#between .between-poem,#between .wood-table{position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;width:auto!important;height:auto!important;transform:none!important}
+ #between .between-top>.photo-space{grid-column:1/-1;height:300px!important}
+ #between .photo-row{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:8px!important;height:100%}
+ #between .photo-row .between-photo-real{position:relative!important;inset:auto!important;width:100%!important;height:100%!important;transform:none!important;padding:5px!important}
+ #between .between-poem{padding:22px!important}
+ #between .game-shell{display:grid!important}
+ #between .side-rail{display:grid!important;gap:18px!important}
+ #between .side-rail:first-of-type>.between-drawing-slot,#between .side-rail:first-of-type>.photo-space{width:100%!important;height:320px!important}
+ #between .wood-table{grid-column:1/-1;grid-row:2;min-height:680px!important;height:680px!important}
+ #between .side-rail:first-of-type{grid-column:1;grid-row:1}
+ #between .side-rail:last-of-type{grid-column:2;grid-row:1}
+ #between .between-poem-two{display:block!important}
+}
+@media(max-width:640px){
+ #between .between-top,#between .game-shell{grid-template-columns:1fr!important}
+ #between .between-top>.photo-space{height:auto!important}
+ #between .photo-row{grid-template-columns:1fr!important;height:auto}
+ #between .photo-row .between-photo-real{height:auto!important;aspect-ratio:4/3}
+ #between .side-rail:first-of-type,#between .side-rail:last-of-type,#between .wood-table{grid-column:1!important;grid-row:auto!important}
+ #between .wood-table{min-height:650px!important;height:650px!important}
+ #between .side-rail:first-of-type>.between-drawing-slot,#between .side-rail:first-of-type>.photo-space{height:auto!important;aspect-ratio:4/5}
+ #between .between-poem-text{font-size:20px}
+}
