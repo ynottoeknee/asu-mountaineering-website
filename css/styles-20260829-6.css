@@ -550,3 +550,34 @@
     aspect-ratio:1 / 1 !important;
   }
 }
+
+/* Between Peaks image repair — full artwork, no crop */
+#between .side-rail:first-of-type > .between-drawing-slot{
+  width:31% !important;
+  height:auto !important;
+  aspect-ratio:1 / 1 !important;
+  padding:8px !important;
+}
+#between .between-drawing-slot img{
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  max-height:none !important;
+  aspect-ratio:auto !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+@media(max-width:900px){
+  #between .side-rail:first-of-type > .between-drawing-slot{
+    width:100% !important;
+    height:auto !important;
+    aspect-ratio:1 / 1 !important;
+  }
+}
+@media(max-width:640px){
+  #between .side-rail:first-of-type > .between-drawing-slot{
+    width:100% !important;
+    height:auto !important;
+    aspect-ratio:1 / 1 !important;
+  }
+}
