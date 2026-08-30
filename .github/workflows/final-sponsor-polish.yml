@@ -1,0 +1,36 @@
+name: Apply final sponsor polish
+on:
+  push:
+    branches: [final-sponsor-polish]
+    paths: ['.github/workflows/final-sponsor-polish.yml']
+permissions:
+  contents: write
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: final-sponsor-polish
+          fetch-depth: 0
+      - name: Restore original MCA favicon
+        run: curl -fsSL https://raw.githubusercontent.com/ynottoeknee/asu-mountaineering/main/mca-favicon.png -o mca-favicon.png
+      - name: Apply final site changes
+        run: |
+          python -m py_compile .github/scripts/apply_final_sponsor_polish.py
+          python .github/scripts/apply_final_sponsor_polish.py
+          test -s mca-favicon.png
+          test -s assets/images/between-peaks/dog-flower-line-art.png
+          ! grep -q '\[Short bio\.\]' index.html
+          ! grep -q 'Time TBD' index.html
+          grep -q 'Partner With MCA' index.html
+          grep -q 'Marina Diamandis' index.html
+      - name: Commit polished site
+        run: |
+          rm -rf .github/scripts .github/workflows/final-sponsor-polish.yml
+          git config user.name 'MCA Website Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Polish sponsor-facing site and rebuild Between Peaks'
+          git push origin HEAD:final-sponsor-polish
