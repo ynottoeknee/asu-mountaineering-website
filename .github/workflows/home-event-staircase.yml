@@ -1,0 +1,82 @@
+name: Apply diagonal home event layout
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/home-event-staircase.yml']
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Add diagonal event composition
+        run: |
+          cat >> css/styles-20260829-6.css <<'EOF'
+
+/* Home upcoming events — diagonal editorial staircase */
+#home .home-events-section{
+  overflow:hidden;
+  padding-bottom:132px;
+}
+#home .home-events-section .section-head{
+  position:relative;
+  z-index:5;
+  align-items:flex-start;
+  margin-bottom:28px;
+}
+#home .home-events-section .section-head > .btn{
+  align-self:flex-start;
+  margin-top:8px;
+}
+#home .home-events-section .event-grid{
+  align-items:start;
+  overflow:visible;
+}
+#home .home-events-section .event-card{
+  position:relative;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+#home .home-events-section .event-card:nth-child(1){
+  transform:translateY(0);
+  z-index:3;
+}
+#home .home-events-section .event-card:nth-child(2){
+  transform:translateY(62px);
+  z-index:2;
+}
+#home .home-events-section .event-card:nth-child(3){
+  transform:translateY(124px);
+  z-index:1;
+}
+@media(max-width:1000px){
+  #home .home-events-section{
+    padding-bottom:96px;
+  }
+  #home .home-events-section .event-card:nth-child(2){transform:translateY(42px)}
+  #home .home-events-section .event-card:nth-child(3){transform:translateY(84px)}
+}
+@media(max-width:720px){
+  #home .home-events-section{
+    padding-bottom:34px;
+  }
+  #home .home-events-section .section-head{
+    margin-bottom:22px;
+  }
+  #home .home-events-section .event-card:nth-child(1),
+  #home .home-events-section .event-card:nth-child(2),
+  #home .home-events-section .event-card:nth-child(3){
+    transform:none;
+  }
+}
+EOF
+          rm .github/workflows/home-event-staircase.yml
+          git config user.name 'MCA Website Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Stagger home events diagonally'
+          git push origin HEAD:main
