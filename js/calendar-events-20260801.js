@@ -193,3 +193,29 @@
     if(done || tries>=40)window.clearInterval(timer);
   },250);
 })();
+
+/* About page: keep the Team section focused on current officers and the faculty advisor. */
+(()=>{
+  const grid=document.querySelector('#about .team-grid');
+  if(!grid)return;
+
+  const leaders=[
+    {name:'Tony',role:'President',photo:'assets/images/team/tony-whitney.webp',alt:'Tony holding the Mount Whitney summit sign'},
+    {name:'Sienna',role:'Vice President',photo:'assets/images/team/sienna.jpg',alt:'Sienna'},
+    {name:'Charlie',role:'Vice President'},
+    {name:'Zahrah',role:'Officer',photo:'assets/images/team/zahrah.jpg',alt:'Zahrah'},
+    {name:'Tydan',role:'Officer'},
+    {name:'David Jacobs',role:'Advisor',photo:'assets/images/team/david-jacobs.jpg',alt:'David Jacobs'}
+  ];
+
+  const photoMarkup=leader=>leader.photo
+    ? `<div class="team-photo"><img src="${leader.photo}" alt="${leader.alt||leader.name}"></div>`
+    : `<div class="team-photo"><img src="assets/images/mca-line-logo-transparent.png" alt="" aria-hidden="true" style="object-fit:contain;padding:14%;background:#f3efe7;"></div>`;
+
+  grid.innerHTML=leaders.map(leader=>`
+    <article class="simple-card wire-box team-member-card">
+      ${photoMarkup(leader)}
+      <h3>${leader.name}</h3>
+      <p class="team-role">${leader.role}</p>
+    </article>`).join('');
+})();
