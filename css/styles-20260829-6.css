@@ -98,9 +98,97 @@
   border:0 !important;
 }
 
+/* Between Peaks — photos should feel physically pinned to the table, not placed in cards around it. */
+#between .between-top{
+  grid-template-columns:190px minmax(0,1fr) 190px !important;
+  gap:0 !important;
+  margin-bottom:0 !important;
+  align-items:end !important;
+}
+#between .between-top > .poem-space{
+  grid-column:1;
+}
+#between .between-top > .photo-space{
+  grid-column:2;
+}
+#between .game-shell{
+  grid-template-columns:190px minmax(0,1fr) 190px !important;
+  gap:0 !important;
+  align-items:start;
+}
+#between .side-rail{
+  gap:0 !important;
+}
+
+/* Strip the photo-card treatment and the photo heading/description. */
+#between .photo-space.wire-box{
+  padding:0 !important;
+  min-height:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  background:transparent !important;
+  overflow:visible !important;
+}
+#between .between-top > .photo-space > h3{
+  display:none !important;
+}
+#between .between-photo-real{
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  object-fit:contain !important;
+  border:0 !important;
+  border-radius:0 !important;
+  color:transparent !important;
+  font-size:0 !important;
+  line-height:0 !important;
+}
+
+/* Keep the top photos at their real proportions while lining their bottom edges up with the table. */
+#between .photo-row{
+  display:flex !important;
+  align-items:flex-end !important;
+  gap:0 !important;
+  margin:0 !important;
+}
+#between .photo-row .between-photo-real{
+  flex:1 1 0 !important;
+  width:33.333333% !important;
+  max-width:33.333333% !important;
+  height:auto !important;
+}
+
+/* A square table edge makes the surrounding photos actually meet it instead of floating off rounded corners. */
+#between .wood-table{
+  border-radius:0 !important;
+}
+
 @media(max-width:960px){
   #home .hero-logo-circle.logo-ready{
     width:min(92%,940px) !important;
+  }
+
+  /* On smaller screens, return to a simple stacked layout while keeping photos undistorted. */
+  #between .between-top{
+    grid-template-columns:1fr !important;
+  }
+  #between .between-top > .poem-space,
+  #between .between-top > .photo-space{
+    grid-column:1;
+  }
+  #between .game-shell{
+    grid-template-columns:1fr !important;
+  }
+  #between .photo-row{
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+  #between .photo-row .between-photo-real{
+    width:100% !important;
+    max-width:100% !important;
   }
 }
 
@@ -132,5 +220,8 @@
   }
   #launchpad .mca-calendly{
     height:800px;
+  }
+  #between .photo-row{
+    grid-template-columns:1fr !important;
   }
 }
