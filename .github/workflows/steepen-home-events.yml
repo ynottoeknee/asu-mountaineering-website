@@ -1,0 +1,26 @@
+name: Steepen home events
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/steepen-home-events.yml'
+permissions:
+  contents: write
+jobs:
+  update_site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Append steeper event layout
+        shell: bash
+        run: |
+          printf '%s' 'Ci8qIEhvbWUgdXBjb21pbmcgZXZlbnRzIOKAlCBzdGVlcGVyIGRpYWdvbmFsIGVkaXRvcmlhbCBzdGFpcmNhc2UgKi8KI2hvbWUgLmhvbWUtZXZlbnRzLXNlY3Rpb257CiAgcGFkZGluZy1ib3R0b206MjIwcHg7Cn0KI2hvbWUgLmhvbWUtZXZlbnRzLXNlY3Rpb24gLmV2ZW50LWNhcmQ6bnRoLWNoaWxkKDIpewogIHRyYW5zZm9ybTp0cmFuc2xhdGVZKDEwMHB4KTsKfQojaG9tZSAuaG9tZS1ldmVudHMtc2VjdGlvbiAuZXZlbnQtY2FyZDpudGgtY2hpbGQoMyl7CiAgdHJhbnNmb3JtOnRyYW5zbGF0ZVkoMjAwcHgpOwp9CkBtZWRpYShtYXgtd2lkdGg6MTAwMHB4KXsKICAjaG9tZSAuaG9tZS1ldmVudHMtc2VjdGlvbnsKICAgIHBhZGRpbmctYm90dG9tOjE1MHB4OwogIH0KICAjaG9tZSAuaG9tZS1ldmVudHMtc2VjdGlvbiAuZXZlbnQtY2FyZDpudGgtY2hpbGQoMil7dHJhbnNmb3JtOnRyYW5zbGF0ZVkoNzBweCl9CiAgI2hvbWUgLmhvbWUtZXZlbnRzLXNlY3Rpb24gLmV2ZW50LWNhcmQ6bnRoLWNoaWxkKDMpe3RyYW5zZm9ybTp0cmFuc2xhdGVZKDE0MHB4KX0KfQpAbWVkaWEobWF4LXdpZHRoOjcyMHB4KXsKICAjaG9tZSAuaG9tZS1ldmVudHMtc2VjdGlvbnsKICAgIHBhZGRpbmctYm90dG9tOjM0cHg7CiAgfQogICNob21lIC5ob21lLWV2ZW50cy1zZWN0aW9uIC5ldmVudC1jYXJkOm50aC1jaGlsZCgyKSwKICAjaG9tZSAuaG9tZS1ldmVudHMtc2VjdGlvbiAuZXZlbnQtY2FyZDpudGgtY2hpbGQoMyl7CiAgICB0cmFuc2Zvcm06bm9uZTsKICB9Cn0K' | base64 -d >> css/styles-20260829-6.css
+          rm .github/workflows/steepen-home-events.yml
+          git config user.name 'MCA Website Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'Steepen home event staircase'
+          git push origin HEAD:main
