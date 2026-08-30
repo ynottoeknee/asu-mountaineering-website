@@ -219,3 +219,16 @@
       <p class="team-role">${leader.role}</p>
     </article>`).join('');
 })();
+
+/* Home page: remove the existing Jane Goodall and challenge section backgrounds only. */
+(()=>{
+  const style=document.createElement('style');
+  style.textContent=`
+    .home-jane-quote,
+    .home-challenge-section{
+      background:none !important;
+      background-image:none !important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
