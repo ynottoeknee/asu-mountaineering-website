@@ -14,40 +14,7 @@ jobs:
           ref: fix-between-peaks-images
           fetch-depth: 0
       - name: Show full line drawing
-        run: |
-          cat >> css/styles-20260829-6.css <<'EOF'
-
-/* Between Peaks image repair — full artwork, no crop */
-#between .side-rail:first-of-type > .between-drawing-slot{
-  width:31% !important;
-  height:auto !important;
-  aspect-ratio:1 / 1 !important;
-  padding:8px !important;
-}
-#between .between-drawing-slot img{
-  display:block !important;
-  width:100% !important;
-  height:auto !important;
-  max-height:none !important;
-  aspect-ratio:auto !important;
-  object-fit:contain !important;
-  object-position:center !important;
-}
-@media(max-width:900px){
-  #between .side-rail:first-of-type > .between-drawing-slot{
-    width:100% !important;
-    height:auto !important;
-    aspect-ratio:1 / 1 !important;
-  }
-}
-@media(max-width:640px){
-  #between .side-rail:first-of-type > .between-drawing-slot{
-    width:100% !important;
-    height:auto !important;
-    aspect-ratio:1 / 1 !important;
-  }
-}
-EOF
+        run: echo 'Ci8qIEJldHdlZW4gUGVha3MgaW1hZ2UgcmVwYWlyIOKAlCBmdWxsIGFydHdvcmssIG5vIGNyb3AgKi8KI2JldHdlZW4gLnNpZGUtcmFpbDpmaXJzdC1vZi10eXBlID4gLmJldHdlZW4tZHJhd2luZy1zbG90ewogIHdpZHRoOjMxJSAhaW1wb3J0YW50OwogIGhlaWdodDphdXRvICFpbXBvcnRhbnQ7CiAgYXNwZWN0LXJhdGlvOjEgLyAxICFpbXBvcnRhbnQ7CiAgcGFkZGluZzo4cHggIWltcG9ydGFudDsKfQojYmV0d2VlbiAuYmV0d2Vlbi1kcmF3aW5nLXNsb3QgaW1newogIGRpc3BsYXk6YmxvY2sgIWltcG9ydGFudDsKICB3aWR0aDoxMDAlICFpbXBvcnRhbnQ7CiAgaGVpZ2h0OmF1dG8gIWltcG9ydGFudDsKICBtYXgtaGVpZ2h0Om5vbmUgIWltcG9ydGFudDsKICBhc3BlY3QtcmF0aW86YXV0byAhaW1wb3J0YW50OwogIG9iamVjdC1maXQ6Y29udGFpbiAhaW1wb3J0YW50OwogIG9iamVjdC1wb3NpdGlvbjpjZW50ZXIgIWltcG9ydGFudDsKfQpAbWVkaWEobWF4LXdpZHRoOjkwMHB4KXsKICAjYmV0d2VlbiAuc2lkZS1yYWlsOmZpcnN0LW9mLXR5cGUgPiAuYmV0d2Vlbi1kcmF3aW5nLXNsb3R7CiAgICB3aWR0aDoxMDAlICFpbXBvcnRhbnQ7CiAgICBoZWlnaHQ6YXV0byAhaW1wb3J0YW50OwogICAgYXNwZWN0LXJhdGlvOjEgLyAxICFpbXBvcnRhbnQ7CiAgfQp9CkBtZWRpYShtYXgtd2lkdGg6NjQwcHgpewogICNiZXR3ZWVuIC5zaWRlLXJhaWw6Zmlyc3Qtb2YtdHlwZSA+IC5iZXR3ZWVuLWRyYXdpbmctc2xvdHsKICAgIHdpZHRoOjEwMCUgIWltcG9ydGFudDsKICAgIGhlaWdodDphdXRvICFpbXBvcnRhbnQ7CiAgICBhc3BlY3QtcmF0aW86MSAvIDEgIWltcG9ydGFudDsKICB9Cn0K' | base64 -d >> css/styles-20260829-6.css
       - name: Commit repair
         run: |
           rm .github/workflows/fix-between-peaks-drawing.yml
