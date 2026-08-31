@@ -910,6 +910,12 @@ body:has(#adaptive.active) .topbar{
 }
 body:has(#adaptive.active) .topbar button{color:#111}
 
+/* September 1, 2026 — lighter yellow Adaptive Ascents event banner */
+#adaptive .aa-event-flag{
+  background:#FFD84D;
+  color:#111;
+}
+
 @media(max-width:760px){
   .topbar .brand-row{
     grid-template-columns:1fr;
