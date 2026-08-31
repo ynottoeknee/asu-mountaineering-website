@@ -910,10 +910,16 @@ body:has(#adaptive.active) .topbar{
 }
 body:has(#adaptive.active) .topbar button{color:#111}
 
-/* September 1, 2026 — lighter yellow Adaptive Ascents event banner */
-#adaptive .aa-event-flag{
+/* September 1, 2026 — lighter yellow homepage Adaptive Ascents banner */
+#home .adaptive-home-entry{
+  border-color:#FFD84D;
   background:#FFD84D;
-  color:#111;
+  color:#432c1c;
+}
+#home .adaptive-home-entry small,
+#home .adaptive-home-entry strong,
+#home .adaptive-home-arrow{
+  color:#432c1c;
 }
 
 @media(max-width:760px){
