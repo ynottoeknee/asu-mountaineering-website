@@ -723,3 +723,123 @@
     background-position:center bottom !important;
   }
 }
+
+/* August 31, 2026 — homepage switchback composition */
+#home .home-problem-section{
+  padding-bottom:clamp(92px,9vw,144px);
+}
+#home .home-problem-section .problem-layout{
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:0;
+  align-items:start;
+}
+#home .home-problem-section .problem-layout > div:first-child{
+  position:relative;
+  z-index:2;
+  grid-column:1 / 5;
+  grid-row:1;
+  padding-right:clamp(18px,3vw,42px);
+}
+#home .home-problem-section .problem-cards{
+  position:relative;
+  z-index:1;
+  grid-column:1 / -1;
+  grid-row:1;
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:clamp(26px,3vw,44px) 0;
+}
+#home .home-problem-section .mini-card{
+  min-height:clamp(178px,16vw,224px);
+}
+#home .home-problem-section .mini-card:nth-child(1){
+  grid-column:9 / 13;
+  grid-row:1;
+}
+#home .home-problem-section .mini-card:nth-child(2){
+  grid-column:5 / 9;
+  grid-row:2;
+}
+#home .home-problem-section .mini-card:nth-child(3){
+  grid-column:1 / 5;
+  grid-row:3;
+}
+
+/* Continue the alternating slope beneath Papago Park. */
+#home .home-jane-quote,
+#home .home-challenge-section{
+  width:min(64%,880px);
+  box-sizing:border-box;
+}
+#home .home-jane-quote{
+  margin:8px 0 0 auto;
+}
+#home .home-challenge-section{
+  margin:clamp(44px,6vw,86px) auto 0 0;
+}
+
+@media(max-width:900px){
+  #home .home-problem-section .problem-layout{
+    display:block;
+  }
+  #home .home-problem-section .problem-layout > div:first-child{
+    max-width:650px;
+    padding-right:0;
+  }
+  #home .home-problem-section .problem-cards{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:22px;
+    margin-top:38px;
+  }
+  #home .home-problem-section .mini-card{
+    width:82%;
+    min-height:176px;
+    box-sizing:border-box;
+  }
+  #home .home-problem-section .mini-card:nth-child(1),
+  #home .home-problem-section .mini-card:nth-child(2),
+  #home .home-problem-section .mini-card:nth-child(3){
+    grid-column:1;
+    grid-row:auto;
+  }
+  #home .home-problem-section .mini-card:nth-child(1){justify-self:end}
+  #home .home-problem-section .mini-card:nth-child(2){justify-self:center}
+  #home .home-problem-section .mini-card:nth-child(3){justify-self:start}
+  #home .home-jane-quote,
+  #home .home-challenge-section{
+    width:78%;
+  }
+}
+
+@media(max-width:720px){
+  #home .home-problem-section{
+    padding-bottom:54px;
+  }
+  #home .home-problem-section .problem-cards{
+    gap:16px;
+    margin-top:30px;
+  }
+  #home .home-problem-section .mini-card{
+    width:92%;
+    min-height:150px;
+  }
+  #home .home-events-section .event-grid{
+    grid-template-columns:1fr;
+  }
+  #home .home-events-section .event-card{
+    width:92%;
+    box-sizing:border-box;
+  }
+  #home .home-events-section .event-card:nth-child(1){justify-self:start}
+  #home .home-events-section .event-card:nth-child(2){justify-self:center}
+  #home .home-events-section .event-card:nth-child(3){justify-self:end}
+  #home .home-jane-quote,
+  #home .home-challenge-section{
+    width:92%;
+  }
+  #home .home-challenge-section{
+    margin-top:36px;
+  }
+}
