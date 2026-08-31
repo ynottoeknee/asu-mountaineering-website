@@ -843,3 +843,109 @@
     margin-top:36px;
   }
 }
+
+/* August 31, 2026 — separated MCA line-art system */
+.topbar .brand-row{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  align-items:center;
+  gap:clamp(24px,4vw,68px);
+}
+.topbar .brand{
+  position:relative;
+  z-index:2;
+  flex:0 0 auto;
+}
+.topbar .brand-copy strong{
+  color:#111;
+  text-decoration:none;
+}
+.header-blue-elements{
+  width:100%;
+  display:grid;
+  grid-template-columns:minmax(190px,1.5fr) minmax(62px,.52fr) minmax(48px,.38fr) minmax(62px,.52fr);
+  align-items:center;
+  justify-items:center;
+  gap:clamp(18px,3vw,54px);
+}
+.header-blue-elements img{
+  display:block;
+  width:100%;
+  height:clamp(52px,6vw,86px);
+  object-fit:contain;
+}
+.header-blue-elements .header-blue-script{
+  height:clamp(30px,3.5vw,48px);
+}
+.header-blue-elements .header-blue-constellation--center{
+  height:clamp(48px,5vw,72px);
+}
+
+#home .hero-logo-circle.hero-mountaineers{
+  width:min(88%,960px) !important;
+  aspect-ratio:1290 / 894 !important;
+}
+#home .hero-logo-circle.hero-mountaineers img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  filter:brightness(0) contrast(1.2) !important;
+}
+
+footer.site-footer{
+  min-height:260px;
+  padding:32px clamp(24px,6vw,92px) !important;
+  display:grid;
+  place-items:center;
+  background:#fbf8f1 !important;
+  border-top:1px solid #d8d0c4 !important;
+  color:#173d8f !important;
+}
+footer.site-footer img{
+  display:block;
+  width:min(100%,1080px);
+  max-height:230px;
+  object-fit:contain;
+}
+
+body:has(#adaptive.active) .topbar{
+  background:#f2efe7;
+  color:#111;
+  border-color:#d8d0c4;
+}
+body:has(#adaptive.active) .topbar button{color:#111}
+
+@media(max-width:760px){
+  .topbar .brand-row{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .topbar .small-logo.logo-ready{
+    width:62px;
+    height:62px;
+    flex-basis:62px;
+  }
+  .header-blue-elements{
+    grid-template-columns:minmax(132px,1.35fr) repeat(3,minmax(42px,.55fr));
+    gap:12px;
+  }
+  .header-blue-elements img{
+    height:54px;
+  }
+  .header-blue-elements .header-blue-script{
+    height:28px;
+  }
+  .header-blue-elements .header-blue-constellation--center{
+    height:46px;
+  }
+  #home .hero-logo-circle.hero-mountaineers{
+    width:min(94%,720px) !important;
+  }
+  footer.site-footer{
+    min-height:190px;
+    padding:26px 18px !important;
+  }
+  footer.site-footer img{
+    max-height:170px;
+  }
+}
