@@ -731,39 +731,34 @@
 #home .home-problem-section .problem-layout{
   display:grid;
   grid-template-columns:repeat(12,minmax(0,1fr));
-  gap:0;
+  column-gap:0;
+  row-gap:clamp(26px,3vw,44px);
   align-items:start;
 }
 #home .home-problem-section .problem-layout > div:first-child{
   position:relative;
   z-index:2;
-  grid-column:1 / 5;
+  grid-column:1 / 7;
   grid-row:1;
   padding-right:clamp(18px,3vw,42px);
 }
 #home .home-problem-section .problem-cards{
-  position:relative;
-  z-index:1;
-  grid-column:1 / -1;
-  grid-row:1;
-  display:grid;
-  grid-template-columns:repeat(12,minmax(0,1fr));
-  gap:clamp(26px,3vw,44px) 0;
+  display:contents;
 }
 #home .home-problem-section .mini-card{
   min-height:clamp(178px,16vw,224px);
 }
 #home .home-problem-section .mini-card:nth-child(1){
-  grid-column:9 / 13;
-  grid-row:1;
+  grid-column:7 / 12;
+  grid-row:2;
 }
 #home .home-problem-section .mini-card:nth-child(2){
   grid-column:5 / 9;
-  grid-row:2;
+  grid-row:3;
 }
 #home .home-problem-section .mini-card:nth-child(3){
   grid-column:1 / 5;
-  grid-row:3;
+  grid-row:4;
 }
 
 /* Continue the alternating slope beneath Papago Park. */
@@ -962,7 +957,7 @@ body:has(#adaptive.active) .topbar button{color:#111}
 }
 .topbar .brand-blue-script{
   display:block;
-  width:clamp(118px,11vw,172px);
+  width:clamp(148px,14vw,218px);
   height:auto;
 }
 .header-blue-elements{
@@ -1014,7 +1009,7 @@ body:has(#adaptive.active) .topbar button{color:#111}
   padding-top:42px;
 }
 #home .home-problem-section .mini-card:nth-child(1){
-  margin-top:clamp(42px,4.8vw,76px);
+  margin-top:0;
 }
 
 @media(max-width:900px){
@@ -1023,12 +1018,13 @@ body:has(#adaptive.active) .topbar button{color:#111}
   }
   #home .home-problem-section .mini-card:nth-child(1){
     margin-top:34px;
+    grid-column:1;
   }
 }
 
 @media(max-width:760px){
   .topbar .brand-blue-script{
-    width:132px;
+    width:158px;
   }
   .header-blue-elements{
     min-height:106px;
