@@ -949,3 +949,111 @@ body:has(#adaptive.active) .topbar button{color:#111}
     max-height:170px;
   }
 }
+
+/* August 31, 2026 — looser header field and original ridgeline */
+.topbar .brand{
+  align-items:center;
+}
+.topbar .brand-copy{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:5px;
+}
+.topbar .brand-blue-script{
+  display:block;
+  width:clamp(118px,11vw,172px);
+  height:auto;
+}
+.header-blue-elements{
+  position:relative;
+  display:block;
+  min-height:clamp(116px,11vw,158px);
+  overflow:visible;
+}
+.header-blue-elements .header-blue-constellation{
+  position:absolute;
+  display:block;
+  object-fit:contain;
+}
+.header-blue-elements .header-blue-constellation:nth-child(1){
+  left:-2%;
+  top:2%;
+  width:38%;
+  height:92%;
+  transform:rotate(-7deg) scale(1.08);
+  transform-origin:center;
+}
+.header-blue-elements .header-blue-constellation:nth-child(2){
+  left:33%;
+  top:19%;
+  width:31%;
+  height:78%;
+  transform:rotate(9deg) scale(1.16);
+  transform-origin:center;
+}
+.header-blue-elements .header-blue-constellation:nth-child(3){
+  right:-3%;
+  top:-9%;
+  width:43%;
+  height:112%;
+  transform:rotate(-5deg) scale(1.12);
+  transform-origin:center;
+}
+
+#home .hero-logo-circle.hero-mountaineers{
+  width:min(116%,1100px) !important;
+  aspect-ratio:1600 / 940 !important;
+  transform:translate(-51%,-49%);
+}
+#home .hero-logo-circle.hero-mountaineers img{
+  filter:none !important;
+}
+
+#home .home-problem-section{
+  padding-top:42px;
+}
+#home .home-problem-section .mini-card:nth-child(1){
+  margin-top:clamp(42px,4.8vw,76px);
+}
+
+@media(max-width:900px){
+  .header-blue-elements{
+    min-height:122px;
+  }
+  #home .home-problem-section .mini-card:nth-child(1){
+    margin-top:34px;
+  }
+}
+
+@media(max-width:760px){
+  .topbar .brand-blue-script{
+    width:132px;
+  }
+  .header-blue-elements{
+    min-height:106px;
+    width:calc(100% + 12px);
+    margin-left:-6px;
+  }
+  .header-blue-elements .header-blue-constellation:nth-child(1){
+    left:-4%;
+    width:40%;
+  }
+  .header-blue-elements .header-blue-constellation:nth-child(2){
+    left:32%;
+    width:32%;
+  }
+  .header-blue-elements .header-blue-constellation:nth-child(3){
+    right:-5%;
+    width:45%;
+  }
+  #home .hero-logo-circle.hero-mountaineers{
+    width:min(112%,820px) !important;
+  }
+  #home .home-problem-section{
+    padding-top:30px;
+  }
+  #home .home-problem-section .mini-card:nth-child(1){
+    margin-top:22px;
+  }
+}
