@@ -1083,7 +1083,13 @@ body:has(#adaptive.active) .topbar button{color:#111}
 #community .community-content{
   border-color:rgba(23,58,103,.46) !important;
   background:rgba(255,252,245,.79);
-  backdrop-filter:blur(1px);
+  backdrop-filter:none;
+}
+#community .community-content{
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent;
+  box-shadow:none;
 }
 #community .community-simple-card,
 #community .alumni-card{
