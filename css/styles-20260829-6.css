@@ -1065,3 +1065,107 @@ body:has(#adaptive.active) .topbar button{color:#111}
     margin-top:22px;
   }
 }
+
+/* September 1, 2026 — pond-line Community switchback */
+#community{
+  --community-pond-ink:#173a67;
+  background:#fbf8f1;
+}
+#community::before{
+  background-image:url('../assets/images/decor/community-lilypad-ripples.webp');
+  background-repeat:repeat-y;
+  background-position:center top;
+  background-size:clamp(720px,78vw,1024px) auto;
+  opacity:.46;
+  mix-blend-mode:multiply;
+}
+#community .community-pages-shell,
+#community .community-content{
+  border-color:rgba(23,58,103,.46) !important;
+  background:rgba(255,252,245,.79);
+  backdrop-filter:blur(1px);
+}
+#community .community-simple-card,
+#community .alumni-card{
+  border-color:rgba(23,58,103,.42);
+  background:rgba(255,253,248,.9);
+}
+#community .community-pages-nav{
+  border-color:rgba(23,58,103,.3);
+}
+#community .community-page-tab{
+  border-color:rgba(23,58,103,.42);
+  background:rgba(255,253,248,.88);
+}
+#community .community-page-tab:hover,
+#community .community-page-tab:focus-visible,
+#community .community-page-tab.active{
+  border-color:var(--community-pond-ink);
+}
+#community .community-page-tab.active,
+#community .btn{
+  background:var(--community-pond-ink);
+  border-color:var(--community-pond-ink);
+  color:#fff;
+}
+#community .btn:hover,
+#community .btn:focus-visible{
+  border-color:#0d294d;
+  background:#0d294d;
+}
+
+#community .community-simple-grid{
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:clamp(28px,4vw,58px) 0;
+  align-items:stretch;
+}
+#community .community-simple-card{
+  width:100%;
+  min-height:clamp(172px,15vw,215px);
+  box-sizing:border-box;
+}
+#community .community-simple-card:nth-child(1),
+#community .community-simple-card:nth-child(5){
+  grid-column:7 / 13;
+}
+#community .community-simple-card:nth-child(2),
+#community .community-simple-card:nth-child(4),
+#community .community-simple-card:nth-child(6){
+  grid-column:4 / 10;
+}
+#community .community-simple-card:nth-child(3){
+  grid-column:1 / 7;
+}
+
+@media(max-width:900px){
+  #community .community-simple-grid{
+    grid-template-columns:1fr;
+    gap:22px;
+  }
+  #community .community-simple-card,
+  #community .community-simple-card:nth-child(n){
+    grid-column:1;
+    width:82%;
+    min-height:168px;
+  }
+  #community .community-simple-card:nth-child(3n + 1){justify-self:end}
+  #community .community-simple-card:nth-child(3n + 2){justify-self:center}
+  #community .community-simple-card:nth-child(3n){justify-self:start}
+}
+
+@media(max-width:640px){
+  #community::before{
+    background-position:center top;
+    background-size:720px auto;
+    opacity:.38;
+  }
+  #community .community-simple-grid{
+    gap:17px;
+  }
+  #community .community-simple-card,
+  #community .community-simple-card:nth-child(n){
+    width:92%;
+    min-height:150px;
+  }
+}
