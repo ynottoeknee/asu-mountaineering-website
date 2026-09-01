@@ -1815,12 +1815,12 @@ footer.site-footer{
 }
 #home .home-switchback-trail .home-route-halo{
   stroke:var(--mca-paper);
-  stroke-width:14;
+  stroke-width:8;
 }
 #home .home-switchback-trail .home-route-ink{
   stroke:var(--mca-ink);
-  stroke-width:3.4;
-  filter:drop-shadow(.7px .45px 0 rgba(11,11,11,.34));
+  stroke-width:2.2;
+  filter:drop-shadow(.45px .3px 0 rgba(11,11,11,.28));
 }
 
 /* Home stays paper-and-ink. Photography returns to full color. */
@@ -1904,8 +1904,8 @@ footer.site-footer{
     min-height:240px;
     border-width:11px !important;
   }
-  #home .home-switchback-trail .home-route-halo{stroke-width:11}
-  #home .home-switchback-trail .home-route-ink{stroke-width:2.8;opacity:1}
+  #home .home-switchback-trail .home-route-halo{stroke-width:6.5}
+  #home .home-switchback-trail .home-route-ink{stroke-width:1.8;opacity:1}
   #home .hero-mission{
     padding:34px 24px 30px;
     border-width:22px !important;
