@@ -1710,3 +1710,205 @@ footer.site-footer img{
   #home .home-challenge-section h2{font-size:clamp(59px,17vw,88px)}
   #home .home-art-reserve--landscape{min-height:220px}
 }
+
+/* September 1, 2026 — lighter rubber proof and continuous ink route */
+:root{
+  --mca-stamp-pink:#fac7d6;
+}
+
+/* The shared header is a pale rubber block with authentic relief pressure. */
+.topbar,
+body:has(#adaptive.active) .topbar{
+  padding:30px 30px 25px;
+  border:14px solid transparent !important;
+  border-image-source:url('../assets/images/brand/mca-relief-ink-frame.png');
+  border-image-slice:38 28 35 28;
+  border-image-width:16px 14px;
+  border-image-outset:3px;
+  border-image-repeat:stretch;
+  background:var(--mca-stamp-pink) !important;
+  box-shadow:6px 7px 0 var(--mca-ink) !important;
+}
+.topbar::before{
+  inset:2px;
+  opacity:.72;
+  background:
+    repeating-linear-gradient(108deg,rgba(255,255,255,.48) 0 2px,rgba(89,28,47,.16) 2px 3px,transparent 3px 24px) top/100% 22px no-repeat,
+    repeating-linear-gradient(72deg,rgba(89,28,47,.18) 0 1px,rgba(255,255,255,.4) 1px 3px,transparent 3px 27px) bottom/100% 20px no-repeat,
+    repeating-linear-gradient(17deg,rgba(255,255,255,.42) 0 2px,rgba(89,28,47,.17) 2px 3px,transparent 3px 23px) left/20px 100% no-repeat,
+    repeating-linear-gradient(163deg,rgba(89,28,47,.17) 0 1px,rgba(255,255,255,.42) 1px 3px,transparent 3px 26px) right/22px 100% no-repeat;
+}
+.topbar::after{
+  content:"";
+  position:absolute;
+  inset:12px;
+  z-index:0;
+  pointer-events:none;
+  opacity:.42;
+  background:
+    radial-gradient(ellipse 9px 2px at 8% 13%,rgba(11,11,11,.48) 0 42%,transparent 55%),
+    radial-gradient(ellipse 13px 2px at 24% 91%,rgba(11,11,11,.38) 0 38%,transparent 52%),
+    radial-gradient(ellipse 8px 2px at 51% 9%,rgba(11,11,11,.34) 0 42%,transparent 56%),
+    radial-gradient(ellipse 15px 2px at 73% 92%,rgba(11,11,11,.4) 0 38%,transparent 54%),
+    radial-gradient(ellipse 10px 2px at 94% 16%,rgba(11,11,11,.46) 0 40%,transparent 54%);
+}
+.topbar > *{z-index:2}
+.header-blue-elements::before,
+.header-blue-elements::after{
+  content:"";
+  position:absolute;
+  inset:-8px -12px;
+  z-index:0;
+  pointer-events:none;
+}
+.header-blue-elements::before{
+  opacity:.56;
+  background:
+    repeating-radial-gradient(ellipse at 17% 51%,transparent 0 18px,rgba(255,255,255,.5) 19px 21px,rgba(90,31,49,.14) 22px 23px,transparent 24px 37px),
+    repeating-radial-gradient(ellipse at 54% 46%,transparent 0 23px,rgba(255,255,255,.4) 24px 26px,rgba(90,31,49,.12) 27px 28px,transparent 29px 43px),
+    repeating-radial-gradient(ellipse at 87% 48%,transparent 0 20px,rgba(255,255,255,.46) 21px 23px,rgba(90,31,49,.14) 24px 25px,transparent 26px 39px);
+  mask-image:linear-gradient(90deg,transparent,black 5%,black 95%,transparent);
+}
+.header-blue-elements::after{
+  opacity:.38;
+  background:
+    repeating-linear-gradient(119deg,transparent 0 17px,rgba(255,255,255,.58) 18px 20px,rgba(90,31,49,.13) 21px,transparent 22px 41px),
+    repeating-linear-gradient(63deg,transparent 0 31px,rgba(255,255,255,.42) 32px 34px,rgba(90,31,49,.12) 35px,transparent 36px 57px);
+  mask-image:linear-gradient(180deg,transparent 2%,black 20%,black 82%,transparent 98%);
+}
+.topbar .header-blue-elements img{
+  z-index:2;
+  opacity:.96;
+  filter:
+    grayscale(1)
+    brightness(0)
+    contrast(2)
+    drop-shadow(2px 0 0 var(--mca-ink))
+    drop-shadow(-1px 0 0 var(--mca-ink))
+    drop-shadow(0 2px 0 rgba(78,23,42,.35))
+    drop-shadow(0 -2px 0 rgba(255,255,255,.72)) !important;
+}
+.topbar nav .join{color:var(--mca-stamp-pink) !important}
+
+/* Pink is now reserved for the two shared brand blocks. */
+footer.site-footer{
+  min-height:340px;
+  border:14px solid transparent !important;
+  border-image-source:url('../assets/images/brand/mca-relief-ink-frame.png');
+  border-image-slice:38 28 35 28;
+  border-image-width:14px 12px;
+  border-image-outset:2px;
+  border-image-repeat:stretch;
+  background:var(--mca-stamp-pink) !important;
+}
+
+/* The route begins at the logo's lower edge and stays legible over every surface. */
+#home .home-switchback-trail{
+  z-index:6;
+}
+#home .home-switchback-trail path{
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+  opacity:1;
+}
+#home .home-switchback-trail .home-route-halo{
+  stroke:var(--mca-paper);
+  stroke-width:14;
+}
+#home .home-switchback-trail .home-route-ink{
+  stroke:var(--mca-ink);
+  stroke-width:3.4;
+  filter:drop-shadow(.7px .45px 0 rgba(11,11,11,.34));
+}
+
+/* Home stays paper-and-ink. Photography returns to full color. */
+#home .adaptive-home-entry{
+  background:var(--mca-paper) !important;
+  color:var(--mca-ink) !important;
+}
+#home .eyebrow{
+  border-color:var(--mca-ink);
+  background:var(--mca-ink);
+  color:var(--mca-paper) !important;
+  box-shadow:none;
+}
+#home .eyebrow::after{content:none}
+#home .home-problem-section .eyebrow{
+  padding:0;
+  border:0;
+  background:transparent;
+  color:var(--mca-ink) !important;
+  box-shadow:none;
+}
+#home .hero-mission{
+  padding:48px 38px 42px;
+  border:26px solid transparent !important;
+  border-image-source:url('../assets/images/brand/mca-relief-ink-frame.png');
+  border-image-slice:38 28 35 28;
+  border-image-width:26px 24px;
+  border-image-outset:9px;
+  border-image-repeat:stretch;
+  background:var(--mca-paper) !important;
+  box-shadow:none !important;
+}
+#home .hero-mission::before{content:none}
+#home .hero-mission .eyebrow{
+  background:var(--mca-ink);
+  color:var(--mca-paper) !important;
+}
+#home .hero-mission .btn{background:var(--mca-paper)}
+#home .home-story,
+#home .home-events-section .event-card,
+#home .home-events-section .event-card:nth-child(n){
+  box-shadow:12px 12px 0 var(--mca-ink) !important;
+}
+#home .home-story-copy span,
+#home .home-events-section .event-card-copy small{
+  border-color:var(--mca-ink);
+  background:var(--mca-ink);
+  color:var(--mca-paper) !important;
+  box-shadow:none;
+}
+#home .home-story-copy h3,
+#home .home-challenge-section h2{
+  background:none;
+}
+#home .home-story-image img,
+#home .home-events-section .event-card-media:not(.event-card-logo) img{
+  filter:none !important;
+  mix-blend-mode:normal;
+}
+#home .home-events-section .event-card-logo img{
+  filter:grayscale(1) brightness(0) contrast(1.3) !important;
+}
+#home .home-jane-quote{
+  border:3px solid var(--mca-ink) !important;
+  background:var(--mca-paper) !important;
+  color:var(--mca-ink) !important;
+  box-shadow:11px 11px 0 var(--mca-ink) !important;
+}
+#home .home-jane-quote::before{content:none}
+
+@media(max-width:720px){
+  .topbar,
+  body:has(#adaptive.active) .topbar{
+    padding:22px 16px 19px;
+    border-width:11px !important;
+    box-shadow:4px 5px 0 var(--mca-ink) !important;
+  }
+  .header-blue-elements::before,
+  .header-blue-elements::after{inset:-4px -6px}
+  footer.site-footer{
+    min-height:240px;
+    border-width:11px !important;
+  }
+  #home .home-switchback-trail .home-route-halo{stroke-width:11}
+  #home .home-switchback-trail .home-route-ink{stroke-width:2.8;opacity:1}
+  #home .hero-mission{
+    padding:34px 24px 30px;
+    border-width:22px !important;
+    border-image-width:22px 20px;
+  }
+}
