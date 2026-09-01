@@ -2,7 +2,10 @@
 
 const navLinks=[...document.querySelectorAll('.nav-link')],pages=[...document.querySelectorAll('.page')];
 function showPage(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));navLinks.forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});window.setTimeout(()=>initializeCalendlyInPage(id),100)}
-navLinks.forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+navLinks.forEach(b=>b.addEventListener('click',()=>{
+  if(b.dataset.page==='community') openCommunityTab('overview');
+  showPage(b.dataset.page);
+}));
 const rm=document.getElementById('readMoreBtn'),pc=document.getElementById('philosophyCopy');rm.addEventListener('click',()=>{const c=pc.classList.toggle('collapsed');pc.style.maxHeight=c?'420px':'none';rm.textContent=c?'Read More':'Read Less'});
 const suits=[['S','♠',0],['H','♥',1],['D','♦',1],['C','♣',0]],ranks=[['2',2],['3',3],['4',4],['5',5],['6',6],['7',7],['8',8],['9',9],['10',10],['J',11],['Q',12],['K',13],['A',14]],members=[['Anabelle','Team Member','assets/images/team/anabelle.jpg'],['Zahrah','Team Member','assets/images/team/zahrah.jpg'],['David Jacobs','Advisor','assets/images/team/david-jacobs.jpg'],['Louis','Team Member','assets/images/team/louis.jpg'],['Patt','Team Member','assets/images/team/patt.jpg'],['Ani','Team Member','assets/images/team/ani.jpg'],['Sienna','Vice President','assets/images/team/sienna.jpg'],['Tony','President','assets/images/team/tony-whitney.webp'],['Tydan','Team Member',''],['Preccious','Team Member',''],['Charlie','Team Member',''],['Kira','Team Member',''],['Riley','Team Member',''],['Arnab','Team Member',''],['Sam','Team Member','']];
 let g={totalYou:0,totalCpu:0,roundYou:0,roundCpu:0,dealer:'computer',deck:[],player:[],cpu:[],playerCap:[],cpuCap:[],leader:'player',trick:[],phase:'idle',selected:new Set(),forced:false};
