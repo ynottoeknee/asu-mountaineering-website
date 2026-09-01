@@ -1912,3 +1912,56 @@ footer.site-footer{
     border-image-width:22px 20px;
   }
 }
+
+/* September 1, 2026 — approved carved constellation header artwork */
+.topbar .header-blue-elements{
+  display:grid;
+  grid-template-columns:.8fr 1.12fr 1.28fr;
+  align-items:center;
+  gap:clamp(8px,1.25vw,22px);
+  min-height:clamp(146px,12vw,190px);
+  overflow:hidden;
+}
+.topbar .header-blue-elements::before,
+.topbar .header-blue-elements::after{
+  display:none;
+}
+.topbar .header-blue-elements .header-carved-constellation,
+.topbar .header-blue-elements .header-carved-constellation:nth-child(1),
+.topbar .header-blue-elements .header-carved-constellation:nth-child(2),
+.topbar .header-blue-elements .header-carved-constellation:nth-child(3){
+  position:relative;
+  inset:auto;
+  width:100%;
+  height:clamp(136px,11vw,178px);
+  transform:none;
+  object-fit:contain;
+  object-position:center;
+  opacity:1;
+  filter:none !important;
+  mix-blend-mode:normal;
+}
+
+@media(max-width:900px){
+  .topbar .header-blue-elements{
+    min-height:134px;
+    gap:8px;
+  }
+  .topbar .header-blue-elements .header-carved-constellation,
+  .topbar .header-blue-elements .header-carved-constellation:nth-child(n){
+    height:126px;
+  }
+}
+
+@media(max-width:760px){
+  .topbar .header-blue-elements{
+    width:100%;
+    margin-left:0;
+    grid-template-columns:.72fr 1.14fr 1.32fr;
+    min-height:108px;
+  }
+  .topbar .header-blue-elements .header-carved-constellation,
+  .topbar .header-blue-elements .header-carved-constellation:nth-child(n){
+    height:102px;
+  }
+}
