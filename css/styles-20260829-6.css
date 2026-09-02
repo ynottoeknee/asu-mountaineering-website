@@ -263,3 +263,32 @@
   #between .between-spacer{height:190px !important}
   #between .between-poem-text{font-size:21px !important}
 }
+
+/* September 2, 2026 — memorial text placement */
+#about .about-memorial h1{
+  top:41% !important;
+  left:50% !important;
+  transform:translate(-50%,-50%) !important;
+  text-align:center !important;
+}
+
+/* September 2, 2026 — Resources uses one continuous paper background. */
+#resources,
+#resources .page-hero,
+#resources .section,
+#resources .wire-box,
+#resources .resource-library,
+#resources .resource-library-results,
+#resources .resource-card,
+#resources .community-entry,
+#resources details,
+#resources summary{
+  background-color:var(--mca-paper,#fbfaf6) !important;
+  box-shadow:none !important;
+}
+#resources .page-hero,
+#resources .section,
+#resources .resource-library,
+#resources .resource-library-results{
+  background-image:none !important;
+}
