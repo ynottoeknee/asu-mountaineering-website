@@ -1,19 +1,23 @@
 @import url('./styles-20260829-6-pre-header-reset.css');
 
-/* September 2, 2026 — header + footer simplification */
+/* September 2, 2026 — compact MCA header + footer */
 .topbar.mca-final-header,
 body:has(#adaptive.active) .topbar.mca-final-header{
   position:relative;
   isolation:isolate;
   display:grid;
-  grid-template-columns:minmax(72px,88px) minmax(72px,120px) minmax(0,1fr);
+  grid-template-columns:64px 92px minmax(0,1fr);
+  grid-template-rows:56px;
   align-items:center;
-  gap:clamp(8px,1.2vw,16px);
+  column-gap:10px;
   width:100%;
-  min-height:88px;
+  height:68px !important;
+  min-height:68px !important;
+  max-height:68px !important;
   margin:0;
-  padding:10px clamp(18px,3.2vw,44px);
-  overflow:visible;
+  padding:6px clamp(18px,3vw,36px) !important;
+  box-sizing:border-box;
+  overflow:hidden;
   border:0 !important;
   border-radius:0 !important;
   background:#fac7d6 !important;
@@ -22,59 +26,71 @@ body:has(#adaptive.active) .topbar.mca-final-header{
 
 .mca-final-header-art{display:none !important}
 
-/* Logo mark */
+/* Logo and MCA are explicitly locked to the same grid row. */
 .topbar.mca-final-header::before,
 body:has(#adaptive.active) .topbar.mca-final-header::before{
   content:"";
   display:block !important;
-  position:relative;
-  inset:auto;
-  z-index:1;
-  grid-column:1;
-  width:100%;
-  height:64px;
+  position:relative !important;
+  inset:auto !important;
+  grid-column:1 !important;
+  grid-row:1 !important;
+  align-self:center !important;
+  justify-self:start;
+  width:58px !important;
+  height:52px !important;
+  margin:0 !important;
   pointer-events:none;
   opacity:1;
-  background:url('../assets/images/mca-line-logo-transparent.png') left center / contain no-repeat !important;
+  background:url('../assets/images/mca-line-logo-transparent.png') center / contain no-repeat !important;
   filter:none !important;
 }
 
-/* Editorial serif MCA wordmark */
 .topbar.mca-final-header::after,
 body:has(#adaptive.active) .topbar.mca-final-header::after{
   content:"MCA" !important;
-  display:block !important;
-  position:relative;
-  inset:auto;
-  z-index:1;
-  grid-column:2;
-  color:#0a0a0a;
-  font-family:Georgia,'Times New Roman',serif;
-  font-size:clamp(32px,3.2vw,44px);
-  font-weight:800;
-  line-height:.88;
-  letter-spacing:-.065em;
+  display:flex !important;
+  position:relative !important;
+  inset:auto !important;
+  grid-column:2 !important;
+  grid-row:1 !important;
+  align-self:center !important;
+  align-items:center;
+  justify-content:flex-start;
+  width:auto !important;
+  height:52px !important;
+  margin:0 !important;
+  padding:0 !important;
+  transform:none !important;
+  color:#0a0a0a !important;
+  font-family:Georgia,'Times New Roman',serif !important;
+  font-size:38px !important;
+  font-weight:800 !important;
+  line-height:1 !important;
+  letter-spacing:-.06em !important;
   text-transform:uppercase;
   white-space:nowrap;
 }
 
 .topbar.mca-final-header nav,
 body:has(#adaptive.active) .topbar.mca-final-header nav{
-  position:static;
-  inset:auto;
-  z-index:2;
-  grid-column:3;
+  position:static !important;
+  inset:auto !important;
+  grid-column:3 !important;
+  grid-row:1 !important;
+  align-self:center !important;
   display:flex;
   align-items:center;
   justify-content:flex-end;
-  flex-wrap:wrap;
-  gap:6px clamp(14px,1.5vw,24px);
+  flex-wrap:nowrap;
+  gap:clamp(13px,1.45vw,24px);
   width:100%;
-  height:auto;
-  margin:0;
-  padding:0;
+  height:52px !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
   overflow:visible;
-  border:0;
+  border:0 !important;
   background:transparent !important;
 }
 
@@ -84,7 +100,8 @@ body:has(#adaptive.active) .topbar.mca-final-header nav button{
   width:auto;
   height:auto;
   min-height:0;
-  padding:7px 0 6px;
+  margin:0;
+  padding:5px 0 4px;
   border:0 !important;
   border-bottom:1.5px solid transparent !important;
   border-radius:0 !important;
@@ -92,31 +109,26 @@ body:has(#adaptive.active) .topbar.mca-final-header nav button{
   box-shadow:none !important;
   color:#0a0a0a !important;
   font-family:var(--font-utility,Arial,sans-serif);
-  font-size:11.5px;
+  font-size:11px;
   font-weight:800;
-  line-height:1.1;
+  line-height:1.05;
   letter-spacing:.045em;
   text-decoration:none;
   text-transform:uppercase;
   white-space:nowrap;
 }
-
 .topbar.mca-final-header nav button:hover,
 .topbar.mca-final-header nav button:focus-visible{
   outline:0;
-  background:transparent !important;
   border-bottom-color:#0a0a0a !important;
 }
 .topbar.mca-final-header nav button.active{
   border-bottom-color:#0a0a0a !important;
-  box-shadow:none !important;
 }
 .topbar.mca-final-header nav button.join,
 body:has(#adaptive.active) .topbar.mca-final-header nav button.join{
-  padding:7px 11px 6px;
+  padding:6px 10px 5px;
   border:1.5px solid #0a0a0a !important;
-  background:transparent !important;
-  color:#0a0a0a !important;
 }
 .topbar.mca-final-header nav button.join:hover,
 .topbar.mca-final-header nav button.join:focus-visible{
@@ -124,97 +136,116 @@ body:has(#adaptive.active) .topbar.mca-final-header nav button.join{
   color:#fac7d6 !important;
 }
 
-/* Slim footer bar in the same pink as the header */
+/* Force the footer to stay a genuinely slim brand bar. */
 .site-footer.mca-carved-block{
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-height:0;
-  margin:0;
-  padding:16px 18px 14px;
+  position:relative !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:100% !important;
+  height:42px !important;
+  min-height:42px !important;
+  max-height:42px !important;
+  margin:0 !important;
+  padding:0 16px !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
   border:0 !important;
   border-radius:0 !important;
   background:#fac7d6 !important;
   box-shadow:none !important;
 }
-.site-footer.mca-carved-block .mca-footer-art{display:none !important}
-.site-footer.mca-carved-block::before{content:none !important;display:none !important}
+.site-footer.mca-carved-block .mca-footer-art{
+  display:none !important;
+  width:0 !important;
+  height:0 !important;
+}
+.site-footer.mca-carved-block::before{
+  content:none !important;
+  display:none !important;
+}
 .site-footer.mca-carved-block::after{
-  content:"We Choose Challenge.";
-  display:block;
-  color:#0a0a0a;
-  font-family:Georgia,'Times New Roman',serif;
-  font-size:clamp(18px,1.6vw,24px);
-  font-weight:700;
-  line-height:1;
-  letter-spacing:-.03em;
+  content:"We Choose Challenge." !important;
+  display:block !important;
+  position:static !important;
+  width:auto !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  transform:none !important;
+  color:#0a0a0a !important;
+  font-family:Georgia,'Times New Roman',serif !important;
+  font-size:17px !important;
+  font-weight:700 !important;
+  line-height:1 !important;
+  letter-spacing:-.03em !important;
   text-align:center;
+  white-space:nowrap;
 }
 
 @media(max-width:980px){
   .topbar.mca-final-header,
   body:has(#adaptive.active) .topbar.mca-final-header{
-    grid-template-columns:minmax(62px,78px) minmax(64px,110px) minmax(0,1fr);
-    gap:10px;
-    min-height:82px;
-    padding-right:20px;
-    padding-left:20px;
+    grid-template-columns:56px 78px minmax(0,1fr);
+    grid-template-rows:50px;
+    height:62px !important;
+    min-height:62px !important;
+    max-height:62px !important;
+    padding:6px 16px !important;
   }
   .topbar.mca-final-header::before,
-  body:has(#adaptive.active) .topbar.mca-final-header::before{height:58px}
+  body:has(#adaptive.active) .topbar.mca-final-header::before{
+    width:50px !important;
+    height:46px !important;
+  }
   .topbar.mca-final-header::after,
-  body:has(#adaptive.active) .topbar.mca-final-header::after{font-size:clamp(28px,3.6vw,38px)}
+  body:has(#adaptive.active) .topbar.mca-final-header::after{
+    height:46px !important;
+    font-size:32px !important;
+  }
   .topbar.mca-final-header nav,
   body:has(#adaptive.active) .topbar.mca-final-header nav{
-    justify-content:flex-start;
-    gap:6px 16px;
+    height:46px !important;
+    gap:12px;
   }
+  .topbar.mca-final-header nav button,
+  body:has(#adaptive.active) .topbar.mca-final-header nav button{font-size:10.5px}
 }
 
 @media(max-width:720px){
   .topbar.mca-final-header,
   body:has(#adaptive.active) .topbar.mca-final-header{
-    display:block;
-    min-height:0;
-    padding:10px 14px 9px;
-    overflow:hidden;
+    grid-template-columns:50px 72px minmax(0,1fr);
+    grid-template-rows:46px;
+    height:58px !important;
+    min-height:58px !important;
+    max-height:58px !important;
+    padding:6px 12px !important;
+    overflow-x:auto;
   }
   .topbar.mca-final-header::before,
   body:has(#adaptive.active) .topbar.mca-final-header::before{
-    display:inline-block !important;
-    vertical-align:middle;
-    width:58px;
-    height:58px;
-    margin:0 8px 6px 0;
+    width:44px !important;
+    height:42px !important;
   }
   .topbar.mca-final-header::after,
   body:has(#adaptive.active) .topbar.mca-final-header::after{
-    display:inline-block !important;
-    vertical-align:middle;
-    margin-bottom:6px;
-    font-size:31px;
+    height:42px !important;
+    font-size:28px !important;
   }
   .topbar.mca-final-header nav,
   body:has(#adaptive.active) .topbar.mca-final-header nav{
-    display:flex;
-    flex-wrap:nowrap;
+    height:42px !important;
     justify-content:flex-start;
-    gap:16px;
-    padding:0 0 2px;
+    gap:14px;
     overflow-x:auto;
-    scrollbar-width:thin;
   }
   .topbar.mca-final-header nav button,
-  body:has(#adaptive.active) .topbar.mca-final-header nav button{
-    font-size:11px;
-    padding-top:5px;
-    padding-bottom:5px;
+  body:has(#adaptive.active) .topbar.mca-final-header nav button{font-size:10px}
+  .site-footer.mca-carved-block{
+    height:36px !important;
+    min-height:36px !important;
+    max-height:36px !important;
   }
-  .topbar.mca-final-header nav button.join,
-  body:has(#adaptive.active) .topbar.mca-final-header nav button.join{
-    padding:6px 9px 5px;
-  }
-  .site-footer.mca-carved-block{padding:14px 16px 12px}
-  .site-footer.mca-carved-block::after{font-size:20px}
+  .site-footer.mca-carved-block::after{font-size:15px !important}
 }
