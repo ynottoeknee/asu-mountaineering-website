@@ -1,14 +1,14 @@
 @import url('./styles-20260829-6-pre-header-reset.css');
 
-/* September 2, 2026 — header design step 1: logo + navigation on one rectangle */
+/* September 2, 2026 — header design step 2: logo + MCA wordmark + navigation */
 .topbar.mca-final-header,
 body:has(#adaptive.active) .topbar.mca-final-header{
   position:relative;
   isolation:isolate;
   display:grid;
-  grid-template-columns:minmax(190px,280px) minmax(0,1fr);
+  grid-template-columns:minmax(86px,112px) minmax(90px,142px) minmax(0,1fr);
   align-items:center;
-  gap:clamp(24px,4vw,64px);
+  gap:clamp(12px,1.7vw,24px);
   width:100%;
   min-height:126px;
   margin:0;
@@ -20,12 +20,9 @@ body:has(#adaptive.active) .topbar.mca-final-header{
   box-shadow:none !important;
 }
 
-/* Retire the previous full-header artwork for this layout pass. */
-.mca-final-header-art{
-  display:none !important;
-}
+.mca-final-header-art{display:none !important}
 
-/* Use the existing MCA logo as a real visual element on the left side. */
+/* Existing logo mark. */
 .topbar.mca-final-header::before,
 body:has(#adaptive.active) .topbar.mca-final-header::before{
   content:"";
@@ -41,10 +38,25 @@ body:has(#adaptive.active) .topbar.mca-final-header::before{
   background:url('../assets/images/mca-line-logo-transparent.png') left center / contain no-repeat !important;
   filter:none !important;
 }
+
+/* MCA wordmark — intentionally separate from the logo so this can evolve into a defining club type treatment. */
 .topbar.mca-final-header::after,
 body:has(#adaptive.active) .topbar.mca-final-header::after{
-  content:none !important;
-  display:none !important;
+  content:"MCA" !important;
+  display:block !important;
+  position:relative;
+  inset:auto;
+  z-index:1;
+  grid-column:2;
+  color:#0a0a0a;
+  font-family:"Bahnschrift SemiBold","Bahnschrift","Arial Narrow",Arial,sans-serif;
+  font-size:clamp(38px,4vw,58px);
+  font-weight:600;
+  font-stretch:semi-condensed;
+  line-height:.86;
+  letter-spacing:-.065em;
+  text-transform:uppercase;
+  white-space:nowrap;
 }
 
 .topbar.mca-final-header nav,
@@ -52,7 +64,7 @@ body:has(#adaptive.active) .topbar.mca-final-header nav{
   position:static;
   inset:auto;
   z-index:2;
-  grid-column:2;
+  grid-column:3;
   display:flex;
   align-items:center;
   justify-content:flex-end;
@@ -113,45 +125,79 @@ body:has(#adaptive.active) .topbar.mca-final-header nav button.join{
   color:#fac7d6 !important;
 }
 
-@media(max-width:980px){
+/* Footer identity line. Keep the existing artwork but let the club value close the page. */
+footer.site-footer.mca-carved-block{
+  position:relative;
+  padding-bottom:clamp(62px,6vw,84px) !important;
+}
+footer.site-footer.mca-carved-block::after{
+  content:"We Choose Challenge." !important;
+  display:block !important;
+  position:absolute;
+  left:50%;
+  bottom:22px;
+  z-index:3;
+  width:max-content;
+  max-width:calc(100% - 40px);
+  transform:translateX(-50%);
+  color:#0a0a0a;
+  font-family:"Bahnschrift SemiBold","Bahnschrift","Arial Narrow",Arial,sans-serif;
+  font-size:clamp(17px,1.8vw,25px);
+  font-weight:600;
+  line-height:1;
+  letter-spacing:.025em;
+  text-transform:uppercase;
+  text-align:center;
+  white-space:nowrap;
+}
+
+@media(max-width:1080px){
   .topbar.mca-final-header,
   body:has(#adaptive.active) .topbar.mca-final-header{
-    grid-template-columns:minmax(170px,230px) minmax(0,1fr);
-    gap:20px;
+    grid-template-columns:82px 96px minmax(0,1fr);
+    gap:12px;
     padding-right:24px;
     padding-left:24px;
   }
   .topbar.mca-final-header::before,
-  body:has(#adaptive.active) .topbar.mca-final-header::before{height:82px}
+  body:has(#adaptive.active) .topbar.mca-final-header::before{height:80px}
+  .topbar.mca-final-header::after,
+  body:has(#adaptive.active) .topbar.mca-final-header::after{font-size:38px}
   .topbar.mca-final-header nav,
   body:has(#adaptive.active) .topbar.mca-final-header nav{
     justify-content:flex-start;
-    gap:6px 18px;
+    gap:6px 16px;
   }
 }
 
 @media(max-width:720px){
   .topbar.mca-final-header,
   body:has(#adaptive.active) .topbar.mca-final-header{
-    display:block;
+    display:grid;
+    grid-template-columns:68px auto;
     min-height:0;
-    padding:14px 16px 11px;
+    padding:12px 16px 10px;
     overflow:hidden;
   }
   .topbar.mca-final-header::before,
   body:has(#adaptive.active) .topbar.mca-final-header::before{
-    width:min(72vw,280px);
-    height:82px;
-    margin:0 0 7px;
-    background-position:left center !important;
+    grid-column:1;
+    width:68px;
+    height:68px;
+  }
+  .topbar.mca-final-header::after,
+  body:has(#adaptive.active) .topbar.mca-final-header::after{
+    grid-column:2;
+    font-size:34px;
   }
   .topbar.mca-final-header nav,
   body:has(#adaptive.active) .topbar.mca-final-header nav{
+    grid-column:1 / -1;
     display:flex;
     flex-wrap:nowrap;
     justify-content:flex-start;
     gap:18px;
-    padding:2px 0 3px;
+    padding:4px 0 3px;
     overflow-x:auto;
     scrollbar-width:thin;
   }
@@ -164,5 +210,10 @@ body:has(#adaptive.active) .topbar.mca-final-header nav button.join{
   .topbar.mca-final-header nav button.join,
   body:has(#adaptive.active) .topbar.mca-final-header nav button.join{
     padding:7px 10px 6px;
+  }
+  footer.site-footer.mca-carved-block{padding-bottom:58px !important}
+  footer.site-footer.mca-carved-block::after{
+    bottom:18px;
+    font-size:15px;
   }
 }
