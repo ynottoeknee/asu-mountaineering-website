@@ -1,0 +1,288 @@
+@import url('./styles-20260829-6-pre-header-reset.css');
+
+/* September 2, 2026 — refined MCA header + footer */
+.topbar.mca-final-header,
+body:has(#adaptive.active) .topbar.mca-final-header{
+  position:relative;
+  isolation:isolate;
+  display:grid;
+  grid-template-columns:72px 104px minmax(0,1fr);
+  grid-template-rows:68px;
+  align-items:center;
+  column-gap:12px;
+  width:100%;
+  height:82px !important;
+  min-height:82px !important;
+  max-height:82px !important;
+  margin:0;
+  padding:7px clamp(20px,3vw,40px) !important;
+  box-sizing:border-box;
+  overflow:hidden;
+  border:0 !important;
+  border-radius:0 !important;
+  background:#fac7d6 !important;
+  box-shadow:none !important;
+}
+
+.mca-final-header-art{display:none !important}
+
+/* Logo and MCA share one centered horizontal lockup. */
+.topbar.mca-final-header::before,
+body:has(#adaptive.active) .topbar.mca-final-header::before{
+  content:"";
+  display:block !important;
+  position:relative !important;
+  inset:auto !important;
+  grid-column:1 !important;
+  grid-row:1 !important;
+  align-self:center !important;
+  justify-self:start;
+  width:64px !important;
+  height:60px !important;
+  margin:0 !important;
+  padding:0 !important;
+  pointer-events:none;
+  opacity:1 !important;
+  background:url('../assets/images/mca-line-logo-transparent.png') center / contain no-repeat !important;
+  border:0 !important;
+  box-shadow:none !important;
+  filter:none !important;
+  transform:none !important;
+}
+
+.topbar.mca-final-header::after,
+body:has(#adaptive.active) .topbar.mca-final-header::after{
+  content:"MCA" !important;
+  display:flex !important;
+  position:relative !important;
+  inset:auto !important;
+  grid-column:2 !important;
+  grid-row:1 !important;
+  align-self:center !important;
+  align-items:center;
+  justify-content:flex-start;
+  width:auto !important;
+  height:60px !important;
+  margin:0 !important;
+  padding:0 !important;
+  opacity:1 !important;
+  background:none !important;
+  background-image:none !important;
+  border:0 !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+  filter:none !important;
+  transform:none !important;
+  mix-blend-mode:normal !important;
+  color:#0a0a0a !important;
+  font-family:Georgia,'Times New Roman',serif !important;
+  font-size:40px !important;
+  font-weight:800 !important;
+  line-height:1 !important;
+  letter-spacing:-.06em !important;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+.topbar.mca-final-header nav,
+body:has(#adaptive.active) .topbar.mca-final-header nav{
+  position:static !important;
+  inset:auto !important;
+  grid-column:3 !important;
+  grid-row:1 !important;
+  align-self:center !important;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:nowrap;
+  gap:clamp(13px,1.45vw,24px);
+  width:100%;
+  height:60px !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:visible;
+  border:0 !important;
+  background:transparent !important;
+}
+
+.topbar.mca-final-header nav button,
+body:has(#adaptive.active) .topbar.mca-final-header nav button{
+  flex:0 0 auto;
+  width:auto;
+  height:auto;
+  min-height:0;
+  margin:0;
+  padding:6px 0 5px;
+  border:0 !important;
+  border-bottom:1.5px solid transparent !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  color:#0a0a0a !important;
+  font-family:var(--font-utility,Arial,sans-serif);
+  font-size:11px;
+  font-weight:800;
+  line-height:1.05;
+  letter-spacing:.045em;
+  text-decoration:none;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.topbar.mca-final-header nav button:hover,
+.topbar.mca-final-header nav button:focus-visible{
+  outline:0;
+  border-bottom-color:#0a0a0a !important;
+}
+.topbar.mca-final-header nav button.active{
+  border-bottom-color:#0a0a0a !important;
+}
+.topbar.mca-final-header nav button.join,
+body:has(#adaptive.active) .topbar.mca-final-header nav button.join{
+  padding:7px 11px 6px;
+  border:1.5px solid #0a0a0a !important;
+}
+.topbar.mca-final-header nav button.join:hover,
+body:has(#adaptive.active) .topbar.mca-final-header nav button.join:focus-visible{
+  background:#0a0a0a !important;
+  color:#fac7d6 !important;
+}
+
+/* Footer gets its own breathing room so it never crowds the final page content. */
+.site-footer.mca-carved-block{
+  position:relative !important;
+  z-index:0 !important;
+  clear:both !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  flex-shrink:0 !important;
+  width:100% !important;
+  height:56px !important;
+  min-height:56px !important;
+  max-height:56px !important;
+  margin:28px 0 0 !important;
+  padding:0 20px !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:#fac7d6 !important;
+  box-shadow:none !important;
+  transform:none !important;
+}
+.site-footer.mca-carved-block .mca-footer-art{
+  display:none !important;
+  width:0 !important;
+  height:0 !important;
+}
+.site-footer.mca-carved-block::before{
+  content:none !important;
+  display:none !important;
+}
+.site-footer.mca-carved-block::after{
+  content:"We Choose Challenge." !important;
+  display:block !important;
+  position:static !important;
+  width:auto !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  background:none !important;
+  border:0 !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+  filter:none !important;
+  transform:none !important;
+  opacity:1 !important;
+  color:#0a0a0a !important;
+  font-family:Georgia,'Times New Roman',serif !important;
+  font-size:18px !important;
+  font-weight:700 !important;
+  line-height:1 !important;
+  letter-spacing:-.03em !important;
+  text-align:center;
+  white-space:nowrap;
+}
+
+/* Community: remove the decorative pond/ripple line-art layer only. */
+#community::before{
+  content:none !important;
+  display:none !important;
+  background:none !important;
+  background-image:none !important;
+}
+
+@media(max-width:980px){
+  .topbar.mca-final-header,
+  body:has(#adaptive.active) .topbar.mca-final-header{
+    grid-template-columns:64px 88px minmax(0,1fr);
+    grid-template-rows:60px;
+    height:74px !important;
+    min-height:74px !important;
+    max-height:74px !important;
+    padding:7px 16px !important;
+  }
+  .topbar.mca-final-header::before,
+  body:has(#adaptive.active) .topbar.mca-final-header::before{
+    width:56px !important;
+    height:54px !important;
+  }
+  .topbar.mca-final-header::after,
+  body:has(#adaptive.active) .topbar.mca-final-header::after{
+    height:54px !important;
+    font-size:34px !important;
+  }
+  .topbar.mca-final-header nav,
+  body:has(#adaptive.active) .topbar.mca-final-header nav{
+    height:54px !important;
+    gap:12px;
+  }
+  .topbar.mca-final-header nav button,
+  body:has(#adaptive.active) .topbar.mca-final-header nav button{font-size:10.5px}
+  .site-footer.mca-carved-block{
+    height:52px !important;
+    min-height:52px !important;
+    max-height:52px !important;
+    margin-top:24px !important;
+  }
+}
+
+@media(max-width:720px){
+  .topbar.mca-final-header,
+  body:has(#adaptive.active) .topbar.mca-final-header{
+    grid-template-columns:56px 78px minmax(0,1fr);
+    grid-template-rows:54px;
+    height:68px !important;
+    min-height:68px !important;
+    max-height:68px !important;
+    padding:7px 12px !important;
+    overflow-x:auto;
+  }
+  .topbar.mca-final-header::before,
+  body:has(#adaptive.active) .topbar.mca-final-header::before{
+    width:50px !important;
+    height:48px !important;
+  }
+  .topbar.mca-final-header::after,
+  body:has(#adaptive.active) .topbar.mca-final-header::after{
+    height:48px !important;
+    font-size:30px !important;
+  }
+  .topbar.mca-final-header nav,
+  body:has(#adaptive.active) .topbar.mca-final-header nav{
+    height:48px !important;
+    justify-content:flex-start;
+    gap:14px;
+    overflow-x:auto;
+  }
+  .topbar.mca-final-header nav button,
+  body:has(#adaptive.active) .topbar.mca-final-header nav button{font-size:10px}
+  .site-footer.mca-carved-block{
+    height:48px !important;
+    min-height:48px !important;
+    max-height:48px !important;
+    margin-top:20px !important;
+  }
+  .site-footer.mca-carved-block::after{font-size:16px !important}
+}
