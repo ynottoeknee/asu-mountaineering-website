@@ -143,7 +143,7 @@ body:has(#adaptive.active) .topbar.mca-final-header nav button.join{
   border:1.5px solid #0a0a0a !important;
 }
 .topbar.mca-final-header nav button.join:hover,
-.topbar.mca-final-header nav button.join:focus-visible{
+body:has(#adaptive.active) .topbar.mca-final-header nav button.join:focus-visible{
   background:#0a0a0a !important;
   color:#fac7d6 !important;
 }
@@ -203,6 +203,14 @@ body:has(#adaptive.active) .topbar.mca-final-header nav button.join{
   letter-spacing:-.03em !important;
   text-align:center;
   white-space:nowrap;
+}
+
+/* Community: remove the decorative pond/ripple line-art layer only. */
+#community::before{
+  content:none !important;
+  display:none !important;
+  background:none !important;
+  background-image:none !important;
 }
 
 @media(max-width:980px){
