@@ -1,0 +1,294 @@
+@import url('./styles-20260902-header-footer-community.css');
+
+/* September 2, 2026 — flatten Meet the Team backgrounds */
+#about .about-team-section,
+#about .about-team-section h2,
+#about .about-team-grid,
+#about .about-team-card,
+#about .about-team-photo{
+  background:var(--mca-paper) !important;
+}
+#about .about-team-section h2 span{
+  background:transparent !important;
+}
+
+/* September 2, 2026 — Between Peaks: clean frame around the game */
+#between{
+  width:100% !important;
+  max-width:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:visible !important;
+  background:var(--mca-paper,#fbfaf6) !important;
+}
+
+#between .between-layout{
+  position:relative !important;
+  display:grid !important;
+  grid-template-columns:repeat(12,minmax(0,1fr)) !important;
+  grid-template-rows:210px repeat(4,155px) 210px !important;
+  gap:14px !important;
+  width:min(100%,1500px) !important;
+  min-height:0 !important;
+  height:auto !important;
+  margin:0 auto !important;
+  padding:clamp(26px,3vw,48px) !important;
+  overflow:visible !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:var(--mca-paper,#fbfaf6) !important;
+  box-shadow:none !important;
+}
+
+/* Flatten the old scrapbook wrappers so every piece can become a frame tile. */
+#between .between-top,
+#between .game-shell,
+#between .side-rail,
+#between .photo-space,
+#between .photo-row,
+#between .between-drawing-slot{
+  display:contents !important;
+}
+#between h3{display:none !important}
+
+/* Reset all old floating / rotated scrapbook positioning. */
+#between .between-poem,
+#between .between-photo-real,
+#between .between-drawing-slot img,
+#between .between-spacer,
+#between .wood-table{
+  position:relative !important;
+  inset:auto !important;
+  top:auto !important;
+  right:auto !important;
+  bottom:auto !important;
+  left:auto !important;
+  margin:0 !important;
+  transform:none !important;
+  float:none !important;
+}
+
+/* Eight frame spots: 4 photos, 2 art pieces, 2 poetry pieces. */
+#between .photo-row .between-photo-real:nth-child(1){
+  grid-column:1 / 6 !important;
+  grid-row:1 !important;
+}
+#between .between-poem-one{
+  grid-column:6 / 9 !important;
+  grid-row:1 !important;
+}
+#between .photo-row .between-photo-real:nth-child(2){
+  grid-column:9 / 13 !important;
+  grid-row:1 !important;
+}
+#between .between-drawing-slot img{
+  grid-column:1 / 4 !important;
+  grid-row:2 / 6 !important;
+}
+#between .wood-table{
+  grid-column:4 / 10 !important;
+  grid-row:2 / 6 !important;
+}
+#between .between-poem-two{
+  grid-column:10 / 13 !important;
+  grid-row:2 / 4 !important;
+}
+#between .photo-row .between-photo-real:nth-child(3){
+  grid-column:10 / 13 !important;
+  grid-row:4 / 6 !important;
+}
+#between .side-rail:first-child .photo-space .between-photo-real{
+  grid-column:1 / 6 !important;
+  grid-row:6 !important;
+}
+#between .between-spacer{
+  display:block !important;
+  grid-column:6 / 13 !important;
+  grid-row:6 !important;
+}
+
+/* Clean tile treatment. */
+#between .between-photo-real,
+#between .between-drawing-slot img,
+#between .between-spacer,
+#between .between-poem{
+  align-self:stretch !important;
+  justify-self:stretch !important;
+  width:100% !important;
+  max-width:none !important;
+  height:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  box-sizing:border-box !important;
+  border:1px solid rgba(26,24,21,.18) !important;
+  border-radius:0 !important;
+  background-color:var(--mca-paper,#fbfaf6) !important;
+  box-shadow:none !important;
+  filter:none !important;
+}
+#between .between-photo-real{
+  display:block !important;
+  padding:0 !important;
+  object-fit:cover !important;
+}
+#between .photo-row .between-photo-real:nth-child(1){object-position:center 52% !important}
+#between .photo-row .between-photo-real:nth-child(2){object-position:center 55% !important}
+#between .photo-row .between-photo-real:nth-child(3){object-position:center center !important}
+#between .side-rail:first-child .photo-space .between-photo-real{object-position:center center !important}
+
+#between .between-drawing-slot img{
+  padding:clamp(24px,3vw,48px) !important;
+  object-fit:contain !important;
+  background:#f4f0e8 !important;
+}
+
+/* Use one existing botanical drawing as the eighth art/frame tile. */
+#between .between-spacer{
+  background-color:#f4f0e8 !important;
+  background-image:url('../assets/images/decor/home-lavender-line.svg') !important;
+  background-repeat:no-repeat !important;
+  background-position:center !important;
+  background-size:min(78%,760px) auto !important;
+}
+
+#between .between-poem{
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  align-items:flex-start !important;
+  max-width:none !important;
+  padding:clamp(18px,2vw,30px) !important;
+  color:#17130f !important;
+  font-family:Georgia,'Times New Roman',serif !important;
+  text-align:left !important;
+}
+#between .between-poem-text{
+  font-size:clamp(20px,1.8vw,28px) !important;
+  line-height:1.12 !important;
+  letter-spacing:-.025em !important;
+}
+#between .between-poem-credit{
+  display:block !important;
+  max-width:100% !important;
+  margin:clamp(14px,1.5vw,22px) 0 0 !important;
+  color:#625b52 !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+  font-size:10.5px !important;
+  line-height:1.4 !important;
+  letter-spacing:.015em !important;
+}
+
+/* Keep the game as the visual center and preserve its internal mechanics. */
+#between .wood-table{
+  align-self:stretch !important;
+  justify-self:stretch !important;
+  width:100% !important;
+  max-width:none !important;
+  height:100% !important;
+  min-height:620px !important;
+  padding:18px !important;
+  overflow:hidden !important;
+  z-index:3 !important;
+}
+#between .scoreboard{top:12px !important;right:12px !important;font-size:11px !important}
+#between .draw-pile{left:16px !important}
+#between .capture-pile.cpu{right:15px !important}
+#between .capture-pile.you{right:15px !important}
+#between .game-controls{bottom:12px !important}
+
+@media(max-width:1180px){
+  #between .between-layout{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    grid-template-rows:190px 560px 190px !important;
+    gap:12px !important;
+    width:min(100%,1080px) !important;
+  }
+  #between .photo-row .between-photo-real:nth-child(1){grid-column:1 !important;grid-row:1 !important}
+  #between .between-poem-one{grid-column:2 !important;grid-row:1 !important}
+  #between .photo-row .between-photo-real:nth-child(2){grid-column:3 !important;grid-row:1 !important}
+  #between .between-drawing-slot img{grid-column:1 !important;grid-row:2 !important}
+  #between .wood-table{grid-column:2 !important;grid-row:2 !important;min-height:560px !important}
+  #between .between-poem-two{grid-column:3 !important;grid-row:2 !important}
+  #between .side-rail:first-child .photo-space .between-photo-real{grid-column:1 !important;grid-row:3 !important}
+  #between .photo-row .between-photo-real:nth-child(3){grid-column:2 !important;grid-row:3 !important}
+  #between .between-spacer{grid-column:3 !important;grid-row:3 !important}
+  #between .between-drawing-slot img{padding:28px !important}
+  #between .between-poem-text{font-size:clamp(18px,2.2vw,24px) !important}
+}
+
+@media(max-width:820px){
+  #between .between-layout{
+    grid-template-columns:1fr 1fr !important;
+    grid-template-rows:auto !important;
+    gap:10px !important;
+    padding:20px 14px 30px !important;
+  }
+  #between .wood-table{
+    grid-column:1 / -1 !important;
+    grid-row:3 !important;
+    min-height:560px !important;
+  }
+  #between .photo-row .between-photo-real:nth-child(1){grid-column:1 !important;grid-row:1 !important;height:180px !important}
+  #between .between-poem-one{grid-column:2 !important;grid-row:1 !important;height:180px !important}
+  #between .photo-row .between-photo-real:nth-child(2){grid-column:1 !important;grid-row:2 !important;height:180px !important}
+  #between .between-drawing-slot img{grid-column:2 !important;grid-row:2 !important;height:180px !important;padding:18px !important}
+  #between .between-poem-two{grid-column:1 !important;grid-row:4 !important;height:190px !important}
+  #between .photo-row .between-photo-real:nth-child(3){grid-column:2 !important;grid-row:4 !important;height:190px !important}
+  #between .side-rail:first-child .photo-space .between-photo-real{grid-column:1 !important;grid-row:5 !important;height:180px !important}
+  #between .between-spacer{grid-column:2 !important;grid-row:5 !important;height:180px !important;background-size:82% auto !important}
+}
+
+@media(max-width:560px){
+  #between .between-layout{
+    grid-template-columns:1fr !important;
+    gap:9px !important;
+    padding:16px 10px 24px !important;
+  }
+  #between .between-poem-one,
+  #between .photo-row .between-photo-real:nth-child(1),
+  #between .photo-row .between-photo-real:nth-child(2),
+  #between .between-drawing-slot img,
+  #between .between-poem-two,
+  #between .photo-row .between-photo-real:nth-child(3),
+  #between .side-rail:first-child .photo-space .between-photo-real,
+  #between .between-spacer,
+  #between .wood-table{
+    grid-column:1 !important;
+    grid-row:auto !important;
+  }
+  #between .wood-table{min-height:540px !important}
+  #between .between-poem,
+  #between .between-photo-real,
+  #between .between-drawing-slot img,
+  #between .between-spacer{height:190px !important}
+  #between .between-poem-text{font-size:21px !important}
+}
+
+/* September 2, 2026 — memorial text placement */
+#about .about-memorial h1{
+  top:41% !important;
+  left:50% !important;
+  transform:translate(-50%,-50%) !important;
+  text-align:center !important;
+}
+
+/* September 2, 2026 — Resources uses one continuous paper background. */
+#resources,
+#resources .page-hero,
+#resources .section,
+#resources .wire-box,
+#resources .resource-library,
+#resources .resource-library-results,
+#resources .resource-card,
+#resources .community-entry,
+#resources details,
+#resources summary{
+  background-color:var(--mca-paper,#fbfaf6) !important;
+  box-shadow:none !important;
+}
+#resources .page-hero,
+#resources .section,
+#resources .resource-library,
+#resources .resource-library-results{
+  background-image:none !important;
+}
