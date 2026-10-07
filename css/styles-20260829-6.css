@@ -41,7 +41,7 @@
 #between .bp-photo-11{grid-area:photo-11}
 #between .bp-photo-12{grid-area:photo-12}
 #between .game-shell{display:contents}
-#between .wood-table{grid-area:game!important;grid-column:auto!important;grid-row:auto!important;min-width:0;width:100%;min-height:760px;height:100%!important;border:0;border-radius:0;padding:var(--space-7);background-color:#6f3a1d;background-position:center;background-size:cover}
+#between .wood-table{grid-area:game!important;position:relative!important;min-width:0;width:100%;min-height:760px;height:100%!important;border:0;border-radius:0;padding:var(--space-7);background-color:#6f3a1d;background-position:center;background-size:cover}
 #between .playing-card{width:clamp(72px,7.4vw,104px);height:clamp(108px,10.8vw,148px)}
 #between .player-hand{width:92%}
 #between .player-hand .playing-card{margin-left:clamp(-45px,-3.1vw,-25px)}
