@@ -14,14 +14,14 @@
     "photo-05 photo-05 game game photo-06 photo-06"
     "photo-07 photo-08 game game photo-09 photo-10"
     "photo-07 photo-08 game game photo-09 photo-10"
-    "photo-11 photo-12 quote-two quote-two quote-two quote-two";
+    "photo-11 photo-11 photo-12 photo-12 quote-two quote-two";
   gap:3px;
 }
-#between .between-poem{position:relative!important;inset:auto!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;transform:none!important;align-self:stretch!important;justify-self:stretch!important;box-sizing:border-box;width:100%!important;height:100%!important;min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:12px;margin:0;padding:clamp(18px,2vw,30px);background:#f7f3ec;color:#171714}
+#between .between-poem{position:relative!important;inset:auto!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;transform:none!important;align-self:stretch!important;justify-self:stretch!important;box-sizing:border-box;width:100%!important;max-width:none!important;height:100%!important;min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:8px;margin:0;padding:16px;background:#f7f3ec;color:#171714}
 #between .between-poem-one{grid-area:quote-one}
 #between .between-poem-one>*{display:block!important}
 #between .between-poem-two{grid-area:quote-two}
-#between .between-poem-text{font-family:Georgia,'Times New Roman',serif;font-size:clamp(19px,2.1vw,32px);line-height:1.16;color:#171714}
+#between .between-poem-text{font-family:Georgia,'Times New Roman',serif;font-size:clamp(18px,1.55vw,23px);line-height:1.15;color:#171714}
 #between .between-poem-credit{margin:0;font-size:clamp(10px,.85vw,13px);line-height:1.4;color:#34312b}
 #between .between-poem-credit em{font-style:italic}
 #between .bp-photo-trigger{display:block;position:relative;min-width:0;min-height:0;width:100%;height:100%;padding:0;border:0;border-radius:0;background:#24231f;overflow:hidden;cursor:zoom-in}
@@ -108,3 +108,6 @@
 /* Keep the pass overlay text clickable while allowing card picks behind it. */
 #between .game-overlay.active{pointer-events:none!important}
 #between .game-overlay.active .overlay-box{pointer-events:auto!important}
+
+/* Keep Hearts instructions and scores readable on their light panels. */
+#between .scoreboard,#between .game-status,#between .overlay-box,#between .overlay-box h2,#between .overlay-box p,#between .overlay-box b,#between .capture-pile,#between .draw-pile{color:#171714!important}
