@@ -79,8 +79,18 @@
       time:'Oct 10–13',
       description:'Backpacking and team-building trip in Arizona’s White Mountains. Details are still being finalized.',
       category:'community'
-    }
+    },
+    {date:'2026-10-09',title:'Club Workout',time:'6:00 AM',description:'Morning club workout. Meet location shared with members.',category:'community'},
+    {date:'2026-10-12',title:'Joshua Tree',time:'Overnight trip · Day 1',description:'MCA trip to Joshua Tree National Park.',category:'community'},
+    {date:'2026-10-13',title:'Joshua Tree',time:'Overnight trip · Day 2',description:'MCA trip to Joshua Tree National Park.',category:'community'},
+    {date:'2026-10-31',title:'Four Peaks Traverse',time:'All day',description:'MCA Four Peaks Traverse on Halloween.',category:'community'},
+    {date:'2026-11-07',title:'Cactus to Clouds',time:'Overnight trip · Day 1',description:'MCA Cactus to Clouds trip, November 7–8.',category:'community'},
+    {date:'2026-11-08',title:'Cactus to Clouds',time:'Overnight trip · Day 2',description:'MCA Cactus to Clouds trip, November 7–8.',category:'community'},
   ];
+
+  for(const day=new Date('2026-10-15T00:00:00Z'), end=new Date('2027-10-14T00:00:00Z'); day<=end; day.setUTCDate(day.getUTCDate()+7)){
+    additions.push({date:day.toISOString().slice(0,10),title:'Club Workout',time:'6:00 AM',description:'Morning club workout. Meet location shared with members.',category:'community'});
+  }
 
   additions.forEach(addition=>{
     const alreadyListed = calendarEvents.some(event=>

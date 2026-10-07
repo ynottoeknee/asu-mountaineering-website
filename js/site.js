@@ -315,10 +315,11 @@ const MCA_LINKS = {
   partnerDiscounts: 'https://docs.google.com/document/d/1kz_xM5VM10HtKq0nZc0DmXLCT4DvZNT2Y8zY55aw32w/edit',
   arizonaCivicAction: 'https://docs.google.com/document/d/19z_7Q1aKePjMDAfCpwi0muZ5Vj9vtdSLXEz-xR7eDro/edit',
   constitution: 'https://docs.google.com/document/d/1CTrwiLUBKHr0SxZPUCPeQbCh45u8hpWcBWShdq6ydSM/edit',
-  waiver: 'https://docs.google.com/forms/d/e/1FAIpQLSd4Gn1_2n7BNehhSDihJeCeeRhdeQPstRWg77FqujOd-I4yVg/viewform',
+  waiver: '/documents/liability-waiver.pdf',
   tripProposal: 'https://docs.google.com/forms/d/e/1FAIpQLSfa3PwYcBNhHrtHhdyaxgrIhiI9j1WC9Z_GboJ0CpGYczOuQg/viewform',
   incidentReport: 'https://docs.google.com/forms/d/e/1FAIpQLSdgbqslJTZc2p0m4LLWMK3l_jlnk4k8HSR4kEQ3tAP3sirtWg/viewform',
-  leadershipDocuments: 'https://docs.google.com/document/d/1nYMEkqNmFcDHtN1hLQNmzkUR9fhEULRBH5ks_-FsvvU/edit'
+  leadershipDocuments: 'https://docs.google.com/document/d/1nYMEkqNmFcDHtN1hLQNmzkUR9fhEULRBH5ks_-FsvvU/edit',
+  waiver: '/documents/liability-waiver.pdf'
 };
 
 const MCA_FORMS = {
@@ -329,7 +330,7 @@ const MCA_FORMS = {
   idea: 'https://docs.google.com/forms/d/e/1FAIpQLScisP8m11F36UPZruDZyJ_ACejUVF4sFChR10qxmw_SZl-qfQ/viewform',
   tripProposal: 'https://docs.google.com/forms/d/e/1FAIpQLSfa3PwYcBNhHrtHhdyaxgrIhiI9j1WC9Z_GboJ0CpGYczOuQg/viewform',
   incidentReport: 'https://docs.google.com/forms/d/e/1FAIpQLSdgbqslJTZc2p0m4LLWMK3l_jlnk4k8HSR4kEQ3tAP3sirtWg/viewform',
-  waiver: 'https://docs.google.com/forms/d/e/1FAIpQLSd4Gn1_2n7BNehhSDihJeCeeRhdeQPstRWg77FqujOd-I4yVg/viewform'
+  waiver: '/documents/liability-waiver.pdf'
 };
 
 function wirePlaceholderLinks(){
@@ -397,7 +398,7 @@ const resources=[
   {category:'Gear and Access',title:'Partner Discounts',format:'Website Guide',status:'Program in Development',description:'A future directory of member discounts, rentals, equipment support, and training opportunities offered by club partners.',included:['Discount directory','Rental support','Partner opportunities'],button:'View Discounts',link:'partnerDiscounts'},
   {category:'Community Action',title:'Arizona Civic Action: Contact Representatives & Verify Petitions',format:'Field Guide',status:'Current Official Links',description:'Official tools for finding Arizona state and federal representatives, contacting public offices, and checking initiative or petition information before signing.',included:['Find state and federal representatives','Contact-message template','Official petition and ballot-measure verification'],button:'Open Guide',link:'arizonaCivicAction'},
   {category:'Club Documents',title:'MCA Constitution',format:'PDF',status:'Current Version',description:'The governing document describing the club’s purpose, leadership structure, responsibilities, membership, elections, and continuity.',included:['Purpose and values','Leadership structure','Membership and governance'],button:'View Constitution',link:'constitution'},
-  {category:'Club Documents',title:'Participation and Liability Waiver',format:'Form',status:'Pending Legal Review',description:'The required participation document describing outdoor risks, individual responsibilities, emergency care, and releases.',included:['Risk acknowledgement','Participant responsibilities','Emergency information'],button:'Open Waiver',link:'waiver'},
+  {category:'Club Documents',title:'Participation and Liability Waiver',format:'PDF',status:'Current Version',description:'Read and sign the club’s outdoor activities liability release and assumption of risk agreement.',included:['Outdoor activity risks','Participant responsibilities','Emergency information'],button:'Open Waiver PDF',link:'waiver'},
   {category:'Club Documents',title:'Trip Proposal Form',format:'Form',status:'Planned for Fall 2026',description:'A form for members or leaders proposing an adventure, expedition, training outing, or member-led trip.',included:['Objective and route','Readiness and logistics','Safety plan'],button:'Propose a Trip',link:'tripProposal'},
   {category:'Club Documents',title:'Incident and Near-Miss Report',format:'Form',status:'Planned for Fall 2026',description:'A private form for documenting injuries, emergencies, close calls, equipment issues, and other safety concerns.',included:['Incident details','Response and contributing factors','Follow-up'],button:'Open Form',link:'incidentReport'},
   {category:'Club Documents',title:'Leadership Documents',format:'Website Guide',status:'Restricted Resource',description:'Templates, records, handoff materials, meeting notes, and planning tools used by officers and Team Leads.',included:['Templates and records','Meeting notes','Leadership handoffs'],button:'Open Leadership Library',link:'leadershipDocuments'}
@@ -801,7 +802,7 @@ function embedMcaGoogleForm(formId,url,title,{schedule=false}={}){
 }
 
 embedMcaGoogleForm('adaptiveIntakeForm',MCA_FORMS.adaptiveIntake,'Adaptive Opportunities Intake',{schedule:true});
-embedMcaGoogleForm('adaptiveWaiverForm',MCA_FORMS.waiver,'Participation and Liability Waiver');
+
 embedMcaGoogleForm('adaptiveRequestForm',MCA_FORMS.adaptiveRequest,'Adaptive Request or Feedback');
 embedMcaGoogleForm('simpleIdeaForm',MCA_FORMS.idea,'Bring an Idea or Project',{schedule:true});
 embedMcaGoogleForm('partnerRequestForm',MCA_FORMS.partner,'Partner With MCA',{schedule:true});

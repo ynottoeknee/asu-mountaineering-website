@@ -1489,3 +1489,5 @@ body:has(#adaptive.active) .topbar button:hover{color:#eacf38}
 .page>.wire-box,footer.wire-box{border-left:0;border-right:0;border-radius:0;margin-top:0}
 .hero-logo-large{background:transparent}
 @media(max-width:640px){.site-shell{padding:0}}
+
+.aa-hero--interest-only{grid-template-columns:minmax(0,1fr);min-height:62svh}.aa-hero--interest-only .aa-hero-copy{position:relative;z-index:2}.aa-hero--interest-only .aa-hero-lede{max-width:820px}
