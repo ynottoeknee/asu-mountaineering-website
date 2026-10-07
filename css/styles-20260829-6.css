@@ -229,3 +229,6 @@
   #home .home-events-section .event-card{flex-basis:min(300px,86vw)!important;min-height:360px}
   #resources .page-hero,#resources .section{padding-left:22px;padding-right:22px}
 }
+
+/* Keep upcoming event cards in a horizontal, touch-scrollable track. */
+#home .home-events-section .event-grid.event-carousel{flex-direction:row!important;flex-wrap:nowrap!important}
