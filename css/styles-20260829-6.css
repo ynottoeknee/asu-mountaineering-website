@@ -103,3 +103,8 @@
   #between .game-controls{bottom:4px}
   #between .game-controls .btn{font-size:11px;padding:8px 10px}
 }
+
+
+/* Keep the pass overlay text clickable while allowing card picks behind it. */
+#between .game-overlay.active{pointer-events:none!important}
+#between .game-overlay.active .overlay-box{pointer-events:auto!important}
