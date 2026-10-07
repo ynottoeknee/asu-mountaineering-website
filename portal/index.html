@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCA Member Portal</title>
+  <meta name="description" content="Mountaineering Club at ASU member portal for trips, applications, gear, grants, membership, and club support.">
+  <meta name="theme-color" content="#151515">
+  <link rel="icon" type="image/png" href="/mca-favicon.png?v=3">
+  <link rel="stylesheet" href="/portal/portal.css?v=20261007-1">
+</head>
+<body>
+  <div class="portal-app" data-portal-app>
+    <aside class="portal-sidebar" aria-label="Member portal">
+      <a class="portal-brand" href="/portal/" aria-label="MCA Member Portal">
+        <img src="/assets/images/mca-line-logo-transparent.png" alt="">
+        <div>
+          <strong>MCA</strong>
+          <span>Member Portal</span>
+        </div>
+      </a>
+
+      <nav class="portal-nav" aria-label="Portal navigation">
+        <button class="portal-nav-link active" type="button" data-view="dashboard">
+          <span>Dashboard</span>
+        </button>
+        <button class="portal-nav-link" type="button" data-view="trips">
+          <span>Trips</span><span class="nav-count">3</span>
+        </button>
+        <button class="portal-nav-link" type="button" data-view="applications">
+          <span>My Applications</span><span class="nav-count">2</span>
+        </button>
+        <button class="portal-nav-link" type="button" data-view="gear">
+          <span>Gear</span><span class="nav-count">2</span>
+        </button>
+        <button class="portal-nav-link" type="button" data-view="grant">
+          <span>Grant</span>
+        </button>
+        <button class="portal-nav-link" type="button" data-view="membership">
+          <span>Membership</span>
+        </button>
+        <button class="portal-nav-link" type="button" data-view="support">
+          <span>Support MCA</span>
+        </button>
+        <button class="portal-nav-link" type="button" data-view="profile">
+          <span>Profile</span>
+        </button>
+      </nav>
+
+      <div class="portal-role-block">
+        <div class="portal-nav-label">Trip leader</div>
+        <button class="portal-nav-link" type="button" data-view="leader">
+          <span>Manage Trips</span><span class="nav-count">1</span>
+        </button>
+      </div>
+
+      <div class="portal-role-block">
+        <div class="portal-nav-label">Administration</div>
+        <button class="portal-nav-link" type="button" data-view="admin">
+          <span>Admin</span>
+        </button>
+      </div>
+
+      <div class="portal-sidebar-footer">
+        <a href="/">Return to MCA website</a>
+      </div>
+    </aside>
+
+    <div class="portal-main">
+      <header class="portal-topbar">
+        <button class="mobile-menu-button" type="button" aria-label="Open portal navigation" data-menu-toggle>Menu</button>
+        <div class="portal-context">
+          <span class="context-kicker">Mountaineering Club at ASU</span>
+          <strong data-view-title>Dashboard</strong>
+        </div>
+        <div class="portal-account">
+          <button class="account-button" type="button" data-account-toggle aria-expanded="false">
+            <span class="account-initials">TF</span>
+            <span class="account-copy"><strong>Tony Fisher</strong><small>Distinguished Member</small></span>
+            <span aria-hidden="true">⌄</span>
+          </button>
+          <div class="account-menu" data-account-menu hidden>
+            <button type="button" data-view="profile">Profile</button>
+            <a href="/">Public website</a>
+            <button type="button" class="muted-action">Sign out</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="portal-content">
+
+        <section class="portal-view active" data-view-panel="dashboard">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">Member dashboard</p>
+              <h1>Welcome back, Tony.</h1>
+              <p class="page-lede">Everything that needs your attention across MCA, in one place.</p>
+            </div>
+            <div class="status-stack">
+              <span class="status-pill status-distinguished">Distinguished Member</span>
+              <span class="status-pill">Trip Leader</span>
+              <span class="status-pill">Admin</span>
+            </div>
+          </div>
+
+          <div class="notice-bar">
+            <div>
+              <strong>Adventure &amp; Stewardship Grant applications are open.</strong>
+              <span>Submit one PDF by March 29, 2027.</span>
+            </div>
+            <button type="button" class="text-button" data-view="grant">View grant</button>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric-card">
+              <span>Upcoming trips</span>
+              <strong>1</strong>
+              <small>Accepted</small>
+            </article>
+            <article class="metric-card">
+              <span>Open applications</span>
+              <strong>3</strong>
+              <small>Available now</small>
+            </article>
+            <article class="metric-card">
+              <span>Gear checked out</span>
+              <strong>2</strong>
+              <small>Assigned to you</small>
+            </article>
+            <article class="metric-card">
+              <span>Applications</span>
+              <strong>2</strong>
+              <small>1 under review</small>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="portal-card portal-card-wide">
+              <div class="card-header">
+                <div>
+                  <p class="card-kicker">Next adventure</p>
+                  <h2>Joshua Tree</h2>
+                </div>
+                <span class="status-pill status-success">Accepted</span>
+              </div>
+              <div class="trip-summary-grid">
+                <div><span>Date</span><strong>Oct. 12–13</strong></div>
+                <div><span>Leaders</span><strong>Charlie · Sienna</strong></div>
+                <div><span>Roster</span><strong>8 members</strong></div>
+                <div><span>Your gear</span><strong>2 assigned items</strong></div>
+              </div>
+              <div class="card-actions">
+                <button class="primary-button" type="button" data-trip="joshua-tree">View trip</button>
+                <button class="secondary-button" type="button" data-view="gear">View gear</button>
+              </div>
+            </section>
+
+            <section class="portal-card">
+              <div class="card-header">
+                <div>
+                  <p class="card-kicker">Club support</p>
+                  <h2>2026–27</h2>
+                </div>
+              </div>
+              <div class="support-summary">
+                <strong>$100</strong>
+                <span>Annual member contribution</span>
+                <div class="support-level">Alpine Supporter</div>
+              </div>
+              <button class="secondary-button full-button" type="button" data-view="support">View support level</button>
+            </section>
+
+            <section class="portal-card portal-card-wide">
+              <div class="card-header">
+                <div>
+                  <p class="card-kicker">Trips open for application</p>
+                  <h2>Choose your next objective</h2>
+                </div>
+                <button class="text-button" type="button" data-view="trips">All trips</button>
+              </div>
+              <div class="compact-list">
+                <article class="compact-row">
+                  <div><strong>Four Peaks Traverse</strong><span>Oct. 31 · Strenuous</span></div>
+                  <button class="small-button" type="button" data-trip="four-peaks">Apply</button>
+                </article>
+                <article class="compact-row">
+                  <div><strong>Cactus to Clouds</strong><span>Nov. 7–8 · Very strenuous</span></div>
+                  <button class="small-button" type="button" data-trip="cactus-to-clouds">Apply</button>
+                </article>
+                <article class="compact-row">
+                  <div><strong>Spring Sierra Week</strong><span>Spring Break · Technical options</span></div>
+                  <button class="small-button" type="button" data-trip="sierras">Apply</button>
+                </article>
+              </div>
+            </section>
+
+            <section class="portal-card">
+              <div class="card-header">
+                <div>
+                  <p class="card-kicker">Your gear</p>
+                  <h2>2 items out</h2>
+                </div>
+              </div>
+              <div class="compact-list">
+                <div class="compact-row static">
+                  <div><strong>Mammut 70m Rope #02</strong><span>Joshua Tree</span></div>
+                </div>
+                <div class="compact-row static">
+                  <div><strong>Black Diamond Helmet #07</strong><span>Joshua Tree</span></div>
+                </div>
+              </div>
+              <button class="secondary-button full-button" type="button" data-view="gear">Open gear</button>
+            </section>
+
+            <section class="portal-card portal-card-wide">
+              <div class="card-header">
+                <div>
+                  <p class="card-kicker">Grant</p>
+                  <h2>MCA Adventure &amp; Stewardship Grant</h2>
+                </div>
+                <span class="status-pill status-open">Open</span>
+              </div>
+              <p>Funding for member adventures and service projects. The application prompt will be published separately; applications are submitted as a single PDF.</p>
+              <div class="deadline-line"><span>Application deadline</span><strong>March 29, 2027</strong></div>
+              <button class="primary-button" type="button" data-view="grant">Go to application</button>
+            </section>
+          </div>
+        </section>
+
+        <section class="portal-view" data-view-panel="trips">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">Trips</p>
+              <h1>Trips &amp; objectives</h1>
+              <p class="page-lede">All MCA trips require an application. Leaders and the President make participant decisions.</p>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <div class="segmented-control" aria-label="Trip filters">
+              <button class="active" type="button" data-trip-filter="all">All</button>
+              <button type="button" data-trip-filter="open">Applications open</button>
+              <button type="button" data-trip-filter="mine">My trips</button>
+            </div>
+            <label class="search-field">Search<input type="search" placeholder="Trip or objective" data-trip-search></label>
+          </div>
+
+          <div class="table-card">
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Trip</th><th>Date</th><th>Leader</th><th>Application</th><th>Your status</th><th></th></tr></thead>
+                <tbody>
+                  <tr data-trip-row data-filter="mine">
+                    <td><strong>Joshua Tree</strong><small>Rock climbing</small></td>
+                    <td>Oct. 12–13</td>
+                    <td>Charlie · Sienna</td>
+                    <td><span class="status-pill status-closed">Closed</span></td>
+                    <td><span class="status-pill status-success">Accepted</span></td>
+                    <td><button class="table-action" type="button" data-trip="joshua-tree">View</button></td>
+                  </tr>
+                  <tr data-trip-row data-filter="open">
+                    <td><strong>Four Peaks Traverse</strong><small>Mountaineering / hiking</small></td>
+                    <td>Oct. 31</td>
+                    <td>TBD</td>
+                    <td><span class="status-pill status-open">Open</span></td>
+                    <td>Not applied</td>
+                    <td><button class="table-action" type="button" data-trip="four-peaks">Apply</button></td>
+                  </tr>
+                  <tr data-trip-row data-filter="open">
+                    <td><strong>Cactus to Clouds</strong><small>Endurance objective</small></td>
+                    <td>Nov. 7–8</td>
+                    <td>TBD</td>
+                    <td><span class="status-pill status-open">Open</span></td>
+                    <td>Not applied</td>
+                    <td><button class="table-action" type="button" data-trip="cactus-to-clouds">Apply</button></td>
+                  </tr>
+                  <tr data-trip-row data-filter="open">
+                    <td><strong>Spring Sierra Week</strong><small>Ice · ski mountaineering · technical climbing</small></td>
+                    <td>Spring Break</td>
+                    <td>TBD</td>
+                    <td><span class="status-pill status-open">Open</span></td>
+                    <td><span class="status-pill status-review">Under review</span></td>
+                    <td><button class="table-action" type="button" data-trip="sierras">View</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <section class="trip-detail-panel" data-trip-detail hidden>
+            <button class="back-button" type="button" data-close-trip>← Back to trips</button>
+            <div class="trip-detail-header">
+              <div>
+                <p class="eyebrow" data-trip-type>Trip</p>
+                <h2 data-trip-title>Joshua Tree</h2>
+                <p data-trip-meta></p>
+              </div>
+              <span class="status-pill status-open" data-trip-application-status>Applications open</span>
+            </div>
+
+            <div class="trip-detail-grid">
+              <div class="portal-card">
+                <h3>Trip overview</h3>
+                <dl class="detail-list">
+                  <div><dt>Date</dt><dd data-trip-date></dd></div>
+                  <div><dt>Leaders</dt><dd data-trip-leaders></dd></div>
+                  <div><dt>Difficulty</dt><dd data-trip-difficulty></dd></div>
+                  <div><dt>Capacity</dt><dd data-trip-capacity></dd></div>
+                </dl>
+              </div>
+              <div class="portal-card">
+                <h3>Application</h3>
+                <p data-trip-application-copy></p>
+                <button class="primary-button full-button" type="button" data-apply-trip>Start application</button>
+              </div>
+            </div>
+
+            <div class="portal-card">
+              <div class="card-header"><div><p class="card-kicker">Roster</p><h3>Who’s going</h3></div><span data-roster-count></span></div>
+              <div class="member-list" data-trip-roster></div>
+            </div>
+
+            <div class="portal-card">
+              <div class="card-header"><div><p class="card-kicker">Club equipment</p><h3>Gear assigned to this trip</h3></div></div>
+              <div class="gear-assignment-list" data-trip-gear></div>
+            </div>
+          </section>
+        </section>
+
+        <section class="portal-view" data-view-panel="applications">
+          <div class="page-heading">
+            <div><p class="eyebrow">Applications</p><h1>My applications</h1><p class="page-lede">Track every trip application and its decision.</p></div>
+          </div>
+          <div class="table-card">
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Trip</th><th>Submitted</th><th>Status</th><th>Decision</th><th></th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Joshua Tree</strong></td><td>Oct. 5</td><td><span class="status-pill status-success">Accepted</span></td><td>Oct. 7</td><td><button class="table-action" data-trip="joshua-tree" type="button">View trip</button></td></tr>
+                  <tr><td><strong>Spring Sierra Week</strong></td><td>Oct. 7</td><td><span class="status-pill status-review">Under review</span></td><td>—</td><td><button class="table-action" data-trip="sierras" type="button">View trip</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="portal-view" data-view-panel="gear">
+          <div class="page-heading">
+            <div><p class="eyebrow">Gear</p><h1>Club gear</h1><p class="page-lede">See what MCA owns, what is available, and who currently has each item.</p></div>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="portal-card">
+              <p class="card-kicker">Checked out to you</p>
+              <h2>2 items</h2>
+              <div class="compact-list">
+                <div class="compact-row static"><div><strong>Mammut 70m Rope #02</strong><span>Trip: Joshua Tree · Due Oct. 14</span></div></div>
+                <div class="compact-row static"><div><strong>Black Diamond Helmet #07</strong><span>Trip: Joshua Tree · Due Oct. 14</span></div></div>
+              </div>
+            </section>
+            <section class="portal-card">
+              <p class="card-kicker">Inventory status</p>
+              <h2>24 tracked items</h2>
+              <div class="inventory-summary">
+                <div><strong>17</strong><span>Available</span></div>
+                <div><strong>7</strong><span>Checked out</span></div>
+              </div>
+            </section>
+          </div>
+
+          <div class="table-card">
+            <div class="table-title"><div><h2>Inventory</h2><p>Member-visible checkout directory</p></div><label class="search-field">Search<input type="search" placeholder="Rope, helmet, tent..." data-gear-search></label></div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Item</th><th>Category</th><th>Status</th><th>Holder</th><th>Trip</th><th>Due</th></tr></thead>
+                <tbody data-gear-table>
+                  <tr><td><strong>Mammut 70m Rope #02</strong></td><td>Rope</td><td><span class="status-pill status-out">Checked out</span></td><td>Tony Fisher</td><td>Joshua Tree</td><td>Oct. 14</td></tr>
+                  <tr><td><strong>Black Diamond Helmet #07</strong></td><td>Helmet</td><td><span class="status-pill status-out">Checked out</span></td><td>Tony Fisher</td><td>Joshua Tree</td><td>Oct. 14</td></tr>
+                  <tr><td><strong>Crash Pad #01</strong></td><td>Bouldering</td><td><span class="status-pill status-out">Checked out</span></td><td>Riley</td><td>Joshua Tree</td><td>Oct. 14</td></tr>
+                  <tr><td><strong>60m Rope #01</strong></td><td>Rope</td><td><span class="status-pill status-available">Available</span></td><td>—</td><td>—</td><td>—</td></tr>
+                  <tr><td><strong>Four-person Tent #03</strong></td><td>Shelter</td><td><span class="status-pill status-available">Available</span></td><td>—</td><td>—</td><td>—</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="portal-view" data-view-panel="grant">
+          <div class="page-heading">
+            <div><p class="eyebrow">MCA funding</p><h1>Adventure &amp; Stewardship Grant</h1><p class="page-lede">Supporting member adventures and service projects.</p></div>
+            <span class="status-pill status-open">Applications open</span>
+          </div>
+
+          <div class="grant-layout">
+            <section class="portal-card grant-primary-card">
+              <p class="card-kicker">2026–27 application cycle</p>
+              <h2>Submit your application by March 29, 2027.</h2>
+              <p>The application prompt and requirements will be published here. When ready, submit your completed application as one PDF.</p>
+              <div class="deadline-box">
+                <span>Deadline</span>
+                <strong>March 29, 2027</strong>
+              </div>
+
+              <div class="upload-box">
+                <label for="grantPdf"><strong>Application PDF</strong><span>One PDF file. The portal will securely store submissions once backend storage is connected.</span></label>
+                <input id="grantPdf" type="file" accept="application/pdf" data-grant-file>
+                <p class="upload-status" data-grant-status>No file selected.</p>
+                <button class="primary-button" type="button" data-grant-submit disabled>Submit application</button>
+              </div>
+            </section>
+
+            <aside class="portal-card">
+              <p class="card-kicker">Your application</p>
+              <h2>Not submitted</h2>
+              <dl class="detail-list">
+                <div><dt>Status</dt><dd>Not started</dd></div>
+                <div><dt>Deadline</dt><dd>Mar. 29, 2027</dd></div>
+                <div><dt>Format</dt><dd>PDF</dd></div>
+              </dl>
+            </aside>
+          </div>
+        </section>
+
+        <section class="portal-view" data-view-panel="membership">
+          <div class="page-heading">
+            <div><p class="eyebrow">Membership</p><h1>Your MCA membership</h1><p class="page-lede">Membership status is separate from financial support.</p></div>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="portal-card portal-card-wide">
+              <p class="card-kicker">Club status</p>
+              <div class="membership-banner">
+                <div>
+                  <span class="status-pill status-distinguished">Distinguished Member</span>
+                  <h2>Tony Fisher</h2>
+                  <p>Distinguished Member status is currently granted at the President’s discretion.</p>
+                </div>
+              </div>
+            </section>
+            <section class="portal-card">
+              <p class="card-kicker">Responsibilities</p>
+              <div class="role-list">
+                <div><strong>Trip Leader</strong><span>Active for assigned trips</span></div>
+                <div><strong>Admin</strong><span>Portal administration</span></div>
+              </div>
+            </section>
+            <section class="portal-card portal-card-wide">
+              <p class="card-kicker">Annual support</p>
+              <h2>Alpine Supporter · $100</h2>
+              <p>Financial support never determines trip selection, leadership, Distinguished Member status, or grant eligibility.</p>
+              <button class="primary-button" type="button" data-view="support">View supporter benefits</button>
+            </section>
+          </div>
+        </section>
+
+        <section class="portal-view" data-view-panel="support">
+          <div class="page-heading">
+            <div><p class="eyebrow">Member support</p><h1>Support your club</h1><p class="page-lede">MCA membership remains open regardless of ability to contribute. Annual supporters help fund access, equipment, training, stewardship, and future objectives.</p></div>
+          </div>
+
+          <div class="support-current">
+            <div><span>Your 2026–27 support</span><strong>$100</strong></div>
+            <div><span>Current level</span><strong>Alpine Supporter</strong></div>
+            <div><span>Renewal</span><strong>Annual</strong></div>
+          </div>
+
+          <div class="tier-grid">
+            <article class="tier-card">
+              <p class="card-kicker">$25 / year</p><h2>Level 1</h2>
+              <ul><li>Supporter profile badge</li><li>Annual MCA supporter sticker</li></ul>
+              <button class="secondary-button full-button" type="button">Choose $25</button>
+            </article>
+            <article class="tier-card">
+              <p class="card-kicker">$50 / year</p><h2>Level 2</h2>
+              <ul><li>Everything above</li><li>Annual MCA supporter patch</li></ul>
+              <button class="secondary-button full-button" type="button">Choose $50</button>
+            </article>
+            <article class="tier-card featured-tier">
+              <div class="recommended-tag">Current</div>
+              <p class="card-kicker">$100 / year</p><h2>Level 3</h2>
+              <ul><li>Everything above</li><li>Annual supporter shirt</li><li>Future partner benefits</li></ul>
+              <button class="primary-button full-button" type="button">Current level</button>
+            </article>
+            <article class="tier-card">
+              <p class="card-kicker">$250 / year</p><h2>Level 4</h2>
+              <ul><li>Everything above</li><li>Supporter appreciation event</li><li>Annual limited supporter item</li></ul>
+              <button class="secondary-button full-button" type="button">Choose $250</button>
+            </article>
+            <article class="tier-card">
+              <p class="card-kicker">$500 / year</p><h2>Level 5</h2>
+              <ul><li>Everything above</li><li>Recognition on the supporter wall</li><li>Special annual supporter item</li></ul>
+              <button class="secondary-button full-button" type="button">Choose $500</button>
+            </article>
+            <article class="tier-card">
+              <p class="card-kicker">$1,000+ / year</p><h2>Expedition Circle</h2>
+              <ul><li>Everything above</li><li>Annual expedition presentation reception</li><li>Yearly recognition</li></ul>
+              <button class="secondary-button full-button" type="button">Choose amount</button>
+            </article>
+          </div>
+
+          <div class="portal-card support-note">
+            <h2>Payment connection comes next.</h2>
+            <p>This structure is prepared for an ASU Foundation giving destination. Payment buttons are intentionally not live until the fund and approved giving flow exist.</p>
+          </div>
+        </section>
+
+        <section class="portal-view" data-view-panel="profile">
+          <div class="page-heading">
+            <div><p class="eyebrow">Profile</p><h1>Member profile</h1><p class="page-lede">Information used for MCA communication, trip applications, and club participation.</p></div>
+          </div>
+          <form class="profile-form portal-card" data-profile-form>
+            <div class="form-section">
+              <h2>Basic information</h2>
+              <div class="form-grid">
+                <label>First name<input type="text" value="Tony"></label>
+                <label>Last name<input type="text" value="Fisher"></label>
+                <label>Email<input type="email" value="afishe54@asu.edu" readonly></label>
+                <label>Phone<input type="tel" placeholder="Add phone"></label>
+              </div>
+            </div>
+            <div class="form-section">
+              <h2>Outdoor profile</h2>
+              <div class="form-grid">
+                <label class="full-field">Experience summary<textarea rows="5" placeholder="Climbing, backpacking, mountaineering, skiing, service, leadership..."></textarea></label>
+                <label>Primary interests<select><option>Mountaineering</option><option>Rock climbing</option><option>Ice climbing</option><option>Ski mountaineering</option><option>Stewardship</option></select></label>
+                <label>Transportation<select><option>Can drive</option><option>Need a ride</option><option>Varies</option></select></label>
+              </div>
+            </div>
+            <div class="form-actions"><button class="primary-button" type="submit">Save profile</button><span data-profile-status></span></div>
+          </form>
+        </section>
+
+        <section class="portal-view" data-view-panel="leader">
+          <div class="page-heading">
+            <div><p class="eyebrow">Trip leader</p><h1>Manage trips</h1><p class="page-lede">Leader tools appear automatically for trips assigned to your account.</p></div>
+          </div>
+
+          <div class="portal-card">
+            <div class="card-header">
+              <div><p class="card-kicker">Assigned trip</p><h2>Joshua Tree</h2></div>
+              <span class="status-pill">8 accepted</span>
+            </div>
+            <div class="leader-tabs">
+              <button class="active" type="button" data-leader-tab="applications">Applications</button>
+              <button type="button" data-leader-tab="roster">Roster</button>
+              <button type="button" data-leader-tab="gear">Gear</button>
+            </div>
+            <div data-leader-panel="applications">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Applicant</th><th>Submitted</th><th>Relevant experience</th><th>Leader recommendation</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Sam Lee</strong></td><td>Oct. 6</td><td>Outdoor climbing · belay</td><td><select><option>Pending</option><option>Recommend accept</option><option>Recommend waitlist</option><option>Recommend decline</option></select></td></tr>
+                    <tr><td><strong>Riley</strong></td><td>Oct. 6</td><td>Bouldering · hiking</td><td><select><option>Pending</option><option>Recommend accept</option><option>Recommend waitlist</option><option>Recommend decline</option></select></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div data-leader-panel="roster" hidden>
+              <div class="member-list">
+                <div class="member-row"><span class="member-avatar">TF</span><div><strong>Tony Fisher</strong><span>Accepted</span></div></div>
+                <div class="member-row"><span class="member-avatar">SL</span><div><strong>Sam Lee</strong><span>Accepted</span></div></div>
+                <div class="member-row"><span class="member-avatar">R</span><div><strong>Riley</strong><span>Accepted</span></div></div>
+              </div>
+            </div>
+            <div data-leader-panel="gear" hidden>
+              <div class="gear-assignment-list">
+                <div><strong>Mammut 70m Rope #02</strong><span>Tony Fisher</span></div>
+                <div><strong>Crash Pad #01</strong><span>Riley</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="portal-view" data-view-panel="admin">
+          <div class="page-heading">
+            <div><p class="eyebrow">Administration</p><h1>Club administration</h1><p class="page-lede">Membership, trip decisions, equipment, grants, and account permissions.</p></div>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric-card"><span>Members</span><strong>84</strong><small>Total accounts</small></article>
+            <article class="metric-card"><span>Distinguished</span><strong>12</strong><small>President-designated</small></article>
+            <article class="metric-card"><span>Pending trip reviews</span><strong>7</strong><small>Need decision</small></article>
+            <article class="metric-card"><span>Grant submissions</span><strong>0</strong><small>Current cycle</small></article>
+          </div>
+
+          <div class="admin-grid">
+            <section class="portal-card admin-card">
+              <div class="card-header"><div><p class="card-kicker">Members</p><h2>Membership status</h2></div><button class="text-button" type="button">View all</button></div>
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Member</th><th>Status</th><th>Role</th><th></th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Tony Fisher</strong><small>afishe54@asu.edu</small></td><td><span class="status-pill status-distinguished">Distinguished</span></td><td>Admin · Trip Leader</td><td><button class="table-action" type="button">Manage</button></td></tr>
+                    <tr><td><strong>Sam Lee</strong><small>Member account</small></td><td><span class="status-pill">Member</span></td><td>—</td><td><button class="table-action" type="button">Manage</button></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="portal-card admin-card">
+              <div class="card-header"><div><p class="card-kicker">Trip decisions</p><h2>President review</h2></div></div>
+              <div class="compact-list">
+                <article class="compact-row"><div><strong>Joshua Tree · Sam Lee</strong><span>Leader recommends accept</span></div><button class="small-button" type="button">Review</button></article>
+                <article class="compact-row"><div><strong>Spring Sierra Week · Riley</strong><span>Leader review complete</span></div><button class="small-button" type="button">Review</button></article>
+              </div>
+            </section>
+
+            <section class="portal-card admin-card">
+              <div class="card-header"><div><p class="card-kicker">Grant</p><h2>Application review</h2></div><span class="status-pill status-open">Open to Mar. 29</span></div>
+              <p>No grant PDFs have been submitted in this prototype.</p>
+              <button class="secondary-button" type="button" data-view="grant">Open grant area</button>
+            </section>
+
+            <section class="portal-card admin-card">
+              <div class="card-header"><div><p class="card-kicker">Gear</p><h2>Checkout overview</h2></div></div>
+              <div class="inventory-summary">
+                <div><strong>17</strong><span>Available</span></div>
+                <div><strong>7</strong><span>Checked out</span></div>
+              </div>
+              <button class="secondary-button" type="button" data-view="gear">Manage inventory</button>
+            </section>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <div class="prototype-bar">
+      <strong>Portal structure preview</strong>
+      <span>Authentication, database storage, PDF uploads, and payments are not connected yet.</span>
+    </div>
+  </div>
+
+  <script src="/portal/portal.js?v=20261007-1"></script>
+</body>
+</html>
