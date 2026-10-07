@@ -176,3 +176,56 @@
   #between .center-trick .playing-card{width:42px!important;height:64px!important}
   #between .game-controls .btn{font-size:9px!important;padding:6px 7px!important}
 }
+
+
+/* Home page: one See a Problem introduction, with its three activity photos below. */
+#home .home-photo-story{
+  width:min(calc(100% - 56px),1280px)!important;margin:52px auto 0!important;padding:0!important;
+  text-align:center!important;background:#fbfaf6!important
+}
+#home .home-photo-caption{max-width:1120px!important;margin:0 auto!important}
+#home .home-photo-caption h2{
+  margin:8px auto 12px!important;color:var(--mca-ink)!important;font-family:var(--font-display,Georgia,'Times New Roman',serif)!important;
+  font-size:clamp(40px,5.7vw,76px)!important;font-weight:500!important;line-height:1.02!important;letter-spacing:-.035em!important
+}
+#home .home-photo-caption p{max-width:1080px;margin:0 auto 12px!important;font-size:clamp(16px,1.35vw,20px)!important;line-height:1.5!important}
+#home .home-opportunity-grid{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:clamp(22px,5.2vw,78px)!important;width:92%!important;margin:42px auto 0!important;align-items:start
+}
+#home .home-opportunity{min-width:0;text-align:center}
+#home .home-opportunity figure{aspect-ratio:4/3;width:100%;margin:0;overflow:hidden}
+#home .home-opportunity figure img{display:block;width:100%;height:100%;object-fit:cover}
+#home .home-events-section{
+  width:min(100%,1280px)!important;margin:0 auto!important;padding:clamp(72px,8vw,110px) 28px 50px!important;
+  overflow:visible!important;background:#fbfaf6!important
+}
+#home .home-events-section .section-head{margin-bottom:28px!important}
+#home .home-events-section .event-grid.event-carousel{
+  display:flex!important;align-items:stretch!important;gap:20px!important;width:100%;overflow-x:auto!important;overflow-y:hidden!important;
+  padding:4px 2px 18px!important;scroll-snap-type:x mandatory;scroll-padding:2px;-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain
+}
+#home .home-events-section .event-card{
+  flex:0 0 min(330px,84vw)!important;min-width:0;min-height:390px;transform:none!important;scroll-snap-align:start;z-index:1!important
+}
+#home .home-events-section .event-card:nth-child(n){transform:none!important}
+#home .home-events-section .event-card-media{height:190px;display:grid;place-items:center;overflow:hidden}
+#home .home-events-section .event-card-logo img{display:block;width:min(72%,240px);height:78%;object-fit:contain}
+#home .home-events-section .event-card-copy small{display:block;line-height:1.4}
+#home .home-events-section .event-card-copy h3{margin:12px 0 8px}
+#home .home-events-section .event-card-copy p{line-height:1.5}
+#resources.active,#resources .page-hero,#resources .section,#resources .wire-box,
+#resources .resource-library,#resources .resource-library-results,#resources .community-entry{background-color:#fbfaf6!important}
+#resources .resource-library-results{border-color:#e4e0d8!important}
+#community .community-project-grid .community-project-card{min-height:210px;justify-content:flex-start;gap:12px;padding:30px}
+#community .community-project-card small{font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--community-muted)}
+#community .community-project-card p{font-size:17px;line-height:1.55;margin:0}
+@media(max-width:720px){
+  #home .home-photo-story{width:calc(100% - 32px)!important;margin-top:32px!important}
+  #home .home-photo-caption h2{font-size:clamp(34px,9vw,50px)!important}
+  #home .home-opportunity-grid{grid-template-columns:1fr!important;width:100%!important;gap:28px!important;margin-top:30px!important}
+  #home .home-opportunity figure{aspect-ratio:4/3}
+  #home .home-events-section{padding:56px 16px 40px!important}
+  #home .home-events-section .event-card{flex-basis:min(300px,86vw)!important;min-height:360px}
+  #resources .page-hero,#resources .section{padding-left:22px;padding-right:22px}
+}

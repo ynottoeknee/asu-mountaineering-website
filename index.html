@@ -20,7 +20,7 @@
 <meta name="twitter:image" content="https://asumountaineering.org/assets/images/brand/mca-social-preview-black-pink.jpg">
 
   <link rel="preload" as="image" href="assets/images/brand/mca-header-final.webp">
-  <link rel="stylesheet" href="css/styles-20260829-6.css?v=20261007-6">
+  <link rel="stylesheet" href="css/styles-20260829-6.css?v=20261007-7">
   <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 </head>
 <body>
@@ -64,58 +64,25 @@
       </section>
 
       <section class="home-photo-story" aria-labelledby="home-photo-story-title">
-        <figure><img src="assets/images/home/mca-forest-meadow.webp" alt="MCA members walking across a mountain meadow beneath a forested ridge"></figure>
         <div class="home-photo-caption">
           <div class="eyebrow">See a Problem</div>
           <h2 id="home-photo-story-title">Turn concern into something people can act on together.</h2>
           <p>MCA gives members a network, shared skills, willing hands, and a structure for turning ideas into real projects.</p>
           <button class="home-text-link nav-link" data-page="launchpad" type="button">Bring an Idea</button>
         </div>
+        <div class="home-opportunity-grid" aria-label="Ways to get involved">
+          <article class="home-opportunity"><figure><img src="assets/images/events/home-lead-adventure.webp" alt="Three hikers moving together on a snowy mountain route" loading="lazy"></figure><h3>Lead an<br>adventure</h3></article>
+          <article class="home-opportunity"><figure><img src="assets/images/events/home-service-project.webp" alt="Volunteers packing food boxes together at St. Mary’s Food Bank" loading="lazy"></figure><h3>Create a<br>service project</h3></article>
+          <article class="home-opportunity"><figure><img src="assets/images/events/home-teach-skill.webp" alt="MCA members learning together at a workshop" loading="lazy"></figure><h3>Teach a skill</h3></article>
+        </div>
       </section>
 
       <section class="section home-events-section">
-        <div class="section-head">
-          <h2>Upcoming events</h2>
-          <button class="home-text-link nav-link" data-page="calendar" type="button">View Full Calendar</button>
-        </div>
-        <div class="event-grid">
-          <article class="event-card">
-            <div class="event-card-media event-card-logo"><img src="assets/images/mca-line-logo-transparent.png" alt="Mountaineering Club at ASU logo"></div>
-            <div class="event-card-copy"><small>WORKSHOP · <time datetime="2026-09-01T18:30">SEPT 1 · 6:30 PM</time></small><h3>Scholarship Workshop</h3><p>Meet at Walton Center for Planetary Health to work on mountaineering and individual scholarships.</p></div>
-          </article>
-          <article class="event-card">
-            <div class="event-card-media event-card-belay"><img src="assets/images/events/beginner-belay-workshop.webp" alt="A climber managing a blue belay rope beside a dog at the crag"></div>
-            <div class="event-card-copy"><small>SKILLS · <time datetime="2026-09-05T06:00">SEPT 5 · 6:00 AM</time></small><h3>Beginner Belay Workshop</h3><p>Learn harnesses, knots, partner checks, and introductory top-rope belaying at Papago Park.</p></div>
-          </article>
-          <article class="event-card">
-            <div class="event-card-media"><img src="assets/images/events/papago-climbing-view.webp" alt="A climber overlooking Papago Park"></div>
-            <div class="event-card-copy"><small>STEWARDSHIP · <time datetime="2026-09-12T04:30">SEPT 12 · 4:30 AM</time></small><h3>Papago Park Restoration</h3><p>Trash removal and an approved graffiti-cleanup project with a park ranger.</p></div>
-          </article>
-        </div>
+        <div class="section-head"><h2>Upcoming events</h2><button class="home-text-link nav-link" data-page="calendar" type="button">View Full Calendar</button></div>
+        <div id="homeUpcomingEvents" class="event-grid event-carousel" aria-label="Upcoming club events"></div>
       </section>
 
-      <section class="section home-opportunities-section">
-        <div class="home-opportunities-intro">
-          <div class="eyebrow">See a Problem</div>
-          <h2>Turn concern into something people can act on together.</h2>
-          <p>MCA gives members a network, shared skills, willing hands, and a structure for turning ideas into real projects.</p>
-          <button class="home-text-link nav-link" data-page="launchpad" type="button">Bring an Idea</button>
-        </div>
-        <div class="home-opportunity-grid">
-          <article class="home-opportunity">
-            <figure><img src="assets/images/events/home-lead-adventure.webp" alt="Three hikers moving together on a snowy mountain route"></figure>
-            <h3>Lead an<br>adventure</h3>
-          </article>
-          <article class="home-opportunity">
-            <figure><img src="assets/images/events/home-service-project.webp" alt="Volunteers packing food boxes together at St. Mary’s Food Bank"></figure>
-            <h3>Create a<br>service project</h3>
-          </article>
-          <article class="home-opportunity">
-            <figure><img src="assets/images/events/home-teach-skill.webp" alt="MCA members learning together at a workshop"></figure>
-            <h3>Teach a skill</h3>
-          </article>
-        </div>
-      </section>
+      
     </section>
 
 
@@ -529,50 +496,19 @@
     </div>
 
     <div id="community-tab-service" class="community-tabpanel">
-      <div class="community-page-heading">
-        <h1>Service Projects</h1>
-      </div>
-      <div class="community-simple-grid community-action-grid">
-        <article class="community-simple-card">
-          <h2>Partner With MCA</h2>
-          <button class="btn nav-link" data-page="partner" type="button">Partnership Form</button>
-        </article>
-        <article class="community-simple-card">
-          <h2>Propose a Project</h2>
-          <button class="btn nav-link" data-page="launchpad" data-idea-type="Service project" type="button">Bring Us the Idea</button>
-        </article>
-        <article class="community-simple-card">
-          <h2>Adaptive Recreation</h2>
-          <button class="btn nav-link" data-page="adaptive" type="button">Open Program</button>
-        </article>
-        <article class="community-simple-card">
-          <h2>View Upcoming Service</h2>
-          <button class="btn nav-link" data-page="calendar" type="button">Open Calendar</button>
-        </article>
+      <div class="community-page-heading"><h1>Service Projects</h1></div>
+      <div class="community-simple-grid community-project-grid">
+        <article class="community-simple-card community-project-card"><small>SERVICE · OCTOBER 25</small><h2>Papago Restoration</h2><p>Restoration work at Papago Park. Details will be shared with volunteers.</p></article>
+        <article class="community-simple-card community-project-card"><small>GRAND CANYON</small><h2>Grand Canyon Restoration</h2><p>North Kaibab restoration and tree-planting work in Grand Canyon National Park.</p></article>
       </div>
     </div>
 
     <div id="community-tab-events" class="community-tabpanel">
-      <div class="community-page-heading">
-        <h1>Social Events</h1>
-      </div>
-      <div class="community-simple-grid community-action-grid">
-        <article class="community-simple-card">
-          <h2>Upcoming Events</h2>
-          <button class="btn nav-link" data-page="calendar" type="button">View Calendar</button>
-        </article>
-        <article class="community-simple-card">
-          <h2>Propose an Event</h2>
-          <button class="btn nav-link" data-page="launchpad" data-idea-type="Club event or community idea" type="button">Bring Us the Idea</button>
-        </article>
-        <article class="community-simple-card">
-          <h2>Host a Workshop</h2>
-          <button class="btn nav-link" data-page="launchpad" data-idea-type="Workshop or training night" type="button">Start Planning</button>
-        </article>
-        <article class="community-simple-card">
-          <h2>Between Peaks</h2>
-          <button class="btn nav-link" data-page="between" type="button">Visit the Clubroom</button>
-        </article>
+      <div class="community-page-heading"><h1>Social Events</h1></div>
+      <div class="community-simple-grid community-event-grid">
+        <article class="community-simple-card community-project-card"><small>FRIDAY · OCTOBER 9 · 6:00 AM</small><h2>Club Workout</h2><p>Meet for a morning club workout. Location details will be shared with members.</p></article>
+        <article class="community-simple-card community-project-card"><small>THURSDAYS · 6:00 AM · STARTING OCTOBER 15</small><h2>Club Workouts</h2><p>Weekly morning workouts to train together and build club community.</p></article>
+        <article class="community-simple-card community-project-card"><small>SOCIAL · OCTOBER 17</small><h2>Bouldering</h2><p>Join MCA for a bouldering meetup. Time and location details will be shared with members.</p></article>
       </div>
     </div>
 
@@ -979,7 +915,7 @@
 
   <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" defer></script>
   <script src="js/site.js?v=20261007-2"></script>
-  <script src="js/calendar-events-20260801.js?v=20260829-7"></script>
+  <script src="js/calendar-events-20260801.js?v=20261007-1"></script>
   <script src="js/adaptive-ascents-20260801.js?v=20260828-1"></script>
 </body>
 </html>

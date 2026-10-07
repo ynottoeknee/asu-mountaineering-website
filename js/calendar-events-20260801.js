@@ -86,6 +86,18 @@
     {date:'2026-10-31',title:'Four Peaks Traverse',time:'All day',description:'MCA Four Peaks Traverse on Halloween.',category:'community'},
     {date:'2026-11-07',title:'Cactus to Clouds',time:'Overnight trip · Day 1',description:'MCA Cactus to Clouds trip, November 7–8.',category:'community'},
     {date:'2026-11-08',title:'Cactus to Clouds',time:'Overnight trip · Day 2',description:'MCA Cactus to Clouds trip, November 7–8.',category:'community'},
+    {date:'2026-10-15',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
+    {date:'2026-10-22',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
+    {date:'2026-10-29',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
+    {date:'2026-11-05',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
+    {date:'2026-11-12',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
+    {date:'2026-11-19',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
+    {date:'2026-11-26',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
+    {date:'2026-12-03',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
+    {date:'2026-12-10',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
+    {date:'2026-10-17',title:'Bouldering',time:'Time TBD',description:'MCA bouldering meetup. Time and location details will be shared with members.',category:'community'},
+    {date:'2026-10-25',title:'Papago Park Restoration',time:'Time TBD',description:'Restoration work at Papago Park. Details will be shared with volunteers.',category:'stewardship'},
+
   ];
 
   additions.forEach(addition=>{
@@ -237,4 +249,62 @@
     }
   `;
   document.head.appendChild(style);
+})();
+
+
+/* Render the home carousel from the same upcoming events shown on the calendar. */
+(()=>{
+  const track=document.getElementById('homeUpcomingEvents');
+  if(!track || typeof calendarEvents==='undefined')return;
+  const now=new Date();
+  const today=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
+  const groups=new Map();
+  calendarEvents.filter(event=>event.date>=today).forEach(event=>{
+    const key=[event.title,event.category||'community',event.description||''].join('|');
+    if(!groups.has(key))groups.set(key,{title:event.title,category:event.category||'community',description:event.description||'',events:[]});
+    const group=groups.get(key);
+    if(!group.events.some(item=>item.date===event.date))group.events.push(event);
+  });
+  const date=value=>new Date(value+'T12:00:00');
+  const shortDate=value=>date(value).toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase();
+  const scheduleLabel=events=>{
+    const dates=events.map(event=>event.date).sort();
+    const first=date(dates[0]),last=date(dates[dates.length-1]);
+    const time=(events[0].time||'Time TBD').replace(/ · Day \d+$/,'');
+    if(dates.length>=3){
+      const gaps=dates.slice(1).map((value,index)=>(date(value)-date(dates[index]))/86400000);
+      if(gaps.every(gap=>gap===7))return `${first.toLocaleDateString('en-US',{weekday:'long'}).toUpperCase()}S · ${time} · ${shortDate(dates[0])}–${shortDate(dates[dates.length-1])}`;
+    }
+    if(dates.length>1){
+      const firstMonth=first.toLocaleDateString('en-US',{month:'short'}).toUpperCase();
+      const lastMonth=last.toLocaleDateString('en-US',{month:'short'}).toUpperCase();
+      const range=firstMonth===lastMonth?`${firstMonth} ${first.getDate()}–${last.getDate()}`:`${firstMonth} ${first.getDate()}–${lastMonth} ${last.getDate()}`;
+      return `${range} · ${time}`;
+    }
+    return `${shortDate(dates[0])} · ${time}`;
+  };
+  const labels={stewardship:'SERVICE',community:'CLUB',adaptive:'ADAPTIVE',club:'CLUB'};
+  [...groups.values()].sort((a,b)=>a.events[0].date.localeCompare(b.events[0].date)).forEach(group=>{
+    group.events.sort((a,b)=>a.date.localeCompare(b.date));
+    const card=document.createElement('article');
+    card.className='event-card';
+    const media=document.createElement('div');
+    media.className='event-card-media event-card-logo';
+    const logo=document.createElement('img');
+    logo.src='assets/images/mca-line-logo-transparent.png';
+    logo.alt='Mountaineering Club at ASU logo';
+    logo.loading='lazy';
+    media.appendChild(logo);
+    const copy=document.createElement('div');
+    copy.className='event-card-copy';
+    const meta=document.createElement('small');
+    meta.textContent=`${labels[group.category]||'CLUB'} · ${scheduleLabel(group.events)}`;
+    const title=document.createElement('h3');
+    title.textContent=group.title;
+    const description=document.createElement('p');
+    description.textContent=group.description;
+    copy.append(meta,title,description);
+    card.append(media,copy);
+    track.appendChild(card);
+  });
 })();
