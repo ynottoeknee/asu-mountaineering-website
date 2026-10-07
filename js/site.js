@@ -219,7 +219,7 @@ function renderCalendar(){
       ].join('-');
 
       const eventsForDate = calendarEvents.filter(calendarEvent => calendarEvent.date === dateKey);
-      if(dateKey >= '2026-10-15' && normalized.getDay() === 4){
+      if(dateKey >= '2026-10-15' && normalized.getDay() === 4 && !eventsForDate.some(calendarEvent => calendarEvent.title === 'Club Workout')){
         eventsForDate.push({
           date:dateKey,
           title:'Club Workout',
