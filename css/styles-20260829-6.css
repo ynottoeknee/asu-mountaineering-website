@@ -1,316 +1,105 @@
 @import url('./styles-20260902-pre-memory.css');
 
-/* September 2, 2026 — Between Peaks dense memory wall */
-#between{
-  width:100% !important;
-  max-width:none !important;
-  margin:0 !important;
-  padding:0 !important;
-  background:var(--mca-paper,#fbfaf6) !important;
-  overflow:visible !important;
+/* Between Peaks: live Hearts table framed by an accessible photo collage */
+#between.active{background:#111;color:#f6f0e6}
+#between .between-layout{position:relative!important;display:block!important;width:100%!important;max-width:none!important;min-height:0!important;height:auto!important;margin:0!important;padding:clamp(8px,1vw,16px)!important;overflow:visible!important;border:0!important;background:#111!important;color:#f6f0e6!important;box-shadow:none!important}
+#between .between-layout::before,#between .between-layout::after{content:none!important;display:none!important}
+#between .between-collage{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,2fr) minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);
+  grid-template-rows:repeat(7,minmax(124px,14vw));
+  grid-template-areas:
+    "quote-one quote-one photo-01 photo-02 photo-03 photo-04"
+    "photo-05 photo-05 game game photo-06 photo-06"
+    "photo-05 photo-05 game game photo-06 photo-06"
+    "photo-05 photo-05 game game photo-06 photo-06"
+    "photo-07 photo-08 game game photo-09 photo-10"
+    "photo-07 photo-08 game game photo-09 photo-10"
+    "photo-11 photo-12 quote-two quote-two quote-two quote-two";
+  gap:3px;
 }
-
-#between .between-layout{
-  position:relative !important;
-  display:grid !important;
-  grid-template-columns:repeat(14,minmax(0,1fr)) !important;
-  grid-template-rows:165px repeat(6,105px) 130px 180px !important;
-  gap:3px !important;
-  width:min(calc(100% - 10px),1560px) !important;
-  min-height:0 !important;
-  height:auto !important;
-  margin:5px auto 28px !important;
-  padding:3px !important;
-  box-sizing:border-box !important;
-  overflow:hidden !important;
-  border:0 !important;
-  border-radius:0 !important;
-  background:#171716 !important;
-  box-shadow:none !important;
+#between .between-poem{min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:12px;margin:0;padding:clamp(18px,2vw,30px);background:#f7f3ec;color:#171714}
+#between .between-poem-one{grid-area:quote-one}
+#between .between-poem-one>*{display:block!important}
+#between .between-poem-two{grid-area:quote-two}
+#between .between-poem-text{font-family:Georgia,'Times New Roman',serif;font-size:clamp(19px,2.1vw,32px);line-height:1.16;color:#171714}
+#between .between-poem-credit{margin:0;font-size:clamp(10px,.85vw,13px);line-height:1.4;color:#34312b}
+#between .between-poem-credit em{font-style:italic}
+#between .bp-photo-trigger{display:block;position:relative;min-width:0;min-height:0;width:100%;height:100%;padding:0;border:0;border-radius:0;background:#24231f;overflow:hidden;cursor:zoom-in}
+#between .bp-photo-trigger img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .35s ease,filter .35s ease}
+#between .bp-photo-trigger:hover img{transform:scale(1.035);filter:brightness(1.06)}
+#between .bp-photo-trigger:focus-visible{z-index:2;outline:4px solid #f5cf70;outline-offset:-4px}
+#between .bp-photo-01{grid-area:photo-01}
+#between .bp-photo-02{grid-area:photo-02}
+#between .bp-photo-03{grid-area:photo-03}
+#between .bp-photo-04{grid-area:photo-04}
+#between .bp-photo-05{grid-area:photo-05}
+#between .bp-photo-06{grid-area:photo-06}
+#between .bp-photo-07{grid-area:photo-07}
+#between .bp-photo-08{grid-area:photo-08}
+#between .bp-photo-09{grid-area:photo-09}
+#between .bp-photo-10{grid-area:photo-10}
+#between .bp-photo-11{grid-area:photo-11}
+#between .bp-photo-12{grid-area:photo-12}
+#between .game-shell{display:contents}
+#between .wood-table{grid-area:game!important;grid-column:auto!important;grid-row:auto!important;min-width:0;width:100%;min-height:760px;height:100%!important;border:0;border-radius:0;padding:var(--space-7);background-color:#6f3a1d;background-position:center;background-size:cover}
+#between .playing-card{width:clamp(72px,7.4vw,104px);height:clamp(108px,10.8vw,148px)}
+#between .player-hand{width:92%}
+#between .player-hand .playing-card{margin-left:clamp(-45px,-3.1vw,-25px)}
+#between .player-hand .playing-card:first-child{margin-left:0}
+#between .computer-hand{width:92%}
+#between .computer-hand .playing-card{margin-left:clamp(-54px,-3.8vw,-30px)}
+#between .computer-hand .playing-card:first-child{margin-left:0}
+#between .game-status{max-width:calc(100% - 24px);min-width:min(310px,calc(100% - 24px))}
+#between .between-photo-dialog{width:min(94vw,1200px);max-width:none;max-height:92vh;padding:12px;border:0;background:#111;color:#fff}
+#between .between-photo-dialog::backdrop{background:rgba(0,0,0,.88)}
+#between .between-photo-dialog-frame{position:relative;display:grid;place-items:center;min-height:160px}
+#betweenPhotoPreview{display:block;max-width:100%;max-height:calc(92vh - 24px);object-fit:contain}
+#between .between-photo-close{position:absolute;z-index:1;top:10px;right:10px;border:1px solid #fff;background:#111;color:#fff;padding:10px 14px;cursor:pointer}
+@media(max-width:1040px){
+  #between .between-collage{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(5,minmax(150px,19vw));grid-template-areas:
+    "quote-one quote-one photo-01 photo-02"
+    "photo-03 photo-04 photo-05 photo-06"
+    "photo-07 photo-08 photo-09 photo-10"
+    "game game game game"
+    "photo-11 photo-12 quote-two quote-two"}
+  #between .wood-table{min-height:740px}
 }
-
-/* Let the existing content become independent collage tiles. */
-#between .between-top,
-#between .game-shell,
-#between .side-rail,
-#between .photo-space,
-#between .photo-row,
-#between .between-drawing-slot{
-  display:contents !important;
-}
-#between h3{display:none !important}
-
-/* Use every supplied MCA image plus the dog/belayer image. */
-#between .photo-row .between-photo-real:nth-child(1){content:url('../assets/images/between-peaks/memory-01.webp') !important}
-#between .photo-row .between-photo-real:nth-child(2){content:url('../assets/images/between-peaks/memory-02.webp') !important}
-#between .photo-row .between-photo-real:nth-child(3){content:url('../assets/images/between-peaks/memory-03.webp') !important}
-#between .side-rail:first-child .photo-space .between-photo-real{content:url('../assets/images/between-peaks/memory-04.webp') !important}
-#between .between-drawing-slot img{content:url('../assets/images/between-peaks/belay-dog.webp') !important}
-#between .between-spacer{
-  display:block !important;
-  background-image:url('../assets/images/between-peaks/memory-05.webp') !important;
-}
-
-/* One poem slot becomes the sixth supplied film photo. */
-#between .between-poem-one{
-  background-image:url('../assets/images/between-peaks/memory-06.webp') !important;
-  background-repeat:no-repeat !important;
-  background-position:center 54% !important;
-  background-size:cover !important;
-}
-#between .between-poem-one > *{display:none !important}
-
-/* The two new panoramas use the full board width. */
-#between .between-layout::before,
-#between .between-layout::after{
-  content:"" !important;
-  display:block !important;
-  position:relative !important;
-  inset:auto !important;
-  align-self:stretch !important;
-  justify-self:stretch !important;
-  width:100% !important;
-  height:100% !important;
-  min-width:0 !important;
-  min-height:0 !important;
-  margin:0 !important;
-  padding:0 !important;
-  border:0 !important;
-  border-radius:0 !important;
-  box-shadow:none !important;
-  transform:none !important;
-  background-color:#171716 !important;
-  background-repeat:no-repeat !important;
-  background-position:center !important;
-  background-size:cover !important;
-  z-index:1 !important;
-}
-#between .between-layout::before{
-  grid-column:1 / 15 !important;
-  grid-row:1 !important;
-  background-image:url('../assets/images/between-peaks/memory-07.webp') !important;
-}
-#between .between-layout::after{
-  grid-column:1 / 15 !important;
-  grid-row:9 !important;
-  background-image:url('../assets/images/between-peaks/memory-08.webp') !important;
-}
-
-/* Center table stays completely clear; every other tile fills the remaining perimeter. */
-#between .wood-table{
-  grid-column:5 / 11 !important;
-  grid-row:2 / 9 !important;
-}
-
-/* Left side: two tall verticals, then a wide group photo, then poetry. */
-#between .between-drawing-slot img{
-  grid-column:1 / 3 !important;
-  grid-row:2 / 6 !important;
-}
-#between .photo-row .between-photo-real:nth-child(2){
-  grid-column:3 / 5 !important;
-  grid-row:2 / 6 !important;
-}
-#between .photo-row .between-photo-real:nth-child(1){
-  grid-column:1 / 5 !important;
-  grid-row:6 / 8 !important;
-}
-#between .between-poem-two{
-  grid-column:1 / 5 !important;
-  grid-row:8 !important;
-}
-
-/* Right side: portrait camp photo plus three landscape memories. */
-#between .between-poem-one{
-  grid-column:11 / 13 !important;
-  grid-row:2 / 6 !important;
-}
-#between .side-rail:first-child .photo-space .between-photo-real{
-  grid-column:13 / 15 !important;
-  grid-row:2 / 4 !important;
-}
-#between .between-spacer{
-  grid-column:13 / 15 !important;
-  grid-row:4 / 6 !important;
-}
-#between .photo-row .between-photo-real:nth-child(3){
-  grid-column:11 / 15 !important;
-  grid-row:6 / 9 !important;
-}
-
-/* Photos are unframed: their own edges are the collage. */
-#between .between-photo-real,
-#between .between-drawing-slot img,
-#between .between-spacer,
-#between .between-poem-one{
-  position:relative !important;
-  inset:auto !important;
-  align-self:stretch !important;
-  justify-self:stretch !important;
-  width:100% !important;
-  max-width:none !important;
-  height:100% !important;
-  min-width:0 !important;
-  min-height:0 !important;
-  margin:0 !important;
-  padding:0 !important;
-  overflow:hidden !important;
-  box-sizing:border-box !important;
-  border:0 !important;
-  border-radius:0 !important;
-  outline:0 !important;
-  box-shadow:none !important;
-  filter:none !important;
-  transform:none !important;
-  background-color:#171716 !important;
-  background-repeat:no-repeat !important;
-  background-size:cover !important;
-  z-index:2 !important;
-}
-#between .between-photo-real,
-#between .between-drawing-slot img{
-  display:block !important;
-  object-fit:cover !important;
-}
-
-/* The requested dog/belayer crop reads vertically rather than as a landscape strip. */
-#between .between-drawing-slot img{
-  object-position:46% 52% !important;
-}
-#between .photo-row .between-photo-real:nth-child(2){object-position:center 50% !important}
-#between .photo-row .between-photo-real:nth-child(1){object-position:center 48% !important}
-#between .photo-row .between-photo-real:nth-child(3){object-position:center 52% !important}
-#between .side-rail:first-child .photo-space .between-photo-real{object-position:center 50% !important}
-#between .between-spacer{background-position:center 55% !important}
-
-/* Keep one poetry note in the wall. */
-#between .between-poem-two{
-  position:relative !important;
-  inset:auto !important;
-  display:flex !important;
-  flex-direction:row !important;
-  gap:18px !important;
-  align-items:center !important;
-  justify-content:center !important;
-  align-self:stretch !important;
-  justify-self:stretch !important;
-  width:100% !important;
-  max-width:none !important;
-  height:100% !important;
-  min-width:0 !important;
-  min-height:0 !important;
-  margin:0 !important;
-  padding:14px 18px !important;
-  box-sizing:border-box !important;
-  overflow:hidden !important;
-  border:0 !important;
-  border-radius:0 !important;
-  background:#f4f0e7 !important;
-  box-shadow:none !important;
-  transform:none !important;
-  color:#17130f !important;
-  text-align:left !important;
-  z-index:2 !important;
-}
-#between .between-poem-two .between-poem-text{
-  flex:1 1 auto !important;
-  font-family:Georgia,'Times New Roman',serif !important;
-  font-size:clamp(17px,1.45vw,23px) !important;
-  line-height:1.05 !important;
-  letter-spacing:-.025em !important;
-}
-#between .between-poem-two .between-poem-credit{
-  flex:0 0 min(36%,180px) !important;
-  max-width:180px !important;
-  margin:0 !important;
-  color:#625b52 !important;
-  font-family:Arial,Helvetica,sans-serif !important;
-  font-size:9px !important;
-  line-height:1.35 !important;
-}
-
-/* The table itself keeps its normal game styling, without extra collage framing. */
-#between .wood-table{
-  position:relative !important;
-  inset:auto !important;
-  align-self:stretch !important;
-  justify-self:stretch !important;
-  width:100% !important;
-  max-width:none !important;
-  height:100% !important;
-  min-height:730px !important;
-  margin:0 !important;
-  padding:18px !important;
-  overflow:hidden !important;
-  transform:none !important;
-  outline:0 !important;
-  box-shadow:none !important;
-  z-index:5 !important;
-}
-#between .scoreboard{top:12px !important;right:12px !important;font-size:11px !important}
-#between .draw-pile{left:16px !important}
-#between .capture-pile.cpu{right:15px !important}
-#between .capture-pile.you{right:15px !important}
-#between .game-controls{bottom:12px !important}
-
-@media(max-width:980px){
-  #between .between-layout{
-    grid-template-columns:1fr 1fr !important;
-    grid-template-rows:155px repeat(4,190px) 590px repeat(3,190px) 155px !important;
-    width:calc(100% - 8px) !important;
-    margin-top:4px !important;
-    padding:3px !important;
-    gap:3px !important;
-  }
-  #between .between-layout::before{grid-column:1 / -1 !important;grid-row:1 !important}
-  #between .between-drawing-slot img{grid-column:1 !important;grid-row:2 / 4 !important}
-  #between .photo-row .between-photo-real:nth-child(2){grid-column:2 !important;grid-row:2 / 4 !important}
-  #between .photo-row .between-photo-real:nth-child(1){grid-column:1 / -1 !important;grid-row:4 !important}
-  #between .between-poem-one{grid-column:1 !important;grid-row:5 !important}
-  #between .side-rail:first-child .photo-space .between-photo-real{grid-column:2 !important;grid-row:5 !important}
-  #between .wood-table{grid-column:1 / -1 !important;grid-row:6 !important;min-height:590px !important}
-  #between .between-spacer{grid-column:1 !important;grid-row:7 !important}
-  #between .photo-row .between-photo-real:nth-child(3){grid-column:2 !important;grid-row:7 !important}
-  #between .between-poem-two{grid-column:1 / -1 !important;grid-row:8 !important}
-  #between .between-layout::after{grid-column:1 / -1 !important;grid-row:9 !important}
-}
-
-@media(max-width:560px){
-  #between .between-layout{
-    display:flex !important;
-    flex-direction:column !important;
-    width:calc(100% - 6px) !important;
-    gap:3px !important;
-    padding:3px !important;
-  }
-  #between .between-layout::before,
-  #between .between-layout::after{
-    flex:0 0 130px !important;
-    height:130px !important;
-  }
-  #between .between-photo-real,
-  #between .between-spacer,
-  #between .between-poem-one,
-  #between .between-poem-two{
-    flex:0 0 185px !important;
-    height:185px !important;
-  }
-  #between .between-drawing-slot img{
-    flex:0 0 300px !important;
-    height:300px !important;
-  }
-  #between .wood-table{
-    flex:0 0 540px !important;
-    height:540px !important;
-    min-height:540px !important;
-  }
-  #between .between-poem-two{
-    flex-direction:column !important;
-    align-items:flex-start !important;
-    justify-content:center !important;
-  }
-  #between .between-poem-two .between-poem-credit{
-    flex:0 0 auto !important;
-    max-width:none !important;
-  }
+@media(max-width:640px){
+  #between .between-layout{padding:5px}
+  #between .between-collage{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto;grid-template-areas:
+    "quote-one quote-one"
+    "photo-01 photo-02"
+    "photo-03 photo-04"
+    "photo-05 photo-06"
+    "game game"
+    "photo-07 photo-08"
+    "photo-09 photo-10"
+    "photo-11 photo-12"
+    "quote-two quote-two"}
+  #between .between-poem{min-height:160px;padding:20px}
+  #between .between-poem-text{font-size:clamp(22px,6vw,30px)}
+  #between .between-poem-credit{font-size:11px}
+  #between .bp-photo-trigger{aspect-ratio:1.12}
+  #between .wood-table{min-height:650px;padding:12px;overflow:hidden}
+  #between .scoreboard{right:8px;top:8px;padding:7px;font-size:9px}
+  #between .game-status{top:19%;font-size:13px}
+  #between .computer-hand{top:70px;height:150px}
+  #between .player-hand{bottom:28px;height:160px;width:98%}
+  #between .playing-card{width:clamp(48px,13vw,72px);height:clamp(76px,20vw,108px)}
+  #between .player-hand .playing-card{margin-left:clamp(-29px,-5vw,-20px)}
+  #between .player-hand .playing-card:first-child{margin-left:0}
+  #between .computer-hand .playing-card{margin-left:-28px}
+  #between .computer-hand .playing-card:first-child{margin-left:0}
+  #between .playing-card .card-corner{left:3px;top:3px;min-width:20px;padding:3px;font-size:12px}
+  #between .playing-card .card-corner span{font-size:11px}
+  #between .playing-card .card-corner.bottom{right:3px;bottom:3px}
+  #between .playing-card .member-label{font-size:8px;padding:18px 3px 4px}
+  #between .draw-pile{left:8px;width:54px;height:78px;font-size:10px}
+  #between .capture-pile{right:8px;width:58px;height:80px;font-size:9px}
+  #between .capture-pile.cpu{top:90px}
+  #between .capture-pile.you{bottom:50px}
+  #between .center-trick{width:68%;height:160px;gap:8px}
+  #between .center-trick .playing-card{width:68px;height:100px}
+  #between .game-controls{bottom:4px}
+  #between .game-controls .btn{font-size:11px;padding:8px 10px}
 }
