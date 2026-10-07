@@ -35,8 +35,9 @@
       <button class="nav-link" data-page="community" type="button">Community</button>
       <button class="nav-link" data-page="between" type="button">Between Peaks</button>
       <button class="nav-link" data-page="resources" type="button">Resources</button>
+      <button class="nav-link" data-page="support" type="button">Support</button>
       <button class="nav-link join" data-page="join" type="button">Join MCA</button>
-      <button class="nav-link member-login" type="button" onclick="window.location.href='/portal/'">Member Login</button>
+      <button class="member-login" type="button" onclick="window.location.href='/portal/'">Member Login</button>
     </nav>
   </header>
 
@@ -844,6 +845,73 @@
   </section>
 </section>
 
+
+<section id="support" class="page support-page">
+  <section class="page-hero compact wire-box support-hero">
+    <div class="eyebrow">Support MCA</div>
+    <h1>Help make ambitious experiences more accessible.</h1>
+    <p>Patron support helps MCA fund student access, technical equipment, training, expeditions, stewardship, service, and adaptive outdoor opportunities.</p>
+  </section>
+
+  <section class="section wire-box support-giving-section">
+    <div class="support-page-heading">
+      <div>
+        <div class="eyebrow">Patron Giving</div>
+        <h2>Give to the club.</h2>
+      </div>
+      <p>This giving structure is prepared for an MCA fund through the ASU Foundation. Payments will be connected after the fund is established.</p>
+    </div>
+
+    <div class="support-frequency" aria-label="Donation frequency">
+      <button class="active" type="button">One time</button>
+      <button type="button">Monthly</button>
+    </div>
+
+    <div class="support-amount-grid" aria-label="Suggested donation amounts">
+      <button type="button">$25</button>
+      <button type="button">$50</button>
+      <button class="featured" type="button">$100</button>
+      <button type="button">$250</button>
+      <button type="button">$500</button>
+      <button type="button">$1,000</button>
+      <button type="button">Other</button>
+    </div>
+
+    <div class="support-designation">
+      <label for="supportDesignation">Direct my gift toward</label>
+      <select id="supportDesignation">
+        <option>Where it is needed most</option>
+        <option>Student Access & Scholarships</option>
+        <option>Technical Equipment</option>
+        <option>Training & Education</option>
+        <option>Expeditions</option>
+        <option>Conservation & Stewardship</option>
+        <option>Adaptive Ascents</option>
+      </select>
+    </div>
+
+    <button class="support-donate-disabled" type="button" disabled>ASU Foundation giving link coming soon</button>
+  </section>
+
+  <section class="section wire-box support-impact-section">
+    <div class="eyebrow">What support can fund</div>
+    <div class="support-impact-grid">
+      <article><span>01</span><h3>Access & Scholarships</h3><p>Reduce financial barriers to meaningful trips, service projects, and outdoor learning.</p></article>
+      <article><span>02</span><h3>Technical Equipment</h3><p>Build a durable shared inventory so members do not need to personally own every piece of specialized gear.</p></article>
+      <article><span>03</span><h3>Training & Education</h3><p>Support instruction, certifications, workshops, and the development of capable club leaders.</p></article>
+      <article><span>04</span><h3>Stewardship & Service</h3><p>Give members the tools and resources to leave outdoor spaces and communities better than they found them.</p></article>
+    </div>
+  </section>
+
+  <section class="section wire-box support-member-section">
+    <div>
+      <div class="eyebrow">For MCA Members</div>
+      <h2>Member support is separate from patron giving.</h2>
+      <p>Members can optionally contribute annually to MCA and receive supporter benefits. Financial support never determines trip selection, Distinguished Member status, leadership, or grant eligibility.</p>
+    </div>
+    <button class="support-portal-button" type="button" onclick="window.location.href='/portal/#support'">Open Member Support</button>
+  </section>
+</section>
     
 <section id="join" class="page">
   <section class="page-hero compact wire-box join-hero"><div class="eyebrow">Join MCA</div><h1>Choose how you want to participate.</h1><p>Join as a member, take responsibility as a leader, build a partnership, or bring us an idea that does not fit into a preset box.</p></section>
