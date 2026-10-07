@@ -217,9 +217,18 @@ function renderCalendar(){
         String(normalized.getDate()).padStart(2, '0')
       ].join('-');
 
-      calendarEvents
-        .filter(calendarEvent => calendarEvent.date === dateKey)
-        .forEach(calendarEvent => {
+      const eventsForDate = calendarEvents.filter(calendarEvent => calendarEvent.date === dateKey);
+      if(dateKey >= '2026-10-15' && normalized.getDay() === 4){
+        eventsForDate.push({
+          date:dateKey,
+          title:'Club Workout',
+          time:'6:00 AM',
+          description:'Morning club workout. Meet location shared with members.',
+          category:'community'
+        });
+      }
+
+      eventsForDate.forEach(calendarEvent => {
           const eventCard = document.createElement('article');
           const eventCategory = calendarEvent.category || 'club';
           eventCard.className = `calendar-event calendar-event-${eventCategory}`;

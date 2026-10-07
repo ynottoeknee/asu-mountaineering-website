@@ -88,10 +88,6 @@
     {date:'2026-11-08',title:'Cactus to Clouds',time:'Overnight trip · Day 2',description:'MCA Cactus to Clouds trip, November 7–8.',category:'community'},
   ];
 
-  for(const day=new Date('2026-10-15T00:00:00Z'), end=new Date('2027-10-14T00:00:00Z'); day<=end; day.setUTCDate(day.getUTCDate()+7)){
-    additions.push({date:day.toISOString().slice(0,10),title:'Club Workout',time:'6:00 AM',description:'Morning club workout. Meet location shared with members.',category:'community'});
-  }
-
   additions.forEach(addition=>{
     const alreadyListed = calendarEvents.some(event=>
       event.date === addition.date && event.title === addition.title
