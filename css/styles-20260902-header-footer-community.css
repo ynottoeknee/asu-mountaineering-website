@@ -286,3 +286,20 @@ body:has(#adaptive.active) .topbar.mca-final-header nav button.join:focus-visibl
   }
   .site-footer.mca-carved-block::after{font-size:16px !important}
 }
+
+
+/* Member portal entry */
+.topbar.mca-final-header nav button.member-login,
+body:has(#adaptive.active) .topbar.mca-final-header nav button.member-login{
+  padding:7px 11px 6px;
+  border:1.5px solid #0a0a0a !important;
+  background:#0a0a0a !important;
+  color:#fac7d6 !important;
+}
+.topbar.mca-final-header nav button.member-login:hover,
+.topbar.mca-final-header nav button.member-login:focus-visible,
+body:has(#adaptive.active) .topbar.mca-final-header nav button.member-login:hover,
+body:has(#adaptive.active) .topbar.mca-final-header nav button.member-login:focus-visible{
+  background:transparent !important;
+  color:#0a0a0a !important;
+}
