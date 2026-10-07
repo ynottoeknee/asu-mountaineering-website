@@ -29,14 +29,14 @@
         ["Tony Fisher","Distinguished Member"],
         ["Charlie","Trip Leader"],
         ["Sienna","Trip Leader"],
-        ["Sam Lee","Member"],
-        ["Riley","Member"],
-        ["Arnab","Member"]
+        ["Member A","Member"],
+        ["Member B","Member"],
+        ["Member C","Member"]
       ],
       gear: [
         ["Mammut 70m Rope #02","Tony Fisher"],
         ["Black Diamond Helmet #07","Tony Fisher"],
-        ["Crash Pad #01","Riley"]
+        ["Crash Pad #01","Member B"]
       ]
     },
     "four-peaks": {
