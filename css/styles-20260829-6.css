@@ -17,7 +17,7 @@
     "photo-11 photo-12 quote-two quote-two quote-two quote-two";
   gap:3px;
 }
-#between .between-poem{min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:12px;margin:0;padding:clamp(18px,2vw,30px);background:#f7f3ec;color:#171714}
+#between .between-poem{position:relative!important;inset:auto!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;transform:none!important;align-self:stretch!important;justify-self:stretch!important;box-sizing:border-box;width:100%!important;height:100%!important;min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:12px;margin:0;padding:clamp(18px,2vw,30px);background:#f7f3ec;color:#171714}
 #between .between-poem-one{grid-area:quote-one}
 #between .between-poem-one>*{display:block!important}
 #between .between-poem-two{grid-area:quote-two}
@@ -41,7 +41,7 @@
 #between .bp-photo-11{grid-area:photo-11}
 #between .bp-photo-12{grid-area:photo-12}
 #between .game-shell{display:contents}
-#between .wood-table{grid-area:game!important;position:relative!important;min-width:0;width:100%;min-height:760px;height:100%!important;border:0;border-radius:0;padding:var(--space-7);background-color:#6f3a1d;background-position:center;background-size:cover}
+#between .wood-table{grid-area:game!important;position:relative!important;inset:auto!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;transform:none!important;min-width:0;width:100%!important;max-width:none!important;min-height:760px;height:100%!important;margin:0!important;border:0;border-radius:0;padding:var(--space-7);background-color:#6f3a1d;background-position:center;background-size:cover}
 #between .playing-card{width:clamp(72px,7.4vw,104px);height:clamp(108px,10.8vw,148px)}
 #between .player-hand{width:92%}
 #between .player-hand .playing-card{margin-left:clamp(-45px,-3.1vw,-25px)}
