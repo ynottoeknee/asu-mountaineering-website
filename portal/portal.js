@@ -136,11 +136,18 @@
     return { text: 'Applications open', cls: 'status-open', label: 'Start application', disabled: false };
   }
 
-  function showView(view, updateHash) {
-    if (updateHash === undefined) updateHash = true;
+  function viewFromUrl() {
+    const path = window.location.pathname.replace(/\\/+$/, '');
+    const pathView = path.startsWith('/portal/') ? path.slice('/portal/'.length).split('/')[0] : '';
+    const candidate = titles[pathView] ? pathView : window.location.hash.replace(/^#/, '');
+    return titles[candidate] ? candidate : 'dashboard';
+  }
+
+  function showView(view, updateHistory) {
+    if (updateHistory === undefined) updateHistory = true;
     if (!titles[view]) view = 'dashboard';
-    if (view === 'admin' && !state.user?.is_president) view = 'dashboard';
-    if (view === 'leader' && !state.user?.is_trip_leader && !state.user?.is_president) view = 'dashboard';
+    if (state.user && view === 'admin' && !state.user.is_president) view = 'dashboard';
+    if (state.user && view === 'leader' && !state.user.is_trip_leader && !state.user.is_president) view = 'dashboard';
 
     document.querySelectorAll('[data-view-panel]').forEach(panel => {
       panel.classList.toggle('active', panel.dataset.viewPanel === view);
@@ -151,7 +158,12 @@
 
     const title = document.querySelector('[data-view-title]');
     if (title) title.textContent = titles[view];
-    if (updateHash) history.replaceState(null, '', '#' + view);
+    const targetPath = '/portal/' + view;
+    if (updateHistory && (window.location.pathname !== targetPath || window.location.hash)) {
+      history.pushState({ view }, '', targetPath);
+    } else if (!updateHistory && (window.location.pathname !== targetPath || window.location.hash)) {
+      history.replaceState({ view }, '', targetPath);
+    }
     window.scrollTo({ top: 0, behavior: 'auto' });
     document.body.classList.remove('menu-open');
     if (view !== 'trips') closeTripDetail();
@@ -224,6 +236,7 @@
     try {
       const data = await apiJson('me');
       hydrateIdentity(data);
+      showView(viewFromUrl(), false);
       document.body.classList.remove('portal-auth-loading', 'portal-auth-error');
       document.body.classList.add('portal-authenticated');
       if (gate) gate.hidden = true;
@@ -1209,13 +1222,9 @@
     location.href = '/portal/';
   });
 
-  window.addEventListener('hashchange', () => {
-    const view = location.hash.replace('#', '');
-    if (titles[view]) showView(view, false);
-  });
+  window.addEventListener('popstate', () => showView(viewFromUrl(), false));
 
-  const initial = location.hash.replace('#', '');
-  showView(titles[initial] ? initial : 'dashboard', false);
+  showView(viewFromUrl(), false);
   document.querySelector('[data-admin-member-search]')?.addEventListener('input', filterAdminMembers);
   document.querySelector('[data-community-search]')?.addEventListener('input', filterCommunityMembers);
   initializeAuth();
