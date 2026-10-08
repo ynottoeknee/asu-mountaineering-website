@@ -233,8 +233,10 @@
     const message = document.querySelector('[data-auth-message]');
     const login = document.querySelector('[data-auth-login]');
 
+    const controller = new AbortController();
+    const authTimeout = setTimeout(() => controller.abort(), 12000);
     try {
-      const data = await apiJson('me');
+      const data = await apiJson('me', { signal: controller.signal });
       hydrateIdentity(data);
       showView(viewFromUrl(), false);
       document.body.classList.remove('portal-auth-loading', 'portal-auth-error');
@@ -249,9 +251,12 @@
         if (authError === 'asu_email_required') message.textContent = 'Use your ASU email to sign in. The MCA President may use the account configured for President access.';
         else if (error.status === 401) message.textContent = 'Use your ASU Google account to open the MCA member portal.';
         else if (error.status === 503) message.textContent = 'The portal code is live, but the Cloudflare database and Google sign-in still need their one-time configuration.';
+        else if (error.name === 'AbortError' || error.name === 'TimeoutError') message.textContent = 'The portal took too long to check your session. Please try again.';
         else message.textContent = 'The member portal could not connect. Please try again.';
       }
       if (login) login.hidden = error.status === 503;
+    } finally {
+      clearTimeout(authTimeout);
     }
   }
 
