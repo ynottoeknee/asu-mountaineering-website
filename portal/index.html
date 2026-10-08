@@ -75,8 +75,8 @@
         </div>
         <div class="portal-account">
           <button class="account-button" type="button" data-account-toggle aria-expanded="false">
-            <span class="account-initials">TF</span>
-            <span class="account-copy"><strong>Tony Fisher</strong><small>Distinguished Member</small></span>
+            <span class="account-initials" data-member-initials>MCA</span>
+            <span class="account-copy"><strong data-member-name>Member</strong><small data-member-status>Member</small></span>
             <span aria-hidden="true">⌄</span>
           </button>
           <div class="account-menu" data-account-menu hidden>
@@ -93,7 +93,7 @@
           <div class="page-heading">
             <div>
               <p class="eyebrow">Member dashboard</p>
-              <h1>Welcome back, Tony.</h1>
+              <h1>Welcome back, <span data-member-first-name>member</span>.</h1>
               <p class="page-lede">Everything that needs your attention across MCA, in one place.</p>
             </div>
             <div class="status-stack">
@@ -109,29 +109,6 @@
               <span>Submit one PDF by March 29, 2027.</span>
             </div>
             <button type="button" class="text-button" data-view="grant">View grant</button>
-          </div>
-
-          <div class="metric-grid">
-            <article class="metric-card">
-              <span>Upcoming trips</span>
-              <strong>1</strong>
-              <small>Accepted</small>
-            </article>
-            <article class="metric-card">
-              <span>Open applications</span>
-              <strong>3</strong>
-              <small>Available now</small>
-            </article>
-            <article class="metric-card">
-              <span>Gear checked out</span>
-              <strong>2</strong>
-              <small>Assigned to you</small>
-            </article>
-            <article class="metric-card">
-              <span>Applications</span>
-              <strong>2</strong>
-              <small>1 under review</small>
-            </article>
           </div>
 
           <div class="dashboard-grid">
@@ -374,8 +351,8 @@
               <table>
                 <thead><tr><th>Item</th><th>Category</th><th>Status</th><th>Holder</th><th>Trip</th><th>Due</th></tr></thead>
                 <tbody data-gear-table>
-                  <tr><td><strong>Mammut 70m Rope #02</strong></td><td>Rope</td><td><span class="status-pill status-out">Checked out</span></td><td>Tony Fisher</td><td>Joshua Tree</td><td>Oct. 14</td></tr>
-                  <tr><td><strong>Black Diamond Helmet #07</strong></td><td>Helmet</td><td><span class="status-pill status-out">Checked out</span></td><td>Tony Fisher</td><td>Joshua Tree</td><td>Oct. 14</td></tr>
+                  <tr><td><strong>Mammut 70m Rope #02</strong></td><td>Rope</td><td><span class="status-pill status-out">Checked out</span></td><td>Member</td><td>Joshua Tree</td><td>Oct. 14</td></tr>
+                  <tr><td><strong>Black Diamond Helmet #07</strong></td><td>Helmet</td><td><span class="status-pill status-out">Checked out</span></td><td>Member</td><td>Joshua Tree</td><td>Oct. 14</td></tr>
                   <tr><td><strong>Crash Pad #01</strong></td><td>Bouldering</td><td><span class="status-pill status-out">Checked out</span></td><td>Member B</td><td>Joshua Tree</td><td>Oct. 14</td></tr>
                   <tr><td><strong>60m Rope #01</strong></td><td>Rope</td><td><span class="status-pill status-available">Available</span></td><td>—</td><td>—</td><td>—</td></tr>
                   <tr><td><strong>Four-person Tent #03</strong></td><td>Shelter</td><td><span class="status-pill status-available">Available</span></td><td>—</td><td>—</td><td>—</td></tr>
@@ -432,7 +409,7 @@
               <div class="membership-banner">
                 <div>
                   <span class="status-pill status-distinguished">Distinguished Member</span>
-                  <h2>Tony Fisher</h2>
+                  <h2>Member</h2>
                   <p>Distinguished Member status is currently granted at the President’s discretion.</p>
                 </div>
               </div>
@@ -453,58 +430,7 @@
           </div>
         </section>
 
-        <section class="portal-view" data-view-panel="support">
-          <div class="page-heading">
-            <div><p class="eyebrow">Member support</p><h1>Support your club</h1><p class="page-lede">MCA membership remains open regardless of ability to contribute. Annual supporters help fund access, equipment, training, stewardship, and future objectives.</p></div>
-          </div>
-
-          <div class="support-current">
-            <div><span>Your 2026–27 support</span><strong>$100</strong></div>
-            <div><span>Current level</span><strong>Alpine Supporter</strong></div>
-            <div><span>Renewal</span><strong>Annual</strong></div>
-          </div>
-
-          <div class="tier-grid">
-            <article class="tier-card">
-              <p class="card-kicker">$25 / year</p><h2>Level 1</h2>
-              <ul><li>Supporter profile badge</li><li>Annual MCA supporter sticker</li></ul>
-              <button class="secondary-button full-button" type="button">Choose $25</button>
-            </article>
-            <article class="tier-card">
-              <p class="card-kicker">$50 / year</p><h2>Level 2</h2>
-              <ul><li>Everything above</li><li>Annual MCA supporter patch</li></ul>
-              <button class="secondary-button full-button" type="button">Choose $50</button>
-            </article>
-            <article class="tier-card featured-tier">
-              <div class="recommended-tag">Current</div>
-              <p class="card-kicker">$100 / year</p><h2>Level 3</h2>
-              <ul><li>Everything above</li><li>Annual supporter shirt</li><li>Future partner benefits</li></ul>
-              <button class="primary-button full-button" type="button">Current level</button>
-            </article>
-            <article class="tier-card">
-              <p class="card-kicker">$250 / year</p><h2>Level 4</h2>
-              <ul><li>Everything above</li><li>Supporter appreciation event</li><li>Annual limited supporter item</li></ul>
-              <button class="secondary-button full-button" type="button">Choose $250</button>
-            </article>
-            <article class="tier-card">
-              <p class="card-kicker">$500 / year</p><h2>Level 5</h2>
-              <ul><li>Everything above</li><li>Recognition on the supporter wall</li><li>Special annual supporter item</li></ul>
-              <button class="secondary-button full-button" type="button">Choose $500</button>
-            </article>
-            <article class="tier-card">
-              <p class="card-kicker">$1,000+ / year</p><h2>Expedition Circle</h2>
-              <ul><li>Everything above</li><li>Annual expedition presentation reception</li><li>Yearly recognition</li></ul>
-              <button class="secondary-button full-button" type="button">Choose amount</button>
-            </article>
-          </div>
-
-          <div class="portal-card support-note">
-            <h2>Payment connection comes next.</h2>
-            <p>This structure is prepared for an ASU Foundation giving destination. Payment buttons are intentionally not live until the fund and approved giving flow exist.</p>
-          </div>
-        </section>
-
-        <section class="portal-view" data-view-panel="profile">
+        <section class="portal-view" data-view-panel="support">\n  <div class="page-heading">\n    <div>\n      <p class="eyebrow">Member support</p>\n      <h1>Support your club</h1>\n      <p class="page-lede">MCA membership is open regardless of ability to contribute. If you want to help fund club gear, trips, training, scholarships, service, and future objectives, choose an amount that works for you.</p>\n    </div>\n  </div>\n  <section class="portal-card member-giving-card">\n    <div>\n      <p class="card-kicker">Annual member contribution</p>\n      <h2>Choose what you want to give.</h2>\n      <p>Support is intentionally flexible. Talk to MCA leaders about supporter gear and other perks that may be available with donations. Perks can change as the club grows and are never tied to trip selection, leadership, Distinguished Member status, or grant eligibility.</p>\n    </div>\n    <div class="member-giving-options" aria-label="Member donation amount">\n      <button class="giving-amount" type="button" data-support-amount="50">$50</button>\n      <button class="giving-amount" type="button" data-support-amount="100">$100</button>\n      <label class="custom-giving"><span>Custom</span><input type="number" min="1" step="1" placeholder="$ amount" data-support-custom></label>\n    </div>\n    <div class="expedition-circle-note">\n      <span>Expedition Circle</span>\n      <strong>$500+ per year</strong>\n      <p>Our highest annual supporter recognition for members and patrons making major contributions to MCA.</p>\n    </div>\n    <button class="primary-button support-payment-button" type="button" disabled>ASU Foundation giving link coming soon</button>\n  </section>\n  <section class="portal-card support-note">\n    <h2>What can donations help with?</h2>\n    <p>Shared technical gear, trip access, instruction and certifications, the Adventure &amp; Stewardship Grant, restoration projects, Adaptive Ascents, and bigger club objectives.</p>\n  </section>\n</section>\n\n        <section class="portal-view" data-view-panel="profile">
           <div class="page-heading">
             <div><p class="eyebrow">Profile</p><h1>Member profile</h1><p class="page-lede">Information used for MCA communication, trip applications, and club participation.</p></div>
           </div>
@@ -558,14 +484,14 @@
             </div>
             <div data-leader-panel="roster" hidden>
               <div class="member-list">
-                <div class="member-row"><span class="member-avatar">TF</span><div><strong>Tony Fisher</strong><span>Accepted</span></div></div>
+                <div class="member-row"><span class="member-avatar">TF</span><div><strong>Member</strong><span>Accepted</span></div></div>
                 <div class="member-row"><span class="member-avatar">SL</span><div><strong>Member A</strong><span>Accepted</span></div></div>
                 <div class="member-row"><span class="member-avatar">R</span><div><strong>Member B</strong><span>Accepted</span></div></div>
               </div>
             </div>
             <div data-leader-panel="gear" hidden>
               <div class="gear-assignment-list">
-                <div><strong>Mammut 70m Rope #02</strong><span>Tony Fisher</span></div>
+                <div><strong>Mammut 70m Rope #02</strong><span>Member</span></div>
                 <div><strong>Crash Pad #01</strong><span>Member B</span></div>
               </div>
             </div>
@@ -591,7 +517,7 @@
                 <table>
                   <thead><tr><th>Member</th><th>Status</th><th>Role</th><th></th></tr></thead>
                   <tbody>
-                    <tr><td><strong>Tony Fisher</strong><small>afishe54@asu.edu</small></td><td><span class="status-pill status-distinguished">Distinguished</span></td><td>Admin · Trip Leader</td><td><button class="table-action" type="button">Manage</button></td></tr>
+                    <tr><td><strong>Member</strong><small>afishe54@asu.edu</small></td><td><span class="status-pill status-distinguished">Distinguished</span></td><td>Admin · Trip Leader</td><td><button class="table-action" type="button">Manage</button></td></tr>
                     <tr><td><strong>Member A</strong><small>Member account</small></td><td><span class="status-pill">Member</span></td><td>—</td><td><button class="table-action" type="button">Manage</button></td></tr>
                   </tbody>
                 </table>
