@@ -494,17 +494,35 @@
 
             <section class="portal-card admin-card">
               <div class="card-header"><div><p class="card-kicker">Grant</p><h2>Application review</h2></div><span class="status-pill status-open">Open to Mar. 29</span></div>
-              <p>No grant PDFs have been submitted in this prototype.</p>
+              <p>Grant submissions are stored privately and can be reviewed by authorized administrators.</p>
               <button class="secondary-button" type="button" data-view="grant">Open grant area</button>
             </section>
 
             <section class="portal-card admin-card">
-              <div class="card-header"><div><p class="card-kicker">Gear</p><h2>Checkout overview</h2></div></div>
-              <div class="inventory-summary">
-                <div><strong>17</strong><span>Available</span></div>
-                <div><strong>7</strong><span>Checked out</span></div>
-              </div>
-              <button class="secondary-button" type="button" data-view="gear">Manage inventory</button>
+              <div class="card-header"><div><p class="card-kicker">Gear inventory</p><h2>Add an item</h2></div></div>
+              <form class="admin-mini-form" data-admin-gear-form>
+                <label>Asset code<input name="asset_code" type="text" placeholder="MCA-RP-001" required></label>
+                <label>Item name<input name="name" type="text" placeholder="70m dry rope" required></label>
+                <label>Category<input name="category" type="text" placeholder="Rope"></label>
+                <label>Manufacturer<input name="manufacturer" type="text" placeholder="Mammut"></label>
+                <button class="primary-button" type="submit">Add gear</button>
+                <p class="form-status" data-admin-gear-status></p>
+              </form>
+              <button class="secondary-button" type="button" data-view="gear">Open inventory</button>
+            </section>
+
+            <section class="portal-card admin-card">
+              <div class="card-header"><div><p class="card-kicker">Trips</p><h2>Create a trip</h2></div></div>
+              <form class="admin-mini-form" data-admin-trip-form>
+                <label>Trip name<input name="title" type="text" required></label>
+                <label>Category<input name="category" type="text" placeholder="Rock climbing"></label>
+                <label>Start date<input name="starts_at" type="datetime-local"></label>
+                <label>Difficulty<input name="difficulty" type="text" placeholder="Intermediate"></label>
+                <label>Capacity<input name="capacity" type="number" min="1" step="1"></label>
+                <label class="full-field">Description<textarea name="description" rows="3"></textarea></label>
+                <button class="primary-button" type="submit">Create trip</button>
+                <p class="form-status" data-admin-trip-status></p>
+              </form>
             </section>
           </div>
         </section>
@@ -512,10 +530,6 @@
       </main>
     </div>
 
-    <div class="prototype-bar">
-      <strong>Portal structure preview</strong>
-      <span>Authentication, database storage, PDF uploads, and payments are not connected yet.</span>
-    </div>
   </div>
 
   <script src="/portal/portal.js?v=20261007-1"></script>
