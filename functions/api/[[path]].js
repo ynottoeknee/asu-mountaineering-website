@@ -100,6 +100,8 @@ async function currentUser(env, request) {
      JOIN trips t ON t.id=tl.trip_id
      WHERE tl.user_id=? AND t.status='published'`
   ).bind(row.id).first();
+  const presidentEmail = String(env.PRESIDENT_EMAIL || "").trim().toLowerCase();
+  const isPresident = !!presidentEmail && String(row.email || "").trim().toLowerCase() === presidentEmail;
   return {
     id: row.id,
     email: row.email,
@@ -112,8 +114,8 @@ async function currentUser(env, request) {
     transportation: row.transportation,
     avatar_url: row.avatar_url,
     membership_status: row.membership_status,
-    is_admin: !!row.is_admin,
-    is_president: !!row.is_president,
+    is_admin: isPresident,
+    is_president: isPresident,
     is_trip_leader: Number(leader?.count || 0) > 0
   };
 }
@@ -128,7 +130,7 @@ function intId(value) {
 }
 
 async function canManageTrip(env, user, tripId) {
-  if (user.is_admin || user.is_president) return true;
+  if (user.is_president) return true;
   const row = await env.DB.prepare(
     "SELECT 1 AS ok FROM trip_leaders WHERE trip_id=? AND user_id=?"
   ).bind(tripId, user.id).first();
@@ -201,10 +203,8 @@ async function handleCallback(context) {
 
   const email = String(profile.email).trim().toLowerCase();
   const presidentEmail = String(env.PRESIDENT_EMAIL || "").trim().toLowerCase();
-  const adminEmails = String(env.ADMIN_EMAILS || "")
-    .split(",").map(x => x.trim().toLowerCase()).filter(Boolean);
   const isPresident = presidentEmail && email === presidentEmail ? 1 : 0;
-  const isAdmin = isPresident || adminEmails.includes(email) ? 1 : 0;
+  const isAdmin = isPresident;
 
   await env.DB.prepare(
     `INSERT INTO users (email,name,avatar_url,is_admin,is_president)
@@ -212,7 +212,7 @@ async function handleCallback(context) {
      ON CONFLICT(email) DO UPDATE SET
        name=excluded.name,
        avatar_url=excluded.avatar_url,
-       is_admin=CASE WHEN excluded.is_admin=1 THEN 1 ELSE users.is_admin END,
+       is_admin=excluded.is_admin,
        is_president=excluded.is_president,
        updated_at=CURRENT_TIMESTAMP`
   ).bind(email, cleanName(profile.name), profile.picture || null, isAdmin, isPresident).run();
@@ -283,7 +283,7 @@ async function updateProfile(env, user, request) {
     `SELECT u.id,u.email,u.name,p.first_name AS profile_first_name,p.last_name AS profile_last_name,p.phone,p.experience_summary,p.primary_interests,p.transportation,u.avatar_url,u.membership_status,u.is_admin,u.is_president
      FROM users u LEFT JOIN member_profiles p ON p.user_id=u.id WHERE u.id=?`
   ).bind(user.id).first();
-  return json({ ok: true, user: { ...updated, is_admin: !!updated.is_admin, is_president: !!updated.is_president, is_trip_leader: user.is_trip_leader } });
+  return json({ ok: true, user: { ...updated, is_admin: user.is_president, is_president: user.is_president, is_trip_leader: user.is_trip_leader } });
 }
 
 async function listTrips(env, user) {
@@ -454,7 +454,7 @@ async function submitGrant(env, user, request) {
 }
 
 async function createTrip(env, user, request) {
-  if (!user.is_admin && !user.is_president) return json({ error: "Admin access required." }, 403);
+  if (!user.is_president) return json({ error: "President access required." }, 403);
   let body;
   try { body = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
   const title = String(body.title || "").trim().slice(0, 140);
@@ -500,7 +500,7 @@ async function createTrip(env, user, request) {
 }
 
 async function setTripLeader(env, user, tripId, request) {
-  if (!user.is_admin && !user.is_president) return json({ error: "Admin access required." }, 403);
+  if (!user.is_president) return json({ error: "President access required." }, 403);
   let body;
   try { body = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
   const memberId = intId(body.user_id);
@@ -515,7 +515,7 @@ async function setTripLeader(env, user, tripId, request) {
 }
 
 async function createGearItem(env, user, request) {
-  if (!user.is_admin && !user.is_president) return json({ error: "Admin access required." }, 403);
+  if (!user.is_president) return json({ error: "President access required." }, 403);
   let body;
   try { body = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
   const code = String(body.asset_code || "").trim().slice(0, 80);
@@ -542,12 +542,14 @@ async function createGearItem(env, user, request) {
 }
 
 async function adminMembers(env, user) {
-  if (!user.is_admin && !user.is_president) return json({ error: "Admin access required." }, 403);
+  if (!user.is_president) return json({ error: "President access required." }, 403);
   const rows = await env.DB.prepare(
-    `SELECT u.id,u.email,u.name,u.avatar_url,u.membership_status,u.is_admin,u.is_president,u.created_at,
+    `SELECT u.id,u.email,u.name,u.avatar_url,u.membership_status,
+      CASE WHEN lower(u.email)=lower(?) THEN 1 ELSE 0 END AS is_admin,
+      CASE WHEN lower(u.email)=lower(?) THEN 1 ELSE 0 END AS is_president,u.created_at,
       (SELECT COUNT(*) FROM trip_leaders tl WHERE tl.user_id=u.id) AS trip_leader_count
      FROM users u ORDER BY u.name`
-  ).all();
+  ).bind(String(env.PRESIDENT_EMAIL || "").trim(),String(env.PRESIDENT_EMAIL || "").trim()).all();
   return json({ members: rows.results || [] });
 }
 
@@ -646,7 +648,7 @@ async function checkoutGear(env, user, gearId, request) {
   const tripId = body.trip_id == null ? null : intId(body.trip_id);
   if (!memberId) return json({ error: "A member is required." }, 400);
   if (tripId && !(await canManageTrip(env, user, tripId))) return json({ error: "Trip leader or admin access required." }, 403);
-  if (!tripId && !user.is_admin && !user.is_president) return json({ error: "Admin access required for non-trip checkout." }, 403);
+  if (!tripId && !user.is_president) return json({ error: "President access required for non-trip checkout." }, 403);
 
   const existing = await env.DB.prepare(
     "SELECT id FROM gear_checkouts WHERE gear_item_id=? AND returned_at IS NULL"
@@ -697,7 +699,7 @@ async function reserveGear(env, user, gearId, request) {
 }
 
 async function returnGear(env, user, checkoutId) {
-  if (!user.is_admin && !user.is_president) return json({ error: "Admin access required." }, 403);
+  if (!user.is_president) return json({ error: "President access required." }, 403);
   const result = await env.DB.prepare(
     "UPDATE gear_checkouts SET returned_at=CURRENT_TIMESTAMP,returned_by=? WHERE id=? AND returned_at IS NULL"
   ).bind(user.id, checkoutId).run();

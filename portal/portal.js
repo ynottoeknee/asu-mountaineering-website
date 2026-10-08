@@ -137,6 +137,8 @@
   function showView(view, updateHash) {
     if (updateHash === undefined) updateHash = true;
     if (!titles[view]) view = 'dashboard';
+    if (view === 'admin' && !state.user?.is_president) view = 'dashboard';
+    if (view === 'leader' && !state.user?.is_trip_leader) view = 'dashboard';
 
     document.querySelectorAll('[data-view-panel]').forEach(panel => {
       panel.classList.toggle('active', panel.dataset.viewPanel === view);
@@ -188,7 +190,6 @@
       const values = [user.membership_status === 'distinguished' ? ['Distinguished Member','status-distinguished'] : ['Member','']];
       if (user.is_trip_leader) values.push(['Trip Leader','']);
       if (user.is_president) values.push(['President','']);
-      else if (user.is_admin) values.push(['Admin','']);
       pills.innerHTML = values.map(v => '<span class="status-pill ' + v[1] + '">' + escapeHtml(v[0]) + '</span>').join('');
     }
 
@@ -197,14 +198,13 @@
       const roles = [['Member','MCA member account']];
       if (user.is_trip_leader) roles.push(['Trip Leader','Assigned to one or more trips']);
       if (user.is_president) roles.push(['President','Portal administration']);
-      else if (user.is_admin) roles.push(['Admin','Portal administration']);
       roleList.innerHTML = roles.map(role => '<div><strong>' + escapeHtml(role[0]) + '</strong><span>' + escapeHtml(role[1]) + '</span></div>').join('');
     }
 
     const leaderNav = document.querySelector('[data-trip-leader-nav]');
     const adminNav = document.querySelector('[data-admin-nav]');
     if (leaderNav) leaderNav.hidden = !user.is_trip_leader;
-    if (adminNav) adminNav.hidden = !(user.is_admin || user.is_president);
+    if (adminNav) adminNav.hidden = !user.is_president;
 
     const support = state.annualSupportCents / 100;
     document.querySelectorAll('.support-summary > strong').forEach(el => el.textContent = '$' + support.toLocaleString());
@@ -599,7 +599,7 @@
   }
 
   async function syncAdmin() {
-    if (!state.user || !(state.user.is_admin || state.user.is_president)) return;
+    if (!state.user || !state.user.is_president) return;
     try {
       const data = await apiJson('admin/members');
       const tbody = document.querySelector('[data-admin-members]');
@@ -611,7 +611,6 @@
         const statusClass = m.membership_status === 'distinguished' ? 'status-distinguished' : '';
         const roles = [];
         if (m.is_president) roles.push('President');
-        else if (m.is_admin) roles.push('Admin');
         if (Number(m.trip_leader_count || 0) > 0) roles.push('Trip Leader');
         return '<tr><td><strong>' + escapeHtml(m.name) + '</strong><small>' + escapeHtml(m.email) + '</small></td>' +
           '<td><span class="status-pill ' + statusClass + '">' + escapeHtml(m.membership_status === 'distinguished' ? 'Distinguished' : 'Member') + '</span></td>' +
