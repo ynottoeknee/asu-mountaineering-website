@@ -103,6 +103,14 @@ async function canManageTrip(env, user, tripId) {
   return !!row;
 }
 
+async function publicSettings(env) {
+  if (!env.DB) return json({ error: "Portal database is not configured yet." }, 503);
+  const rows = await env.DB.prepare(
+    "SELECT key,value FROM portal_settings WHERE key IN ('foundation_giving_url','grant_deadline','grant_name','expedition_circle_min_cents')"
+  ).all();
+  return json({ settings: Object.fromEntries((rows.results || []).map(x => [x.key,x.value])) });
+}
+
 async function handleLogin(context) {
   const { env, request } = context;
   requireBinding(env, "DB");
@@ -602,6 +610,7 @@ export async function onRequest(context) {
   const method = request.method.toUpperCase();
 
   try {
+    if (method === "GET" && path === "public/settings") return publicSettings(env);
     if (method === "GET" && path === "auth/login") return handleLogin(context);
     if (method === "GET" && path === "auth/callback") return handleCallback(context);
     if (method === "POST" && path === "auth/logout") return handleLogout(context);
