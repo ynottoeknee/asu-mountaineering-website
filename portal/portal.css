@@ -569,8 +569,8 @@ body:not(.portal-authenticated) .portal-app{display:none}
   backdrop-filter:blur(5px);
 }
 .auth-logo{
-  width:128px;
-  height:96px;
+  width:160px;
+  height:120px;
   object-fit:contain;
   justify-self:center;
 }

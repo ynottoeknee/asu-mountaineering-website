@@ -5,11 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MCA Member Portal</title>
   <meta name="description" content="Mountaineering Club at ASU member portal for trips, applications, gear, grants, membership, and club support.">
-  <meta name="theme-color" content="#151515">\n  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#151515">
+  <meta name="robots" content="noindex,nofollow">
   <link rel="icon" type="image/png" href="/mca-favicon.png?v=3">
-  <link rel="stylesheet" href="/portal/portal.css?v=20261008-2">
+  <link rel="stylesheet" href="/portal/portal.css?v=20261008-3">
 </head>
-<body class="portal-auth-loading">\n  <section class="auth-gate" data-auth-gate>\n    <div class="auth-card">\n      <img src="/assets/images/brand/four-mountaineers-linework.webp" alt="Four mountaineers" class="auth-logo">\n      <p class="eyebrow">MCA Member Portal</p>\n      <h1>Sign in to continue.</h1>\n      <p data-auth-message>Checking your account…</p>\n      <a class="primary-button auth-login-button" href="/api/auth/login" data-auth-login hidden>Continue with Google</a>\n      <a class="secondary-button" href="/">Return to MCA website</a>\n    </div>\n  </section>
+<body class="portal-auth-loading">
+  <section class="auth-gate" data-auth-gate>
+    <div class="auth-card">
+      <img src="/assets/images/brand/four-mountaineers-linework.webp" alt="Four mountaineers" class="auth-logo">
+      <p class="eyebrow">MCA Member Portal</p>
+      <h1>Sign in to continue.</h1>
+      <p data-auth-message>Checking your account…</p>
+      <a class="primary-button auth-login-button" href="/api/auth/login" data-auth-login hidden>Continue with Google</a>
+      <a class="secondary-button" href="/">Return to MCA website</a>
+    </div>
+  </section>
   <div class="portal-app" data-portal-app>
     <aside class="portal-sidebar" aria-label="Member portal">
       <a class="portal-brand" href="/portal/" aria-label="MCA Member Portal">
@@ -445,7 +456,39 @@
           </div>
         </section>
 
-        <section class="portal-view" data-view-panel="support">\n  <div class="page-heading">\n    <div>\n      <p class="eyebrow">Member support</p>\n      <h1>Support your club</h1>\n      <p class="page-lede">MCA membership is open regardless of ability to contribute. If you want to help fund club gear, trips, training, scholarships, service, and future objectives, choose an amount that works for you.</p>\n    </div>\n  </div>\n  <section class="portal-card member-giving-card">\n    <div>\n      <p class="card-kicker">Annual member contribution</p>\n      <h2>Choose what you want to give.</h2>\n      <p>Support is intentionally flexible. Talk to MCA leaders about supporter gear and other perks that may be available with donations. Perks can change as the club grows and are never tied to trip selection, leadership, Distinguished Member status, or grant eligibility.</p>\n    </div>\n    <div class="member-giving-options" aria-label="Member donation amount">\n      <button class="giving-amount" type="button" data-support-amount="50">$50</button>\n      <button class="giving-amount" type="button" data-support-amount="100">$100</button>\n      <label class="custom-giving"><span>Custom</span><input type="number" min="1" step="1" placeholder="$ amount" data-support-custom></label>\n    </div>\n    <div class="expedition-circle-note">\n      <span>Expedition Circle</span>\n      <strong>$500+ per year</strong>\n      <p>Our highest annual supporter recognition for members and patrons making major contributions to MCA.</p>\n    </div>\n    <button class="primary-button support-payment-button" type="button" data-member-donate disabled>ASU Foundation giving link coming soon</button>\n  </section>\n  <section class="portal-card support-note">\n    <h2>What can donations help with?</h2>\n    <p>Shared technical gear, trip access, instruction and certifications, the Adventure &amp; Stewardship Grant, restoration projects, Adaptive Ascents, and bigger club objectives.</p>\n  </section>\n</section>\n\n        <section class="portal-view" data-view-panel="profile">
+        <section class="portal-view" data-view-panel="support">
+  <div class="page-heading">
+    <div>
+      <p class="eyebrow">Member support</p>
+      <h1>Support your club</h1>
+      <p class="page-lede">MCA membership is open regardless of ability to contribute. If you want to help fund club gear, trips, training, scholarships, service, and future objectives, choose an amount that works for you.</p>
+    </div>
+  </div>
+  <section class="portal-card member-giving-card">
+    <div>
+      <p class="card-kicker">Annual member contribution</p>
+      <h2>Choose what you want to give.</h2>
+      <p>Support is intentionally flexible. Talk to MCA leaders about supporter gear and other perks that may be available with donations. Perks can change as the club grows and are never tied to trip selection, leadership, Distinguished Member status, or grant eligibility.</p>
+    </div>
+    <div class="member-giving-options" aria-label="Member donation amount">
+      <button class="giving-amount" type="button" data-support-amount="50">$50</button>
+      <button class="giving-amount" type="button" data-support-amount="100">$100</button>
+      <label class="custom-giving"><span>Custom</span><input type="number" min="1" step="1" placeholder="$ amount" data-support-custom></label>
+    </div>
+    <div class="expedition-circle-note">
+      <span>Expedition Circle</span>
+      <strong>$500+ per year</strong>
+      <p>Our highest annual supporter recognition for members and patrons making major contributions to MCA.</p>
+    </div>
+    <button class="primary-button support-payment-button" type="button" data-member-donate disabled>ASU Foundation giving link coming soon</button>
+  </section>
+  <section class="portal-card support-note">
+    <h2>What can donations help with?</h2>
+    <p>Shared technical gear, trip access, instruction and certifications, the Adventure &amp; Stewardship Grant, restoration projects, Adaptive Ascents, and bigger club objectives.</p>
+  </section>
+</section>
+
+        <section class="portal-view" data-view-panel="profile">
           <div class="page-heading">
             <div><p class="eyebrow">Profile</p><h1>Member profile</h1><p class="page-lede">Information used for MCA communication, trip applications, and club participation.</p></div>
           </div>
@@ -471,7 +514,16 @@
           </form>
         </section>
 
-        <section class="portal-view" data-view-panel="leader">\n  <div class="page-heading">\n    <div><p class="eyebrow">Trip leader</p><h1>Manage trips</h1><p class="page-lede">Leader tools appear automatically for trips assigned to your account.</p></div>\n  </div>\n  <div data-leader-trips>\n    <section class="portal-card"><p>No assigned trips are loaded yet.</p></section>\n  </div>\n</section>\n\n        <section class="portal-view" data-view-panel="admin">
+        <section class="portal-view" data-view-panel="leader">
+  <div class="page-heading">
+    <div><p class="eyebrow">Trip leader</p><h1>Manage trips</h1><p class="page-lede">Leader tools appear automatically for trips assigned to your account.</p></div>
+  </div>
+  <div data-leader-trips>
+    <section class="portal-card"><p>No assigned trips are loaded yet.</p></section>
+  </div>
+</section>
+
+        <section class="portal-view" data-view-panel="admin">
           <div class="page-heading">
             <div><p class="eyebrow">Administration</p><h1>Club administration</h1><p class="page-lede">Membership, trip decisions, equipment, grants, and account permissions.</p></div>
           </div>
