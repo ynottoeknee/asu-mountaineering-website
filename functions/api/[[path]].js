@@ -682,6 +682,7 @@ async function presidentDecision(env, user, applicationId, request) {
 }
 
 async function checkoutGear(env, user, gearId, request) {
+  if (!user.is_president) return json({ error: "President approval is required for equipment checkout." }, 403);
   let body;
   try { body = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
   const memberId = intId(body.user_id);
