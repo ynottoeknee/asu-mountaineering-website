@@ -522,33 +522,20 @@
             <div><p class="eyebrow">Administration</p><h1>Club administration</h1><p class="page-lede">Membership, trip decisions, equipment, grants, and account permissions.</p></div>
           </div>
 
-          <div class="metric-grid">
-            <article class="metric-card"><span>Members</span><strong>84</strong><small>Total accounts</small></article>
-            <article class="metric-card"><span>Distinguished</span><strong>12</strong><small>President-designated</small></article>
-            <article class="metric-card"><span>Pending trip reviews</span><strong>7</strong><small>Need decision</small></article>
-            <article class="metric-card"><span>Grant submissions</span><strong>0</strong><small>Current cycle</small></article>
-          </div>
-
           <div class="admin-grid">
             <section class="portal-card admin-card">
               <div class="card-header"><div><p class="card-kicker">Members</p><h2>Membership status</h2></div><button class="text-button" type="button">View all</button></div>
               <div class="table-scroll">
                 <table>
                   <thead><tr><th>Member</th><th>Status</th><th>Role</th><th></th></tr></thead>
-                  <tbody>
-                    <tr><td><strong>Member</strong><small>afishe54@asu.edu</small></td><td><span class="status-pill status-distinguished">Distinguished</span></td><td>Admin · Trip Leader</td><td><button class="table-action" type="button">Manage</button></td></tr>
-                    <tr><td><strong>Member A</strong><small>Member account</small></td><td><span class="status-pill">Member</span></td><td>—</td><td><button class="table-action" type="button">Manage</button></td></tr>
-                  </tbody>
+                  <tbody data-admin-members><tr><td colspan="4">Loading members…</td></tr></tbody>
                 </table>
               </div>
             </section>
 
             <section class="portal-card admin-card">
               <div class="card-header"><div><p class="card-kicker">Trip decisions</p><h2>President review</h2></div></div>
-              <div class="compact-list">
-                <article class="compact-row"><div><strong>Joshua Tree · Member A</strong><span>Leader recommends accept</span></div><button class="small-button" type="button">Review</button></article>
-                <article class="compact-row"><div><strong>Spring Sierra Week · Member B</strong><span>Leader review complete</span></div><button class="small-button" type="button">Review</button></article>
-              </div>
+              <div class="compact-list" data-admin-trip-decisions><p>Trip decisions will appear here when applications are submitted and reviewed by leaders.</p></div>
             </section>
 
             <section class="portal-card admin-card">
