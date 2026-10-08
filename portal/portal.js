@@ -428,6 +428,73 @@
     state.selectedTrip = null;
   }
 
+
+  function renderQuestion(field) {
+    const key=escapeHtml(field.key),label=escapeHtml(field.label),required=field.required?" required":"";
+    if(field.type==="select") return '<label>'+label+'<select name="'+key+'"'+required+'><option value="">Choose…</option>'+field.options.map(o=>'<option>'+escapeHtml(o)+'</option>').join('')+'</select></label>';
+    if(field.type==="checkbox") return '<label><input type="checkbox" name="'+key+'" value="Yes"'+required+'> '+label+'</label>';
+    if(field.type==="paragraph")return '<label>'+label+'<textarea rows="3" name="'+key+'"'+required+'></textarea></label>';
+    return '<label>'+label+'<input type="text" name="'+key+'"'+required+'></label>';
+  }
+  async function loadMemberTripForm(tripId) {
+    const host=document.querySelector('[data-dynamic-trip-form]');
+    const pdf=document.querySelector('[data-trip-pdf-link]');
+    if(!host||!pdf)return;
+    host.innerHTML='<p>Loading application…</p>';pdf.innerHTML='';
+    try {
+      const {form}=await apiJson('trips/'+tripId+'/form');
+      host.innerHTML='<h3>'+escapeHtml(form.title)+'</h3>'+form.fields.map(renderQuestion).join('');
+      if(form.mode==='upload' && form.pdf_available)pdf.innerHTML='<p>Leader-provided application: <a href="/api/trips/'+tripId+'/form-pdf">Download PDF</a>. Complete it and contact your trip leader. The standard application below is still required.</p>';
+    } catch(error){host.innerHTML='<p>'+escapeHtml(error.message)+'</p>';}
+  }
+  function renderTripFormBuilder(tripId,target) {
+    target.innerHTML='<div class="portal-card"><h3>Application Builder</h3><p>Customize this trip’s application. All trips retain the core MCA questions.</p>'+
+    '<label>Title<input data-form-title value="Trip Application"></label>'+
+    '<label>Application type<select data-form-mode><option value="standard">Standard MCA form</option><option value="custom">Custom questions</option><option value="upload">Leader PDF + standard form</option></select></label>'+
+    '<div data-form-questions></div><button type="button" class="secondary-button" data-add-question>Add question</button>'+
+    '<label>Upload PDF (optional, 5 MB max)<input data-form-pdf type="file" accept="application/pdf"></label>'+
+    '<div class="form-actions"><button class="primary-button" type="button" data-save-form>Save application</button></div><p data-form-message aria-live="polite"></p></div>';
+    const questions=target.querySelector('[data-form-questions]');
+    const add=(f={})=>{
+      const row=document.createElement('div');row.className='portal-card';row.innerHTML=
+      '<label>Question<input data-question-label maxlength="220"></label><label>Type<select data-question-type><option value="short">Short answer</option><option value="paragraph">Paragraph</option><option value="select">Multiple choice</option><option value="checkbox">Checkbox</option></select></label>'+
+      '<label>Options, comma separated (multiple choice only)<input data-question-options></label><label><input data-question-required type="checkbox"> Required</label><button class="secondary-button" type="button" data-delete-question>Remove question</button>';
+      row.querySelector('[data-question-label]').value=f.label||'';
+      row.querySelector('[data-question-type]').value=f.type||'short';
+      row.querySelector('[data-question-options]').value=(f.options||[]).join(', ');
+      row.querySelector('[data-question-required]').checked=!!f.required;
+      row.querySelector('[data-delete-question]').onclick=()=>row.remove();
+      questions.append(row);
+    };
+    target.querySelector('[data-add-question]').onclick=()=>add();
+    apiJson('trips/'+tripId+'/form').then(({form})=>{
+      target.querySelector('[data-form-title]').value=form.title;
+      target.querySelector('[data-form-mode]').value=form.mode;
+      (form.fields||[]).filter(f=>f.key.startsWith('custom_')).forEach(add);
+      if(form.pdf_available)target.querySelector('[data-form-message]').textContent='Current PDF: '+form.pdf_name;
+    }).catch(e=>target.querySelector('[data-form-message]').textContent=e.message);
+    target.querySelector('[data-save-form]').onclick=async()=>{
+      const msg=target.querySelector('[data-form-message]');msg.textContent='Saving…';
+      const fields=[...questions.children].map(row=>({
+        label:row.querySelector('[data-question-label]').value,
+        type:row.querySelector('[data-question-type]').value,
+        options:row.querySelector('[data-question-options]').value.split(',').map(x=>x.trim()).filter(Boolean),
+        required:row.querySelector('[data-question-required]').checked
+      }));
+      try{
+        await apiJson('leader/trips/'+tripId+'/form',{method:'PUT',headers:{'content-type':'application/json'},body:JSON.stringify({
+          title:target.querySelector('[data-form-title]').value,mode:target.querySelector('[data-form-mode]').value,fields
+        })});
+        const file=target.querySelector('[data-form-pdf]').files[0];
+        if(file){
+          const body=new FormData();body.append('file',file);
+          await apiJson('leader/trips/'+tripId+'/form-pdf',{method:'POST',body});
+        }
+        msg.textContent='Application saved.';
+      }catch(e){msg.textContent=e.message;}
+    };
+  }
+
   function renderLeaderTrips(trips) {
     const wrap = document.querySelector('[data-leader-trips]');
     if (!wrap || !state.user || !state.user.is_trip_leader) return;
@@ -439,11 +506,16 @@
     wrap.innerHTML = mine.map(t =>
       '<section class="portal-card leader-live-card">' +
         '<div class="card-header"><div><p class="card-kicker">Assigned trip</p><h2>' + escapeHtml(t.title) + '</h2></div>' +
-        '<button class="secondary-button" type="button" data-load-leader-apps="' + t.id + '">Review applications</button></div>' +
+        '<div><button class="secondary-button" type="button" data-build-form="'+t.id+'">Edit application</button> <button class="secondary-button" type="button" data-load-leader-apps="' + t.id + '">Review applications</button></div></div>' +
+        '<div data-form-builder-for="' + t.id + '"></div>' +
         '<div data-leader-apps-for="' + t.id + '"><p>Load applications to review participant requests.</p></div>' +
       '</section>'
     ).join('');
 
+    wrap.querySelectorAll('[data-build-form]').forEach(button=>button.addEventListener('click',()=>{
+      const id=Number(button.dataset.buildForm),target=wrap.querySelector('[data-form-builder-for="'+id+'"]');
+      renderTripFormBuilder(id,target);button.disabled=true;
+    }));
     wrap.querySelectorAll('[data-load-leader-apps]').forEach(button => {
       button.addEventListener('click', async () => {
         const tripId = Number(button.dataset.loadLeaderApps);
@@ -714,7 +786,7 @@
       if (applyTrip.disabled) return;
       tripApplicationForm.hidden = false;
       applyTrip.hidden = true;
-      tripApplicationForm.querySelector('textarea')?.focus();
+      loadMemberTripForm(Number(tripApplicationForm.dataset.tripId));
     });
 
     document.querySelector('[data-cancel-trip-application]')?.addEventListener('click', () => {
