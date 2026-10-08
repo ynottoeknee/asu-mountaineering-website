@@ -273,3 +273,20 @@
   #support .support-impact-grid{grid-template-columns:1fr}
   #support .support-portal-button{width:100%}
 }
+
+
+#support .support-expedition-circle{
+  display:grid;grid-template-columns:auto auto minmax(220px,1fr);gap:14px;align-items:center;
+  border-top:1.5px solid #111;border-bottom:1.5px solid #111;padding:18px 0;max-width:900px
+}
+#support .support-expedition-circle strong{font-family:Georgia,'Times New Roman',serif;font-size:22px}
+#support .support-expedition-circle span{font-weight:900;font-size:13px;text-transform:uppercase;letter-spacing:.08em}
+#support .support-expedition-circle p{margin:0;font-size:14px;line-height:1.5}
+#support .support-donate-live{
+  width:max-content;max-width:100%;border:1.5px solid #111;background:#111;color:#fff;
+  padding:14px 18px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;font-size:12px;cursor:pointer
+}
+#support .support-donate-live:hover{background:transparent;color:#111}
+@media(max-width:720px){
+  #support .support-expedition-circle{grid-template-columns:1fr}
+}
