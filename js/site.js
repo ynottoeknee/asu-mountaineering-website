@@ -17,7 +17,7 @@ const publicPagePaths={
   launchpad:'/bring-an-idea'
 };
 const pageIdsByPath=Object.fromEntries(Object.entries(publicPagePaths).map(([id,path])=>[path,id]));
-function normalizePagePath(path){return path.replace(/\\/+$/,'')||'/'}
+function normalizePagePath(path){while(path.length>1&&path.endsWith('/'))path=path.slice(0,-1);return path}
 function showPage(id,{push=true,scroll=true}={}){
   if(!pages.some(page=>page.id===id))return;
   pages.forEach(page=>page.classList.toggle('active',page.id===id));
