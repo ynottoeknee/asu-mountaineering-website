@@ -1001,3 +1001,36 @@ if(betweenPhotoDialog&&betweenPhotoPreview){
     betweenPhotoPreview.removeAttribute('src');
   });
 }
+
+
+/* Public MCA giving page */
+(() => {
+  const frequencyButtons = [...document.querySelectorAll('#support .support-frequency button')];
+  frequencyButtons.forEach(button => button.addEventListener('click', () => {
+    frequencyButtons.forEach(b => b.classList.toggle('active', b === button));
+  }));
+
+  const amountButtons = [...document.querySelectorAll('#support .support-amount-grid button')];
+  amountButtons.forEach(button => button.addEventListener('click', () => {
+    amountButtons.forEach(b => b.classList.toggle('featured', b === button));
+  }));
+
+  const donateButton = document.querySelector('[data-public-donate]');
+  if (!donateButton) return;
+
+  fetch('/api/public/settings', { headers: { accept: 'application/json' } })
+    .then(async response => {
+      if (!response.ok) return null;
+      return response.json();
+    })
+    .then(data => {
+      const url = data && data.settings && data.settings.foundation_giving_url;
+      if (!url) return;
+      donateButton.disabled = false;
+      donateButton.classList.remove('support-donate-disabled');
+      donateButton.classList.add('support-donate-live');
+      donateButton.textContent = 'Donate through ASU Foundation';
+      donateButton.addEventListener('click', () => window.open(url, '_blank', 'noopener'));
+    })
+    .catch(() => {});
+})();
