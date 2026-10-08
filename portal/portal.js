@@ -138,7 +138,7 @@
     if (updateHash === undefined) updateHash = true;
     if (!titles[view]) view = 'dashboard';
     if (view === 'admin' && !state.user?.is_president) view = 'dashboard';
-    if (view === 'leader' && !state.user?.is_trip_leader) view = 'dashboard';
+    if (view === 'leader' && !state.user?.is_trip_leader && !state.user?.is_president) view = 'dashboard';
 
     document.querySelectorAll('[data-view-panel]').forEach(panel => {
       panel.classList.toggle('active', panel.dataset.viewPanel === view);
@@ -203,7 +203,7 @@
 
     const leaderNav = document.querySelector('[data-trip-leader-nav]');
     const adminNav = document.querySelector('[data-admin-nav]');
-    if (leaderNav) leaderNav.hidden = !user.is_trip_leader;
+    if (leaderNav) leaderNav.hidden = !user.is_trip_leader && !user.is_president;
     if (adminNav) adminNav.hidden = !user.is_president;
 
     const support = state.annualSupportCents / 100;
@@ -497,8 +497,8 @@
 
   function renderLeaderTrips(trips) {
     const wrap = document.querySelector('[data-leader-trips]');
-    if (!wrap || !state.user || !state.user.is_trip_leader) return;
-    const mine = (trips || []).filter(t => (t.leaders || []).some(l => Number(l.user_id) === Number(state.user.id)));
+    if (!wrap || !state.user || (!state.user.is_trip_leader && !state.user.is_president)) return;
+    const mine = (trips || []).filter(t => state.user.is_president || (t.leaders || []).some(l => Number(l.user_id) === Number(state.user.id)));
     if (!mine.length) {
       wrap.innerHTML = '<section class="portal-card"><p>No published trips are currently assigned to you.</p></section>';
       return;
@@ -532,7 +532,8 @@
           }
           target.innerHTML = '<div class="table-scroll"><table><thead><tr><th>Applicant</th><th>Status</th><th>Submitted</th><th>Recommendation</th></tr></thead><tbody>' +
             apps.map(a =>
-              '<tr><td><strong>' + escapeHtml(a.name) + '</strong><small>' + escapeHtml(a.membership_status === 'distinguished' ? 'Distinguished Member' : 'Member') + '</small></td>' +
+              '<tr><td><strong>' + escapeHtml(a.name) + '</strong><small>' + escapeHtml(a.membership_status === 'distinguished' ? 'Distinguished Member' : 'Member') + '</small>' +
+              '<details><summary>Read answers</summary><div>' + Object.entries((()=>{try{return JSON.parse(a.answers_json||'{}')}catch{return {}}})()).map(([k,v])=>'<p><strong>'+escapeHtml(k.replace(/_/g,' '))+':</strong> '+escapeHtml(v)+'</p>').join('') + '</div></details></td>' +
               '<td>' + escapeHtml(a.status.replace('_',' ')) + '</td>' +
               '<td>' + escapeHtml(formatDate(a.submitted_at)) + '</td>' +
               '<td><select data-recommend-app="' + a.id + '">' +
