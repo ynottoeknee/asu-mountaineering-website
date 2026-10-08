@@ -2577,7 +2577,7 @@ body{color:var(--mca-ink)}
 #about .about-memorial img{display:block;width:100%;height:auto}
 #about .about-memorial h1{
   position:absolute;
-  top:31%;
+  top:calc(31% + 1in);
   left:50%;
   width:92%;
   margin:0;
