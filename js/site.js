@@ -1069,3 +1069,59 @@ if(betweenPhotoDialog&&betweenPhotoPreview){
     })
     .catch(() => {});
 })();
+
+/* Smooth Past Adventures scene color changes while preserving the selected palette. */
+(function smoothAdventureSceneTransitions(){
+  const marker='data-mca-scroll-color-tune';
+  const installOnHost=host=>{
+    let attempts=0;
+    const install=()=>{
+      const shadow=host.shadowRoot;
+      if(!shadow)return false;
+      if(shadow.querySelector(`style[${marker}]`))return true;
+      const style=document.createElement('style');
+      style.setAttribute(marker,'');
+      style.textContent=`
+        :host,
+        .background,
+        .adventure-flow-root,
+        .scene {
+          transition:
+            background-color 820ms cubic-bezier(.22, 1, .36, 1),
+            color 520ms ease !important;
+        }
+        .site-header,
+        .counter,
+        .scroll-hint,
+        .contours,
+        .trip-card {
+          transition:
+            color 520ms ease,
+            background-color 820ms cubic-bezier(.22, 1, .36, 1) !important;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          :host,
+          .background,
+          .adventure-flow-root,
+          .scene,
+          .site-header,
+          .counter,
+          .scroll-hint,
+          .contours,
+          .trip-card {
+            transition: none !important;
+          }
+        }
+      `;
+      shadow.appendChild(style);
+      return true;
+    };
+    if(install())return;
+    const timer=window.setInterval(()=>{
+      if(install()||++attempts>=40)window.clearInterval(timer);
+    },75);
+  };
+  const scan=()=>document.querySelectorAll('.adventures-flow-shell').forEach(installOnHost);
+  scan();
+  new MutationObserver(scan).observe(document.body,{childList:true,subtree:true});
+})();
