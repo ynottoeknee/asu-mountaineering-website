@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#151515">
   <meta name="robots" content="noindex,nofollow">
   <link rel="icon" type="image/png" href="/mca-favicon.png?v=3">
-  <link rel="stylesheet" href="/portal/portal.css?v=20261008-3">
+  <link rel="stylesheet" href="/portal/portal.css?v=20261008-4">
 </head>
 <body class="portal-auth-loading">
   <section class="auth-gate" data-auth-gate>
@@ -55,6 +55,9 @@
         </button>
         <button class="portal-nav-link" type="button" data-view="profile">
           <span>Profile</span>
+        </button>
+        <button class="portal-nav-link" type="button" data-view="community">
+          <span>Member directory</span>
         </button>
       </nav>
 
@@ -433,6 +436,7 @@
                 <label>Last name<input type="text" name="last_name" data-profile-last-name autocomplete="family-name"></label>
                 <label>Email<input type="email" value="" data-member-email readonly></label>
                 <label>Phone<input type="tel" name="phone" data-profile-phone autocomplete="tel" placeholder="Add phone"></label>
+                <label class="full-field">About me<textarea name="about_me" data-profile-about rows="3" maxlength="500" placeholder="A little about what you enjoy, what you are learning, or the kinds of adventures you hope to find."></textarea></label>
               </div>
             </div>
             <div class="form-section">
@@ -443,8 +447,26 @@
                 <label>Transportation<select name="transportation" data-profile-transportation><option value="">Choose one</option><option value="Can drive">Can drive</option><option value="Need a ride">Need a ride</option><option value="Varies">Varies</option></select></label>
               </div>
             </div>
+            <div class="form-section profile-sharing-section">
+              <h2>Privacy and sharing</h2>
+              <p>Your profile is private by default. You decide what other MCA members can see. Phone and email sharing are separate choices and start turned off; contact details appear only when your profile is listed in the directory.</p>
+              <div class="profile-sharing-options">
+                <label><input type="checkbox" name="show_in_directory" data-profile-directory> Show my About Me, experience, and interests in the member directory</label>
+                <label><input type="checkbox" name="share_email" data-profile-share-email> Share my ASU email with MCA members</label>
+                <label><input type="checkbox" name="share_phone" data-profile-share-phone> Share my phone number with MCA members</label>
+              </div>
+            </div>
             <div class="form-actions"><button class="primary-button" type="submit">Save profile</button><span data-profile-status></span></div>
           </form>
+        </section>
+
+        <section class="portal-view" data-view-panel="community">
+          <div class="page-heading">
+            <div><p class="eyebrow">MCA community</p><h1>Member directory</h1><p class="page-lede">Meet members who have chosen to share their outdoor interests and experience.</p></div>
+          </div>
+          <label class="search-field community-search">Search members<input type="search" placeholder="Name, interest, or experience" data-community-search></label>
+          <div class="community-member-grid" data-community-members><div class="portal-card"><p>Loading member profiles…</p></div></div>
+          <p class="community-empty" data-community-empty hidden>No members have shared a profile yet.</p>
         </section>
 
         <section class="portal-view" data-view-panel="leader">
@@ -463,11 +485,12 @@
 
           <div class="admin-grid">
             <section class="portal-card admin-card">
-              <div class="card-header"><div><p class="card-kicker">Members</p><h2>Membership status</h2></div><button class="text-button" type="button">View all</button></div>
+              <div class="card-header"><div><p class="card-kicker">Members</p><h2>Member directory</h2><p>Full profile details are visible only to the President here.</p></div></div>
+              <label class="search-field admin-member-search">Search members<input type="search" placeholder="Name, email, experience, interest, trip…" data-admin-member-search></label>
               <div class="table-scroll">
                 <table>
-                  <thead><tr><th>Member</th><th>Status</th><th>Role</th><th></th></tr></thead>
-                  <tbody data-admin-members><tr><td colspan="4">Loading members…</td></tr></tbody>
+                  <thead><tr><th>Member</th><th>Contact</th><th>Experience &amp; interests</th><th>Transportation</th><th>Trips</th><th>Status</th><th>Role / actions</th></tr></thead>
+                  <tbody data-admin-members><tr><td colspan="7">Loading members…</td></tr></tbody>
                 </table>
               </div>
             </section>
@@ -529,6 +552,6 @@
 
   </div>
 
-  <script src="/portal/portal.js?v=20261008-6"></script>
+  <script src="/portal/portal.js?v=20261008-7"></script>
 </body>
 </html>

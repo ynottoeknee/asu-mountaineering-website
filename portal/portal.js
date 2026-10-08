@@ -8,6 +8,7 @@
     membership: 'Membership',
     support: 'Support MCA',
     profile: 'Profile',
+    community: 'Member directory',
     leader: 'Manage Trips',
     admin: 'Admin'
   };
@@ -177,6 +178,10 @@
       profile.querySelector('[data-profile-experience]').value = user.experience_summary || '';
       profile.querySelector('[data-profile-interests]').value = user.primary_interests || '';
       profile.querySelector('[data-profile-transportation]').value = user.transportation || '';
+      profile.querySelector('[data-profile-about]').value = user.about_me || '';
+      profile.querySelector('[data-profile-directory]').checked = !!user.show_in_directory;
+      profile.querySelector('[data-profile-share-email]').checked = !!user.share_email;
+      profile.querySelector('[data-profile-share-phone]').checked = !!user.share_phone;
     }
 
     const membershipPill = document.querySelector('[data-membership-pill]');
@@ -221,7 +226,7 @@
       document.body.classList.remove('portal-auth-loading', 'portal-auth-error');
       document.body.classList.add('portal-authenticated');
       if (gate) gate.hidden = true;
-      await Promise.allSettled([syncPublicSettings(), syncTrips(), syncGear(), syncGrant(), syncApplications(), syncAdmin()]);
+      await Promise.allSettled([syncPublicSettings(), syncTrips(), syncGear(), syncGrant(), syncApplications(), syncAdmin(), syncCommunity()]);
     } catch (error) {
       document.body.classList.remove('portal-auth-loading');
       document.body.classList.add('portal-auth-error');
@@ -526,11 +531,16 @@
           const data = await apiJson('leader/trips/' + tripId + '/applications');
           const apps = data.applications || [];
           if (!target) return;
-          if (!apps.length) {
-            target.innerHTML = '<p>No applications have been submitted for this trip yet.</p>';
-            return;
-          }
-          target.innerHTML = '<div class="table-scroll"><table><thead><tr><th>Applicant</th><th>Status</th><th>Submitted</th><th>Recommendation</th></tr></thead><tbody>' +
+          const participants = data.participants || [];
+          const participantSection = '<section class="leader-participant-directory"><h3>Accepted participant information</h3><p>Visible to leaders assigned to this trip for coordination.</p>' +
+            (participants.length ? '<div class="community-member-grid">' + participants.map(p => '<article class="portal-card community-member-card"><h4>' + escapeHtml(p.name) + '</h4>' +
+              (p.email ? '<p><strong>Email</strong> <a href="mailto:' + escapeHtml(p.email) + '">' + escapeHtml(p.email) + '</a></p>' : '') +
+              (p.phone ? '<p><strong>Phone</strong> <a href="tel:' + escapeHtml(p.phone) + '">' + escapeHtml(p.phone) + '</a></p>' : '') +
+              (p.experience_summary ? '<p><strong>Experience</strong><br>' + escapeHtml(p.experience_summary) + '</p>' : '') +
+              (p.primary_interests ? '<p><strong>Interests</strong><br>' + escapeHtml(p.primary_interests) + '</p>' : '') +
+              (p.transportation ? '<p><strong>Transportation</strong> ' + escapeHtml(p.transportation) + '</p>' : '') +
+              (p.about_me ? '<p>' + escapeHtml(p.about_me) + '</p>' : '') + '</article>').join('') + '</div>' : '<p>No participants have been accepted yet.</p>') + '</section>';
+          const applicationsSection = apps.length ? '<h3>Trip applications</h3><div class="table-scroll"><table><thead><tr><th>Applicant</th><th>Status</th><th>Submitted</th><th>Recommendation</th></tr></thead><tbody>' +
             apps.map(a =>
               '<tr><td><strong>' + escapeHtml(a.name) + '</strong><small>' + escapeHtml(a.membership_status === 'distinguished' ? 'Distinguished Member' : 'Member') + '</small>' +
               '<details><summary>Read answers</summary><div>' + Object.entries((()=>{try{return JSON.parse(a.answers_json||'{}')}catch{return {}}})()).map(([k,v])=>'<p><strong>'+escapeHtml(k.replace(/_/g,' '))+':</strong> '+escapeHtml(v)+'</p>').join('') + '</div></details></td>' +
@@ -543,7 +553,8 @@
                 '<option value="decline"' + (a.leader_recommendation === 'decline' ? ' selected' : '') + '>Recommend decline</option>' +
               '</select></td></tr>'
             ).join('') +
-            '</tbody></table></div>';
+            '</tbody></table></div>' : '<p>No applications have been submitted for this trip yet.</p>';
+          target.innerHTML = participantSection + applicationsSection;
 
           target.querySelectorAll('[data-recommend-app]').forEach(select => {
             select.addEventListener('change', async () => {
@@ -687,11 +698,23 @@
         const roles = [];
         if (m.is_president) roles.push('President');
         if (Number(m.trip_leader_count || 0) > 0) roles.push('Trip Leader');
-        return '<tr><td><strong>' + escapeHtml(m.name) + '</strong><small>' + escapeHtml(m.email) + '</small></td>' +
+        const searchText = [m.name,m.email,m.phone,m.experience_summary,m.primary_interests,m.transportation,m.about_me,m.trips].filter(Boolean).join(' ');
+        const fullProfile = '<details class="admin-profile-details"><summary>Full profile</summary>' +
+          '<p><strong>About me</strong><br>' + escapeHtml(m.about_me || 'Not provided') + '</p>' +
+          '<p><strong>Experience</strong><br>' + escapeHtml(m.experience_summary || 'Not provided') + '</p>' +
+          '<p><strong>Interests</strong><br>' + escapeHtml(m.primary_interests || 'Not provided') + '</p>' +
+          '<p><strong>Transportation</strong><br>' + escapeHtml(m.transportation || 'Not provided') + '</p>' +
+          '<p><strong>Directory sharing</strong><br>' + (Number(m.show_in_directory) ? 'Listed' : 'Private') + ' · Email ' + (Number(m.share_email) ? 'shared' : 'private') + ' · Phone ' + (Number(m.share_phone) ? 'shared' : 'private') + '</p></details>';
+        return '<tr data-admin-member-row data-search-text="' + escapeHtml(searchText.toLowerCase()) + '">' +
+          '<td><strong>' + escapeHtml(m.name) + '</strong><small>' + escapeHtml(m.membership_status === 'distinguished' ? 'Distinguished Member' : 'Member') + '</small>' + fullProfile + '</td>' +
+          '<td><a href="mailto:' + escapeHtml(m.email) + '">' + escapeHtml(m.email) + '</a><small>' + escapeHtml(m.phone || 'Phone not provided') + '</small></td>' +
+          '<td><strong>' + escapeHtml(m.experience_summary || 'No experience added') + '</strong><small>' + escapeHtml(m.primary_interests || 'No interests added') + '</small></td>' +
+          '<td>' + escapeHtml(m.transportation || 'Not provided') + '</td>' +
+          '<td>' + escapeHtml(m.trips || 'No accepted trips') + '</td>' +
           '<td><span class="status-pill ' + statusClass + '">' + escapeHtml(m.membership_status === 'distinguished' ? 'Distinguished' : 'Member') + '</span></td>' +
-          '<td>' + escapeHtml(roles.join(' · ') || '—') + '</td>' +
-          '<td>' + (state.user.is_president ? '<button class="table-action" type="button" data-member-status-toggle="' + m.id + '" data-current-status="' + m.membership_status + '">' + (m.membership_status === 'distinguished' ? 'Set Member' : 'Make Distinguished') + '</button>' : '—') + '</td></tr>';
-      }).join('') : '<tr><td colspan="4">No member accounts yet.</td></tr>';
+          '<td>' + escapeHtml(roles.join(' · ') || '—') + '<br>' + (state.user.is_president ? '<button class="table-action" type="button" data-member-status-toggle="' + m.id + '" data-current-status="' + m.membership_status + '">' + (m.membership_status === 'distinguished' ? 'Set Member' : 'Make Distinguished') + '</button>' : '—') + '</td></tr>';
+      }).join('') : '<tr><td colspan="7">No member accounts yet.</td></tr>';
+      filterAdminMembers();
 
       if (state.user.is_president) {
         try {
@@ -748,6 +771,51 @@
         });
       });
     } catch {}
+  }
+
+  function filterAdminMembers() {
+    const input = document.querySelector('[data-admin-member-search]');
+    const query = (input?.value || '').trim().toLowerCase();
+    document.querySelectorAll('[data-admin-member-row]').forEach(row => {
+      row.hidden = !!query && !row.dataset.searchText.includes(query);
+    });
+  }
+
+  async function syncCommunity() {
+    const host = document.querySelector('[data-community-members]');
+    if (!host) return;
+    try {
+      const data = await apiJson('community/members');
+      const members = data.members || [];
+      host.innerHTML = members.map(m => {
+        const profileText = [m.name,m.about_me,m.experience_summary,m.primary_interests,m.email,m.phone].filter(Boolean).join(' ');
+        return '<article class="portal-card community-member-card" data-community-member data-search-text="' + escapeHtml(profileText.toLowerCase()) + '">' +
+          '<h2>' + escapeHtml(m.name) + '</h2>' +
+          (m.about_me ? '<p>' + escapeHtml(m.about_me) + '</p>' : '') +
+          (m.experience_summary ? '<p><strong>Experience</strong><br>' + escapeHtml(m.experience_summary) + '</p>' : '') +
+          (m.primary_interests ? '<p><strong>Interests</strong><br>' + escapeHtml(m.primary_interests) + '</p>' : '') +
+          (m.email ? '<p><strong>Email</strong> <a href="mailto:' + escapeHtml(m.email) + '">' + escapeHtml(m.email) + '</a></p>' : '') +
+          (m.phone ? '<p><strong>Phone</strong> <a href="tel:' + escapeHtml(m.phone) + '">' + escapeHtml(m.phone) + '</a></p>' : '') +
+          '</article>';
+      }).join('');
+      const empty = document.querySelector('[data-community-empty]');
+      if (empty) empty.hidden = members.length > 0;
+      filterCommunityMembers();
+    } catch (error) {
+      host.innerHTML = '<div class="portal-card"><p>' + escapeHtml(error.message) + '</p></div>';
+    }
+  }
+
+  function filterCommunityMembers() {
+    const query = (document.querySelector('[data-community-search]')?.value || '').trim().toLowerCase();
+    let visible = 0;
+    document.querySelectorAll('[data-community-member]').forEach(card => {
+      const show = !query || card.dataset.searchText.includes(query);
+      card.hidden = !show;
+      if (show) visible++;
+    });
+    const empty = document.querySelector('[data-community-empty]');
+    if (empty && document.querySelector('[data-community-members]')?.children.length) empty.hidden = visible > 0;
   }
 
   function renderLeaderAssignmentControls() {
@@ -1020,6 +1088,7 @@
         });
         state.user = data.user;
         hydrateIdentity({ user: data.user });
+        await Promise.allSettled([syncCommunity(), syncAdmin()]);
         if (status) status.textContent = 'Profile saved.';
       } catch (error) {
         if (status) status.textContent = error.message;
@@ -1071,6 +1140,8 @@
 
   const initial = location.hash.replace('#', '');
   showView(titles[initial] ? initial : 'dashboard', false);
+  document.querySelector('[data-admin-member-search]')?.addEventListener('input', filterAdminMembers);
+  document.querySelector('[data-community-search]')?.addEventListener('input', filterCommunityMembers);
   initializeAuth();
 })();
 

@@ -68,9 +68,22 @@ async function ensurePortalAdditions(env) {
       experience_summary TEXT,
       primary_interests TEXT,
       transportation TEXT,
+      about_me TEXT,
+      show_in_directory INTEGER NOT NULL DEFAULT 0,
+      share_email INTEGER NOT NULL DEFAULT 0,
+      share_phone INTEGER NOT NULL DEFAULT 0,
       updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     )`
   ).run();
+  for (const column of [
+    "about_me TEXT",
+    "show_in_directory INTEGER NOT NULL DEFAULT 0",
+    "share_email INTEGER NOT NULL DEFAULT 0",
+    "share_phone INTEGER NOT NULL DEFAULT 0"
+  ]) {
+    try { await env.DB.prepare("ALTER TABLE member_profiles ADD COLUMN " + column).run(); }
+    catch (error) { if (!String(error).toLowerCase().includes("duplicate column")) throw error; }
+  }
   try {
     await env.DB.prepare(
       "CREATE UNIQUE INDEX IF NOT EXISTS idx_gear_checkouts_one_open_item ON gear_checkouts(gear_item_id) WHERE returned_at IS NULL"
@@ -108,7 +121,7 @@ async function currentUser(env, request) {
   if (!token) return null;
   const hash = await sha256Hex(token);
   const row = await env.DB.prepare(
-    `SELECT u.id,u.email,u.name,p.first_name AS profile_first_name,p.last_name AS profile_last_name,p.phone,p.experience_summary,p.primary_interests,p.transportation,u.avatar_url,u.membership_status,u.is_admin,u.is_president,s.expires_at
+    `SELECT u.id,u.email,u.name,p.first_name AS profile_first_name,p.last_name AS profile_last_name,p.phone,p.experience_summary,p.primary_interests,p.transportation,p.about_me,p.show_in_directory,p.share_email,p.share_phone,u.avatar_url,u.membership_status,u.is_admin,u.is_president,s.expires_at
      FROM sessions s
      JOIN users u ON u.id=s.user_id
      LEFT JOIN member_profiles p ON p.user_id=u.id
@@ -135,6 +148,10 @@ async function currentUser(env, request) {
     experience_summary: row.experience_summary,
     primary_interests: row.primary_interests,
     transportation: row.transportation,
+    about_me: row.about_me,
+    show_in_directory: Number(row.show_in_directory || 0) === 1,
+    share_email: Number(row.share_email || 0) === 1,
+    share_phone: Number(row.share_phone || 0) === 1,
     avatar_url: row.avatar_url,
     membership_status: row.membership_status,
     is_admin: isPresident,
@@ -296,23 +313,39 @@ async function updateProfile(env, user, request) {
   const phone = String(body.phone || "").trim().slice(0, 40) || null;
   const experience = String(body.experience_summary || "").trim().slice(0, 2000) || null;
   const interests = String(body.primary_interests || "").trim().slice(0, 240) || null;
+  const aboutMe = String(body.about_me || "").trim().slice(0, 500) || null;
+  const showInDirectory = body.show_in_directory === true || body.show_in_directory === "on" || body.show_in_directory === "1" ? 1 : 0;
+  const shareEmail = body.share_email === true || body.share_email === "on" || body.share_email === "1" ? 1 : 0;
+  const sharePhone = body.share_phone === true || body.share_phone === "on" || body.share_phone === "1" ? 1 : 0;
   const transportation = String(body.transportation || "").trim();
   if (transportation && !["Can drive","Need a ride","Varies"].includes(transportation)) {
     return json({ error: "Choose a valid transportation option." }, 400);
   }
   const name = cleanName([first,last].filter(Boolean).join(" "));
   await env.DB.prepare(
-    `INSERT INTO member_profiles (user_id,first_name,last_name,phone,experience_summary,primary_interests,transportation)
-     VALUES (?,?,?,?,?,?,?)
+    `INSERT INTO member_profiles (user_id,first_name,last_name,phone,experience_summary,primary_interests,transportation,about_me,show_in_directory,share_email,share_phone)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?)
      ON CONFLICT(user_id) DO UPDATE SET first_name=excluded.first_name,last_name=excluded.last_name,
        phone=excluded.phone,experience_summary=excluded.experience_summary,primary_interests=excluded.primary_interests,
-       transportation=excluded.transportation,updated_at=CURRENT_TIMESTAMP`
-  ).bind(user.id,first,last || null,phone,experience,interests,transportation || null).run();
+       transportation=excluded.transportation,about_me=excluded.about_me,show_in_directory=excluded.show_in_directory,
+       share_email=excluded.share_email,share_phone=excluded.share_phone,updated_at=CURRENT_TIMESTAMP`
+  ).bind(user.id,first,last || null,phone,experience,interests,transportation || null,aboutMe,showInDirectory,shareEmail,sharePhone).run();
   const updated = await env.DB.prepare(
-    `SELECT u.id,u.email,u.name,p.first_name AS profile_first_name,p.last_name AS profile_last_name,p.phone,p.experience_summary,p.primary_interests,p.transportation,u.avatar_url,u.membership_status,u.is_admin,u.is_president
+    `SELECT u.id,u.email,u.name,p.first_name AS profile_first_name,p.last_name AS profile_last_name,p.phone,p.experience_summary,p.primary_interests,p.transportation,p.about_me,p.show_in_directory,p.share_email,p.share_phone,u.avatar_url,u.membership_status,u.is_admin,u.is_president
      FROM users u LEFT JOIN member_profiles p ON p.user_id=u.id WHERE u.id=?`
   ).bind(user.id).first();
-  return json({ ok: true, user: { ...updated, is_admin: user.is_president, is_president: user.is_president, is_trip_leader: user.is_trip_leader } });
+  return json({ ok: true, user: { ...updated, show_in_directory: !!updated.show_in_directory, share_email: !!updated.share_email, share_phone: !!updated.share_phone, is_admin: user.is_president, is_president: user.is_president, is_trip_leader: user.is_trip_leader } });
+}
+
+async function communityMembers(env) {
+  const rows = await env.DB.prepare(
+    `SELECT u.id,u.name,u.avatar_url,u.membership_status,p.about_me,p.experience_summary,p.primary_interests,
+       CASE WHEN p.share_email=1 THEN u.email ELSE NULL END AS email,
+       CASE WHEN p.share_phone=1 THEN p.phone ELSE NULL END AS phone
+     FROM member_profiles p JOIN users u ON u.id=p.user_id
+     WHERE p.show_in_directory=1 ORDER BY COALESCE(p.first_name,u.name),p.last_name`
+  ).all();
+  return json({ members: rows.results || [] });
 }
 
 async function listTrips(env, user) {
@@ -584,11 +617,13 @@ async function createGearItem(env, user, request) {
 async function adminMembers(env, user) {
   if (!user.is_president) return json({ error: "President access required." }, 403);
   const rows = await env.DB.prepare(
-    `SELECT u.id,u.email,u.name,u.avatar_url,u.membership_status,
+    `SELECT u.id,u.email,u.name,u.avatar_url,u.membership_status,p.phone,p.experience_summary,p.primary_interests,p.transportation,p.about_me,
+      p.show_in_directory,p.share_email,p.share_phone,
       CASE WHEN lower(u.email)=lower(?) THEN 1 ELSE 0 END AS is_admin,
       CASE WHEN lower(u.email)=lower(?) THEN 1 ELSE 0 END AS is_president,u.created_at,
-      (SELECT COUNT(*) FROM trip_leaders tl WHERE tl.user_id=u.id) AS trip_leader_count
-     FROM users u ORDER BY u.name`
+      (SELECT COUNT(*) FROM trip_leaders tl WHERE tl.user_id=u.id) AS trip_leader_count,
+      (SELECT group_concat(t.title, ', ') FROM trip_participants tp JOIN trips t ON t.id=tp.trip_id WHERE tp.user_id=u.id) AS trips
+     FROM users u LEFT JOIN member_profiles p ON p.user_id=u.id ORDER BY u.name`
   ).bind(String(env.PRESIDENT_EMAIL || "").trim(),String(env.PRESIDENT_EMAIL || "").trim()).all();
   return json({ members: rows.results || [] });
 }
@@ -607,13 +642,21 @@ async function setMembershipStatus(env, user, memberId, request) {
 
 async function leaderApplications(env, user, tripId) {
   if (!(await canManageTrip(env, user, tripId))) return json({ error: "Trip leader access required." }, 403);
-  const rows = await env.DB.prepare(
+  const [rows, participants] = await env.DB.batch([
+    env.DB.prepare(
     `SELECT ta.id,ta.status,ta.answers_json,ta.leader_recommendation,ta.president_decision,ta.submitted_at,
             u.id AS user_id,u.name,u.email,u.membership_status
      FROM trip_applications ta JOIN users u ON u.id=ta.user_id
      WHERE ta.trip_id=? ORDER BY ta.submitted_at`
-  ).bind(tripId).all();
-  return json({ applications: rows.results || [] });
+    ).bind(tripId),
+    env.DB.prepare(
+      `SELECT u.id AS user_id,u.name,u.email,p.phone,p.experience_summary,p.primary_interests,p.transportation,p.about_me
+       FROM trip_participants tp JOIN users u ON u.id=tp.user_id
+       LEFT JOIN member_profiles p ON p.user_id=u.id
+       WHERE tp.trip_id=? ORDER BY u.name`
+    ).bind(tripId)
+  ]);
+  return json({ applications: rows.results || [], participants: participants.results || [] });
 }
 
 async function recommendApplication(env, user, applicationId, request) {
@@ -855,6 +898,7 @@ export async function onRequest(context) {
 
     if (method === "GET" && path === "me") return handleMe(env, user);
     if (method === "POST" && path === "profile") return updateProfile(env, user, request);
+    if (method === "GET" && path === "community/members") return communityMembers(env);
     if (method === "GET" && path === "trips") return listTrips(env, user);
     if (method === "GET" && parts[0] === "trips" && parts.length === 2) {
       const tripId = intId(parts[1]);
