@@ -290,3 +290,24 @@
 @media(max-width:720px){
   #support .support-expedition-circle{grid-template-columns:1fr}
 }
+
+
+/* Home page member photos */
+#home .home-photo-insert{
+  width:min(calc(100% - 56px),1180px);
+  margin:42px auto 0;
+}
+#home .home-photo-insert img{
+  display:block;
+  width:100%;
+  height:auto;
+  border:1px solid rgba(48,44,50,.22);
+}
+#home .home-photo-insert--closing{
+  margin-top:54px;
+  margin-bottom:52px;
+}
+@media(max-width:700px){
+  #home .home-photo-insert{width:calc(100% - 30px);margin-top:28px}
+  #home .home-photo-insert--closing{margin-top:36px;margin-bottom:34px}
+}
