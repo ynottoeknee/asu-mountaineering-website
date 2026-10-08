@@ -137,7 +137,7 @@
   }
 
   function viewFromUrl() {
-    const path = window.location.pathname.replace(/\\/+$/, '');
+    const path = window.location.pathname.replace(/\/+$/, '');
     const pathView = path.startsWith('/portal/') ? path.slice('/portal/'.length).split('/')[0] : '';
     const candidate = titles[pathView] ? pathView : window.location.hash.replace(/^#/, '');
     return titles[candidate] ? candidate : 'dashboard';
