@@ -352,6 +352,77 @@
     state.selectedTrip = null;
   }
 
+  function renderLeaderTrips(trips) {
+    const wrap = document.querySelector('[data-leader-trips]');
+    if (!wrap || !state.user || !state.user.is_trip_leader) return;
+    const mine = (trips || []).filter(t => (t.leaders || []).some(l => Number(l.user_id) === Number(state.user.id)));
+    if (!mine.length) {
+      wrap.innerHTML = '<section class="portal-card"><p>No published trips are currently assigned to you.</p></section>';
+      return;
+    }
+    wrap.innerHTML = mine.map(t =>
+      '<section class="portal-card leader-live-card">' +
+        '<div class="card-header"><div><p class="card-kicker">Assigned trip</p><h2>' + escapeHtml(t.title) + '</h2></div>' +
+        '<button class="secondary-button" type="button" data-load-leader-apps="' + t.id + '">Review applications</button></div>' +
+        '<div data-leader-apps-for="' + t.id + '"><p>Load applications to review participant requests.</p></div>' +
+      '</section>'
+    ).join('');
+
+    wrap.querySelectorAll('[data-load-leader-apps]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const tripId = Number(button.dataset.loadLeaderApps);
+        const target = wrap.querySelector('[data-leader-apps-for="' + tripId + '"]');
+        button.disabled = true;
+        if (target) target.innerHTML = '<p>Loading applications…</p>';
+        try {
+          const data = await apiJson('leader/trips/' + tripId + '/applications');
+          const apps = data.applications || [];
+          if (!target) return;
+          if (!apps.length) {
+            target.innerHTML = '<p>No applications have been submitted for this trip yet.</p>';
+            return;
+          }
+          target.innerHTML = '<div class="table-scroll"><table><thead><tr><th>Applicant</th><th>Status</th><th>Submitted</th><th>Recommendation</th></tr></thead><tbody>' +
+            apps.map(a =>
+              '<tr><td><strong>' + escapeHtml(a.name) + '</strong><small>' + escapeHtml(a.membership_status === 'distinguished' ? 'Distinguished Member' : 'Member') + '</small></td>' +
+              '<td>' + escapeHtml(a.status.replace('_',' ')) + '</td>' +
+              '<td>' + escapeHtml(formatDate(a.submitted_at)) + '</td>' +
+              '<td><select data-recommend-app="' + a.id + '">' +
+                '<option value="">Choose…</option>' +
+                '<option value="accept"' + (a.leader_recommendation === 'accept' ? ' selected' : '') + '>Recommend accept</option>' +
+                '<option value="waitlist"' + (a.leader_recommendation === 'waitlist' ? ' selected' : '') + '>Recommend waitlist</option>' +
+                '<option value="decline"' + (a.leader_recommendation === 'decline' ? ' selected' : '') + '>Recommend decline</option>' +
+              '</select></td></tr>'
+            ).join('') +
+            '</tbody></table></div>';
+
+          target.querySelectorAll('[data-recommend-app]').forEach(select => {
+            select.addEventListener('change', async () => {
+              if (!select.value) return;
+              select.disabled = true;
+              try {
+                await apiJson('leader/applications/' + select.dataset.recommendApp + '/recommend', {
+                  method: 'POST',
+                  headers: { 'content-type': 'application/json', 'accept': 'application/json' },
+                  body: JSON.stringify({ recommendation: select.value })
+                });
+                await syncAdmin();
+              } catch (error) {
+                alert(error.message);
+              } finally {
+                select.disabled = false;
+              }
+            });
+          });
+        } catch (error) {
+          if (target) target.innerHTML = '<p>' + escapeHtml(error.message) + '</p>';
+        } finally {
+          button.disabled = false;
+        }
+      });
+    });
+  }
+
   async function syncApplications() {
     const data = await apiJson('applications');
     const tbody = document.querySelector('[data-view-panel="applications"] tbody');
@@ -426,6 +497,43 @@
           '<td>' + escapeHtml(roles.join(' · ') || '—') + '</td>' +
           '<td>' + (state.user.is_president ? '<button class="table-action" type="button" data-member-status-toggle="' + m.id + '" data-current-status="' + m.membership_status + '">' + (m.membership_status === 'distinguished' ? 'Set Member' : 'Make Distinguished') + '</button>' : '—') + '</td></tr>';
       }).join('') : '<tr><td colspan="4">No member accounts yet.</td></tr>';
+
+      if (state.user.is_president) {
+        try {
+          const queue = await apiJson('president/applications');
+          const box = document.querySelector('[data-admin-trip-decisions]');
+          if (box) {
+            const apps = queue.applications || [];
+            box.innerHTML = apps.length ? apps.map(a =>
+              '<article class="compact-row"><div><strong>' + escapeHtml(a.trip_title + ' · ' + a.applicant_name) + '</strong><span>Leader recommendation: ' + escapeHtml(a.leader_recommendation || 'pending') + '</span></div>' +
+              '<div class="decision-actions">' +
+                '<button class="small-button" type="button" data-president-decision="' + a.id + '" data-decision="accepted">Accept</button>' +
+                '<button class="small-button" type="button" data-president-decision="' + a.id + '" data-decision="waitlisted">Waitlist</button>' +
+                '<button class="small-button" type="button" data-president-decision="' + a.id + '" data-decision="declined">Decline</button>' +
+              '</div></article>'
+            ).join('') : '<p>No applications are waiting for Presidential review.</p>';
+
+            box.querySelectorAll('[data-president-decision]').forEach(button => {
+              button.addEventListener('click', async () => {
+                const label = button.dataset.decision;
+                if (!confirm('Set this application to ' + label + '?')) return;
+                button.disabled = true;
+                try {
+                  await apiJson('president/applications/' + button.dataset.presidentDecision + '/decision', {
+                    method: 'POST',
+                    headers: { 'content-type': 'application/json', 'accept': 'application/json' },
+                    body: JSON.stringify({ decision: label })
+                  });
+                  await Promise.allSettled([syncAdmin(), syncTrips()]);
+                } catch (error) {
+                  alert(error.message);
+                  button.disabled = false;
+                }
+              });
+            });
+          }
+        } catch {}
+      }
 
       tbody.querySelectorAll('[data-member-status-toggle]').forEach(button => {
         button.addEventListener('click', async () => {
