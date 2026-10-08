@@ -1,3 +1,27 @@
 # Add Cloudflare Pages redirects here when needed.
 # Example:
 # /old-page  /  301
+
+# Member portal routes load the portal app and keep the selected page URL.
+/portal/dashboard /portal/index.html 200
+/portal/dashboard/ /portal/index.html 200
+/portal/trips /portal/index.html 200
+/portal/trips/ /portal/index.html 200
+/portal/applications /portal/index.html 200
+/portal/applications/ /portal/index.html 200
+/portal/gear /portal/index.html 200
+/portal/gear/ /portal/index.html 200
+/portal/grant /portal/index.html 200
+/portal/grant/ /portal/index.html 200
+/portal/membership /portal/index.html 200
+/portal/membership/ /portal/index.html 200
+/portal/support /portal/index.html 200
+/portal/support/ /portal/index.html 200
+/portal/profile /portal/index.html 200
+/portal/profile/ /portal/index.html 200
+/portal/community /portal/index.html 200
+/portal/community/ /portal/index.html 200
+/portal/leader /portal/index.html 200
+/portal/leader/ /portal/index.html 200
+/portal/admin /portal/index.html 200
+/portal/admin/ /portal/index.html 200
