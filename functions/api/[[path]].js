@@ -367,7 +367,7 @@ async function submitGrant(env, user, request) {
   const key = `grant/${m.grant_cycle || "2026-27"}/user-${user.id}/${Date.now()}-${randomToken(6)}-${safe}`;
   await env.GRANT_FILES.put(key, data, {
     httpMetadata: { contentType: "application/pdf" },
-    customMetadata: { user_id: String(user.id), email: user.email }
+    customMetadata: { user_id: String(user.id) }
   });
 
   await env.DB.prepare(
@@ -425,6 +425,22 @@ async function recommendApplication(env, user, applicationId, request) {
      WHERE id=?`
   ).bind(body.recommendation, user.id, applicationId).run();
   return json({ ok: true });
+}
+
+async function presidentApplications(env, user) {
+  if (!user.is_president) return json({ error: "President access required." }, 403);
+  const rows = await env.DB.prepare(
+    `SELECT ta.id,ta.status,ta.leader_recommendation,ta.president_decision,ta.submitted_at,
+            t.id AS trip_id,t.title AS trip_title,t.starts_at,
+            u.id AS user_id,u.name AS applicant_name,u.email AS applicant_email,u.membership_status
+     FROM trip_applications ta
+     JOIN trips t ON t.id=ta.trip_id
+     JOIN users u ON u.id=ta.user_id
+     WHERE ta.status IN ('submitted','under_review','waitlisted')
+       AND ta.president_decision IS NULL
+     ORDER BY ta.submitted_at`
+  ).all();
+  return json({ applications: rows.results || [] });
 }
 
 async function presidentDecision(env, user, applicationId, request) {
@@ -535,6 +551,7 @@ export async function onRequest(context) {
       const appId = intId(parts[2]);
       return appId ? recommendApplication(env, user, appId, request) : json({ error: "Invalid application id." }, 400);
     }
+    if (method === "GET" && path === "president/applications") return presidentApplications(env, user);
     if (method === "POST" && parts[0] === "president" && parts[1] === "applications" && parts[3] === "decision") {
       const appId = intId(parts[2]);
       return appId ? presidentDecision(env, user, appId, request) : json({ error: "Invalid application id." }, 400);
