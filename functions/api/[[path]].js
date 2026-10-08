@@ -366,7 +366,14 @@ async function submitGrant(env, user, request) {
   const form = await request.formData();
   const file = form.get("file");
   if (!file || typeof file.arrayBuffer !== "function") return json({ error: "A PDF file is required." }, 400);
-  if (file.size > 15 * 1024 * 1024) return json({ error: "PDF must be 15 MB or smaller." }, 413);
+  if (file.size > 5 * 1024 * 1024) return json({ error: "PDF must be 5 MB or smaller." }, 413);
+  const existing = await env.DB.prepare(
+    "SELECT id,r2_key,status FROM grant_applications WHERE user_id=? AND cycle=? ORDER BY submitted_at DESC LIMIT 1"
+  ).bind(user.id, m.grant_cycle || "2026-27").first();
+  if (existing && existing.status !== "withdrawn") {
+    return json({ error: "You already have a grant application on file for this cycle. Contact MCA leadership if you need to replace it." }, 409);
+  }
+
   const data = await file.arrayBuffer();
   const head = new TextDecoder().decode(data.slice(0, 4));
   if (head !== "%PDF") return json({ error: "The uploaded file must be a valid PDF." }, 400);
