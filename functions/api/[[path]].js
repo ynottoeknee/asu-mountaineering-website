@@ -378,6 +378,94 @@ async function submitGrant(env, user, request) {
   return json({ ok: true, status: "submitted" }, 201);
 }
 
+async function createTrip(env, user, request) {
+  if (!user.is_admin && !user.is_president) return json({ error: "Admin access required." }, 403);
+  let body;
+  try { body = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
+  const title = String(body.title || "").trim().slice(0, 140);
+  if (!title) return json({ error: "Trip title is required." }, 400);
+  const baseSlug = String(body.slug || title)
+    .toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 100);
+  if (!baseSlug) return json({ error: "Could not create a valid trip slug." }, 400);
+
+  const existing = await env.DB.prepare("SELECT id FROM trips WHERE slug=?").bind(baseSlug).first();
+  if (existing) return json({ error: "A trip with that slug already exists." }, 409);
+
+  const capacity = body.capacity == null || body.capacity === "" ? null : Number(body.capacity);
+  if (capacity != null && (!Number.isInteger(capacity) || capacity < 1 || capacity > 500)) {
+    return json({ error: "Capacity must be a positive whole number." }, 400);
+  }
+
+  await env.DB.prepare(
+    `INSERT INTO trips
+      (slug,title,category,starts_at,ends_at,location,difficulty,capacity,description,application_open,application_opens_at,application_closes_at,status,created_by)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+  ).bind(
+    baseSlug,
+    title,
+    String(body.category || "").trim().slice(0, 120) || null,
+    body.starts_at || null,
+    body.ends_at || null,
+    String(body.location || "").trim().slice(0, 200) || null,
+    String(body.difficulty || "").trim().slice(0, 120) || null,
+    capacity,
+    String(body.description || "").trim().slice(0, 4000) || null,
+    body.application_open === false ? 0 : 1,
+    body.application_opens_at || null,
+    body.application_closes_at || null,
+    ["draft","published"].includes(body.status) ? body.status : "published",
+    user.id
+  ).run();
+
+  const trip = await env.DB.prepare("SELECT * FROM trips WHERE slug=?").bind(baseSlug).first();
+  return json({ ok: true, trip }, 201);
+}
+
+async function setTripLeader(env, user, tripId, request) {
+  if (!user.is_admin && !user.is_president) return json({ error: "Admin access required." }, 403);
+  let body;
+  try { body = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
+  const memberId = intId(body.user_id);
+  if (!memberId) return json({ error: "A valid member id is required." }, 400);
+  const action = body.action === "remove" ? "remove" : "add";
+  if (action === "remove") {
+    await env.DB.prepare("DELETE FROM trip_leaders WHERE trip_id=? AND user_id=?").bind(tripId, memberId).run();
+  } else {
+    await env.DB.prepare("INSERT OR IGNORE INTO trip_leaders (trip_id,user_id) VALUES (?,?)").bind(tripId, memberId).run();
+  }
+  return json({ ok: true, action });
+}
+
+async function createGearItem(env, user, request) {
+  if (!user.is_admin && !user.is_president) return json({ error: "Admin access required." }, 403);
+  let body;
+  try { body = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
+  const code = String(body.asset_code || "").trim().slice(0, 80);
+  const name = String(body.name || "").trim().slice(0, 180);
+  if (!code || !name) return json({ error: "Asset code and item name are required." }, 400);
+  try {
+    await env.DB.prepare(
+      `INSERT INTO gear_items (asset_code,name,category,manufacturer,model,notes)
+       VALUES (?,?,?,?,?,?)`
+    ).bind(
+      code,
+      name,
+      String(body.category || "").trim().slice(0, 120) || null,
+      String(body.manufacturer || "").trim().slice(0, 120) || null,
+      String(body.model || "").trim().slice(0, 120) || null,
+      String(body.notes || "").trim().slice(0, 1000) || null
+    ).run();
+  } catch (error) {
+    if (String(error).toLowerCase().includes("unique")) return json({ error: "That asset code already exists." }, 409);
+    throw error;
+  }
+  const item = await env.DB.prepare("SELECT * FROM gear_items WHERE asset_code=?").bind(code).first();
+  return json({ ok: true, item }, 201);
+}
+
 async function adminMembers(env, user) {
   if (!user.is_admin && !user.is_president) return json({ error: "Admin access required." }, 403);
   const rows = await env.DB.prepare(
@@ -537,6 +625,12 @@ export async function onRequest(context) {
     if (method === "GET" && path === "grant") return grantStatus(env, user);
     if (method === "POST" && path === "grant/apply") return submitGrant(env, user, request);
 
+    if (method === "POST" && path === "admin/trips") return createTrip(env, user, request);
+    if (method === "POST" && parts[0] === "admin" && parts[1] === "trips" && parts[3] === "leaders") {
+      const tripId = intId(parts[2]);
+      return tripId ? setTripLeader(env, user, tripId, request) : json({ error: "Invalid trip id." }, 400);
+    }
+    if (method === "POST" && path === "admin/gear") return createGearItem(env, user, request);
     if (method === "GET" && path === "admin/members") return adminMembers(env, user);
     if (method === "POST" && parts[0] === "admin" && parts[1] === "members" && parts[3] === "status") {
       const memberId = intId(parts[2]);
