@@ -54,7 +54,7 @@ PRESIDENT_EMAIL
 
 Do not put OAuth secrets in the repository.
 
-When a person signs in for the first time, a Member account is created automatically. Only the Google account whose email matches `PRESIDENT_EMAIL` receives President/Admin permissions and can use the Admin page or its APIs. Other members cannot access Admin tools, even if their account has an old administrator flag. The President can grant or remove Distinguished Member status from the Admin page. Trip Leader access is determined by assignment in `trip_leaders`, not by a separate login.
+Only verified Google accounts ending in `@asu.edu` can create or use a member account. The single exception is the exact Google email configured in `PRESIDENT_EMAIL`, which receives President/Admin permissions and can use the Admin page or its APIs. Other members cannot access Admin tools, even if their account has an old administrator flag. Other members cannot access Admin tools, even if their account has an old administrator flag. The President can grant or remove Distinguished Member status from the Admin page. Trip Leader access is determined by assignment in `trip_leaders`, not by a separate login.
 
 ## 4. ASU Foundation giving link
 
