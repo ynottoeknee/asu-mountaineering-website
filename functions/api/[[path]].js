@@ -101,7 +101,9 @@ async function currentUser(env, request) {
      WHERE tl.user_id=? AND t.status='published'`
   ).bind(row.id).first();
   const presidentEmail = String(env.PRESIDENT_EMAIL || "").trim().toLowerCase();
-  const isPresident = !!presidentEmail && String(row.email || "").trim().toLowerCase() === presidentEmail;
+  const email = String(row.email || "").trim().toLowerCase();
+  const isPresident = !!presidentEmail && email === presidentEmail;
+  if (!isPresident && !email.endsWith("@asu.edu")) return null;
   return {
     id: row.id,
     email: row.email,
@@ -203,8 +205,14 @@ async function handleCallback(context) {
 
   const email = String(profile.email).trim().toLowerCase();
   const presidentEmail = String(env.PRESIDENT_EMAIL || "").trim().toLowerCase();
-  const isPresident = presidentEmail && email === presidentEmail ? 1 : 0;
-  const isAdmin = isPresident;
+  const isPresident = !!presidentEmail && email === presidentEmail;
+  if (!isPresident && !email.endsWith("@asu.edu")) {
+    return redirect("/portal/?auth=asu_email_required", {
+      "set-cookie": cookie(STATE_COOKIE, "", { maxAge: 0 })
+    });
+  }
+  const isPresidentFlag = isPresident ? 1 : 0;
+  const isAdmin = isPresidentFlag;
 
   await env.DB.prepare(
     `INSERT INTO users (email,name,avatar_url,is_admin,is_president)
@@ -215,7 +223,7 @@ async function handleCallback(context) {
        is_admin=excluded.is_admin,
        is_president=excluded.is_president,
        updated_at=CURRENT_TIMESTAMP`
-  ).bind(email, cleanName(profile.name), profile.picture || null, isAdmin, isPresident).run();
+  ).bind(email, cleanName(profile.name), profile.picture || null, isAdmin, isPresidentFlag).run();
 
   const user = await env.DB.prepare("SELECT id FROM users WHERE email=?").bind(email).first();
   const token = randomToken(40);
