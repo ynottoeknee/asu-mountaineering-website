@@ -226,7 +226,9 @@
       document.body.classList.remove('portal-auth-loading');
       document.body.classList.add('portal-auth-error');
       if (message) {
-        if (error.status === 401) message.textContent = 'Use your Google account to open the MCA member portal.';
+        const authError = new URLSearchParams(location.search).get('auth');
+        if (authError === 'asu_email_required') message.textContent = 'Use your ASU email to sign in. The MCA President may use the account configured for President access.';
+        else if (error.status === 401) message.textContent = 'Use your ASU Google account to open the MCA member portal.';
         else if (error.status === 503) message.textContent = 'The portal code is live, but the Cloudflare database and Google sign-in still need their one-time configuration.';
         else message.textContent = 'The member portal could not connect. Please try again.';
       }
