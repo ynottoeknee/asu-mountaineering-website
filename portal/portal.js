@@ -579,20 +579,29 @@
               (p.experience_summary ? '<p><strong>Experience</strong><br>' + escapeHtml(p.experience_summary) + '</p>' : '') +
               (p.primary_interests ? '<p><strong>Interests</strong><br>' + escapeHtml(p.primary_interests) + '</p>' : '') +
               (p.transportation ? '<p><strong>Transportation</strong> ' + escapeHtml(p.transportation) + '</p>' : '') +
-              (p.about_me ? '<p>' + escapeHtml(p.about_me) + '</p>' : '') + '</article>').join('') + '</div>' : '<p>No participants have been accepted yet.</p>') + '</section>';
-          const applicationsSection = apps.length ? '<h3>Trip applications</h3><div class="table-scroll"><table><thead><tr><th>Applicant</th><th>Status</th><th>Submitted</th><th>Recommendation</th></tr></thead><tbody>' +
-            apps.map(a =>
-              '<tr><td><strong>' + escapeHtml(a.name) + '</strong><small>' + escapeHtml(a.membership_status === 'distinguished' ? 'Distinguished Member' : 'Member') + '</small>' +
-              '<details><summary>Read answers</summary><div>' + Object.entries((()=>{try{return JSON.parse(a.answers_json||'{}')}catch{return {}}})()).map(([k,v])=>'<p><strong>'+escapeHtml(k.replace(/_/g,' '))+':</strong> '+escapeHtml(v)+'</p>').join('') + '</div></details></td>' +
-              '<td>' + escapeHtml(a.status.replace('_',' ')) + '</td>' +
-              '<td>' + escapeHtml(formatDate(a.submitted_at)) + '</td>' +
-              '<td><select data-recommend-app="' + a.id + '">' +
-                '<option value="">Choose…</option>' +
-                '<option value="accept"' + (a.leader_recommendation === 'accept' ? ' selected' : '') + '>Recommend accept</option>' +
-                '<option value="waitlist"' + (a.leader_recommendation === 'waitlist' ? ' selected' : '') + '>Recommend waitlist</option>' +
-                '<option value="decline"' + (a.leader_recommendation === 'decline' ? ' selected' : '') + '>Recommend decline</option>' +
-              '</select></td></tr>'
-            ).join('') +
+              (p.about_me ? '<p>' + escapeHtml(p.about_me) + '</p>' : '') +
+              (state.user?.is_president ? '<button class="small-button" type="button" data-remove-trip-participant="' + tripId + '" data-participant-user="' + p.user_id + '" aria-label="Remove ' + escapeHtml(p.name) + ' from this trip">Remove from trip</button>' : '') +
+              '</article>').join('') + '</div>' : '<p>No participants have been accepted yet.</p>') + '</section>';
+          const applicationsSection = apps.length ? '<h3>Trip applications</h3><div class="table-scroll"><table><thead><tr><th>Applicant</th><th>Status</th><th>Submitted</th><th>Leader recommendation / action</th></tr></thead><tbody>' +
+            apps.map(a => {
+              const finalDecision = a.president_decision ? 'Final decision: ' + a.president_decision : '';
+              const action = a.status === 'accepted'
+                ? '<span class="status-pill status-success">Accepted to trip</span>'
+                : finalDecision
+                  ? '<span>' + escapeHtml(finalDecision) + '</span>'
+                  : '<div class="decision-actions"><button class="small-button" type="button" data-leader-accept="' + a.id + '">Accept applicant</button>' +
+                    '<select data-recommend-app="' + a.id + '">' +
+                      '<option value=""' + (!a.leader_recommendation ? ' selected' : '') + '>Optional recommendation…</option>' +
+                      '<option value="accept"' + (a.leader_recommendation === 'accept' ? ' selected' : '') + '>Recommend accept (not final)</option>' +
+                      '<option value="waitlist"' + (a.leader_recommendation === 'waitlist' ? ' selected' : '') + '>Recommend waitlist</option>' +
+                      '<option value="decline"' + (a.leader_recommendation === 'decline' ? ' selected' : '') + '>Recommend decline</option>' +
+                    '</select></div>';
+              return '<tr><td><strong>' + escapeHtml(a.name) + '</strong><small>' + escapeHtml(a.membership_status === 'distinguished' ? 'Distinguished Member' : 'Member') + '</small>' +
+                '<details><summary>Read answers</summary><div>' + Object.entries((()=>{try{return JSON.parse(a.answers_json||'{}')}catch{return {}}})()).map(([k,v])=>'<p><strong>'+escapeHtml(k.replace(/_/g,' '))+':</strong> '+escapeHtml(v)+'</p>').join('') + '</div></details></td>' +
+                '<td>' + escapeHtml(a.status.replace('_',' ')) + '</td>' +
+                '<td>' + escapeHtml(formatDate(a.submitted_at)) + '</td>' +
+                '<td>' + action + '</td></tr>';
+            }).join('') +
             '</tbody></table></div>' : '<p>No applications have been submitted for this trip yet.</p>';
           target.innerHTML = participantSection + applicationsSection;
 
@@ -611,6 +620,42 @@
                 alert(error.message);
               } finally {
                 select.disabled = false;
+              }
+            });
+          });
+          target.querySelectorAll('[data-leader-accept]').forEach(button => {
+            button.addEventListener('click', async () => {
+              if (!confirm('Accept this applicant onto the trip?')) return;
+              button.disabled = true;
+              try {
+                await apiJson('leader/applications/' + button.dataset.leaderAccept + '/decision', {
+                  method: 'POST',
+                  headers: { 'content-type': 'application/json', 'accept': 'application/json' },
+                  body: JSON.stringify({ decision: 'accepted' })
+                });
+                await syncTrips();
+                wrap.querySelector('[data-load-leader-apps="' + tripId + '"]')?.click();
+              } catch (error) {
+                alert(error.message);
+                button.disabled = false;
+              }
+            });
+          });
+          target.querySelectorAll('[data-remove-trip-participant]').forEach(button => {
+            button.addEventListener('click', async () => {
+              if (!confirm('Remove this participant from the trip? Their application will be marked declined.')) return;
+              button.disabled = true;
+              try {
+                await apiJson('president/trips/' + button.dataset.removeTripParticipant + '/participants/' + button.dataset.participantUser + '/remove', {
+                  method: 'POST',
+                  headers: { 'content-type': 'application/json', 'accept': 'application/json' },
+                  body: JSON.stringify({})
+                });
+                await Promise.allSettled([syncTrips(), syncAdmin()]);
+                wrap.querySelector('[data-load-leader-apps="' + tripId + '"]')?.click();
+              } catch (error) {
+                alert(error.message);
+                button.disabled = false;
               }
             });
           });
