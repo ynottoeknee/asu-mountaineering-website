@@ -78,6 +78,16 @@ async function ensurePortalAdditions(env) {
   } catch (error) {
     console.warn("Could not add unique active rental index; preserving current checkout records.", error);
   }
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS trip_application_forms (
+    trip_id INTEGER PRIMARY KEY REFERENCES trips(id) ON DELETE CASCADE,
+    mode TEXT NOT NULL DEFAULT 'standard',
+    title TEXT,
+    fields_json TEXT NOT NULL DEFAULT '[]',
+    pdf_key TEXT,
+    pdf_name TEXT,
+    updated_by INTEGER REFERENCES users(id),
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+  )`).run();
   portalSchemaReady = true;
 }
 
@@ -365,7 +375,18 @@ async function applyToTrip(env, user, tripId, request) {
 
   let body = {};
   try { body = await request.json(); } catch {}
-  const answers = JSON.stringify(body.answers && typeof body.answers === "object" ? body.answers : {});
+  const form=await tripForm(env,tripId);
+  const fields=formFields(form);
+  const supplied=body.answers && typeof body.answers==="object" && !Array.isArray(body.answers)?body.answers:{};
+  const validated={};
+  for(const field of fields){
+    const raw=supplied[field.key];
+    const answer=typeof raw==="string"?raw.trim().slice(0,4000):"";
+    if(field.required && !answer)return json({error:"Please answer: "+field.label},400);
+    if(field.type==="select" && answer && !field.options.includes(answer))return json({error:"Invalid answer for "+field.label},400);
+    validated[field.key]=answer;
+  }
+  const answers=JSON.stringify(validated);
 
   await env.DB.prepare(
     `INSERT INTO trip_applications (trip_id,user_id,answers_json,status)
@@ -715,6 +736,79 @@ async function returnGear(env, user, checkoutId) {
   return json({ ok: true });
 }
 
+
+const DEFAULT_TRIP_FIELDS = [
+  {key:"motivation",label:"Why do you want to join this trip?",type:"paragraph",required:true},
+  {key:"experience",label:"Relevant hiking, climbing, or mountaineering experience",type:"paragraph",required:true},
+  {key:"preparation",label:"How are you preparing for this objective?",type:"paragraph",required:true},
+  {key:"needs",label:"Transportation, equipment or other needs",type:"paragraph",required:false},
+  {key:"transportation",label:"Transportation",type:"select",options:["Need a ride","Can drive","Either works"],required:true}
+];
+function formFields(row) {
+  let custom=[];
+  try { custom=JSON.parse(row?.fields_json||"[]"); } catch {}
+  return (row?.mode==="custom" && Array.isArray(custom)) ? [...DEFAULT_TRIP_FIELDS,...custom] : DEFAULT_TRIP_FIELDS;
+}
+async function tripForm(env,tripId) {
+  return await env.DB.prepare("SELECT * FROM trip_application_forms WHERE trip_id=?").bind(tripId).first();
+}
+async function getTripForm(env,user,tripId) {
+  const trip=await env.DB.prepare("SELECT id,title,status FROM trips WHERE id=?").bind(tripId).first();
+  if (!trip || (trip.status==="draft" && !(await canManageTrip(env,user,tripId)))) return json({error:"Trip not found."},404);
+  const row=await tripForm(env,tripId);
+  return json({form:{mode:row?.mode||"standard",title:row?.title||trip.title+" Application",fields:formFields(row),pdf_name:row?.pdf_name||null,pdf_available:!!row?.pdf_key}});
+}
+async function saveTripForm(env,user,tripId,request) {
+  if (!(await canManageTrip(env,user,tripId))) return json({error:"Trip leader access required."},403);
+  let body;try{body=await request.json();}catch{return json({error:"Invalid JSON."},400)}
+  if(!["standard","custom","upload"].includes(body.mode)) return json({error:"Invalid application type."},400);
+  const title=String(body.title||"Trip Application").trim().slice(0,120);
+  const input=Array.isArray(body.fields)?body.fields:[];
+  if(input.length>25) return json({error:"Maximum 25 custom questions."},400);
+  const fields=[];
+  for(let i=0;i<input.length;i++){
+    const f=input[i]||{};
+    if(!["short","paragraph","select","checkbox"].includes(f.type))return json({error:"Invalid question type."},400);
+    const label=String(f.label||"").trim().slice(0,220);
+    if(!label)return json({error:"Question text required."},400);
+    const options=f.type==="select"?(Array.isArray(f.options)?f.options:[]).map(x=>String(x).trim().slice(0,100)).filter(Boolean).slice(0,12):[];
+    if(f.type==="select" && !options.length)return json({error:"Multiple choice questions need options."},400);
+    fields.push({key:"custom_"+i,label,type:f.type,required:!!f.required,options});
+  }
+  await env.DB.prepare(`INSERT INTO trip_application_forms(trip_id,mode,title,fields_json,updated_by)
+    VALUES(?,?,?,?,?) ON CONFLICT(trip_id) DO UPDATE SET mode=excluded.mode,title=excluded.title,
+    fields_json=excluded.fields_json,updated_by=excluded.updated_by,updated_at=CURRENT_TIMESTAMP`)
+    .bind(tripId,body.mode,title,JSON.stringify(fields),user.id).run();
+  return json({ok:true});
+}
+async function uploadTripFormPdf(env,user,tripId,request){
+  if(!(await canManageTrip(env,user,tripId)))return json({error:"Trip leader access required."},403);
+  if(!env.GRANT_FILES)return json({error:"File storage unavailable."},503);
+  const data=await request.formData();
+  const file=data.get("file");
+  if(!file || typeof file.arrayBuffer!=="function")return json({error:"PDF required."},400);
+  if(file.size>5*1024*1024 || file.size===0)return json({error:"PDF must be under 5 MB."},400);
+  const buf=await file.arrayBuffer();
+  const bytes=new Uint8Array(buf);
+  if(String.fromCharCode(...bytes.slice(0,5))!=="%PDF-")return json({error:"File must be a PDF."},400);
+  const key="trip-application-forms/"+tripId+"/"+crypto.randomUUID()+".pdf";
+  await env.GRANT_FILES.put(key,buf,{httpMetadata:{contentType:"application/pdf"}});
+  await env.DB.prepare(`INSERT INTO trip_application_forms(trip_id,mode,title,fields_json,pdf_key,pdf_name,updated_by)
+    VALUES(?,'upload','Trip Application','[]',?,?,?)
+    ON CONFLICT(trip_id) DO UPDATE SET mode='upload',pdf_key=excluded.pdf_key,pdf_name=excluded.pdf_name,updated_by=excluded.updated_by,updated_at=CURRENT_TIMESTAMP`)
+    .bind(tripId,key,String(file.name||"application.pdf").slice(0,150),user.id).run();
+  return json({ok:true});
+}
+async function downloadTripFormPdf(env,user,tripId) {
+  const form=await tripForm(env,tripId);
+  const trip=await env.DB.prepare("SELECT status FROM trips WHERE id=?").bind(tripId).first();
+  if(!trip||trip.status==="draft"&&!(await canManageTrip(env,user,tripId)))return json({error:"Trip not found."},404);
+  if(!form?.pdf_key||!env.GRANT_FILES)return json({error:"PDF unavailable."},404);
+  const object=await env.GRANT_FILES.get(form.pdf_key);
+  if(!object)return json({error:"PDF unavailable."},404);
+  return new Response(object.body,{headers:{"content-type":"application/pdf","content-disposition":"attachment; filename=\"MCA-trip-application.pdf\"","cache-control":"private, no-store"}});
+}
+
 export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
@@ -744,6 +838,10 @@ export async function onRequest(context) {
       const tripId = intId(parts[1]);
       return tripId ? applyToTrip(env, user, tripId, request) : json({ error: "Invalid trip id." }, 400);
     }
+    if (parts[0] === "trips" && parts[2] === "form" && parts.length===3 && method==="GET") return getTripForm(env,user,intId(parts[1]));
+    if (parts[0] === "trips" && parts[2] === "form-pdf" && parts.length===3 && method==="GET") return downloadTripFormPdf(env,user,intId(parts[1]));
+    if (parts[0] === "leader" && parts[1]==="trips" && parts[3]==="form" && method==="PUT") return saveTripForm(env,user,intId(parts[2]),request);
+    if (parts[0] === "leader" && parts[1]==="trips" && parts[3]==="form-pdf" && method==="POST") return uploadTripFormPdf(env,user,intId(parts[2]),request);
     if (method === "GET" && path === "applications") return myApplications(env, user);
     if (method === "GET" && path === "gear") return listGear(env);
     if (method === "GET" && path === "grant") return grantStatus(env, user);
