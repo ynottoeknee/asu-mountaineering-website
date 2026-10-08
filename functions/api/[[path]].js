@@ -88,6 +88,17 @@ async function ensurePortalAdditions(env) {
     updated_by INTEGER REFERENCES users(id),
     updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
   )`).run();
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS gear_rental_requests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    gear_item_id INTEGER NOT NULL REFERENCES gear_items(id),
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    trip_id INTEGER NOT NULL REFERENCES trips(id),
+    status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','approved','declined')),
+    reviewed_by INTEGER REFERENCES users(id),
+    reviewed_at TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+  )`).run();
+  await env.DB.prepare("CREATE UNIQUE INDEX IF NOT EXISTS idx_one_pending_rental_request ON gear_rental_requests(gear_item_id) WHERE status='pending'").run();
   portalSchemaReady = true;
 }
 
@@ -700,33 +711,47 @@ async function checkoutGear(env, user, gearId, request) {
 }
 
 async function reserveGear(env, user, gearId, request) {
-  let body;
-  try { body = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
-  const tripId = intId(body.trip_id);
-  if (!tripId) return json({ error: "Choose an accepted trip." }, 400);
-  const trip = await env.DB.prepare("SELECT id,status,ends_at FROM trips WHERE id=?").bind(tripId).first();
-  if (!trip || trip.status !== "published") return json({ error: "That trip is not available." }, 404);
-  const participation = await env.DB.prepare(
-    "SELECT 1 AS ok FROM trip_participants WHERE trip_id=? AND user_id=? UNION SELECT 1 AS ok FROM trip_leaders WHERE trip_id=? AND user_id=? LIMIT 1"
-  ).bind(tripId,user.id,tripId,user.id).first();
-  if (!participation) return json({ error: "Gear can only be rented for a trip you are accepted on or leading." }, 403);
-  const item = await env.DB.prepare("SELECT id FROM gear_items WHERE id=? AND active=1").bind(gearId).first();
-  if (!item) return json({ error: "Gear item not found." }, 404);
+  let body; try { body=await request.json(); } catch {return json({error:"Invalid JSON."},400);}
+  const tripId=intId(body.trip_id);
+  if(!tripId)return json({error:"Choose an accepted trip."},400);
+  const trip=await env.DB.prepare("SELECT id FROM trips WHERE id=? AND status='published'").bind(tripId).first();
+  if(!trip)return json({error:"Trip not available."},404);
+  const participant=await env.DB.prepare("SELECT 1 ok FROM trip_participants WHERE trip_id=? AND user_id=? UNION SELECT 1 ok FROM trip_leaders WHERE trip_id=? AND user_id=? LIMIT 1").bind(tripId,user.id,tripId,user.id).first();
+  if(!participant)return json({error:"Only accepted participants and assigned leaders can request gear."},403);
+  const item=await env.DB.prepare("SELECT id FROM gear_items WHERE id=? AND active=1").bind(gearId).first();
+  if(!item)return json({error:"Equipment not found."},404);
+  const out=await env.DB.prepare("SELECT id FROM gear_checkouts WHERE gear_item_id=? AND returned_at IS NULL").bind(gearId).first();
+  if(out)return json({error:"This item is checked out."},409);
   try {
-    const result = await env.DB.prepare(
-      `INSERT INTO gear_checkouts (gear_item_id,user_id,trip_id,checked_out_by,due_at)
-       SELECT ?,?,?,?,? WHERE NOT EXISTS (
-         SELECT 1 FROM gear_checkouts WHERE gear_item_id=? AND returned_at IS NULL
-       )`
-    ).bind(gearId,user.id,tripId,user.id,trip.ends_at || null,gearId).run();
-    if (!result.meta?.changes) return json({ error: "That item has already been rented. Choose another available item." }, 409);
-  } catch (error) {
-    if (String(error).toLowerCase().includes("unique")) return json({ error: "That item has already been rented. Choose another available item." }, 409);
-    throw error;
-  }
-  return json({ ok: true }, 201);
+    await env.DB.prepare("INSERT INTO gear_rental_requests(gear_item_id,user_id,trip_id) VALUES(?,?,?)").bind(gearId,user.id,tripId).run();
+  }catch(error){if(String(error).includes("UNIQUE")||String(error).toLowerCase().includes("unique"))return json({error:"An approval request is already pending for this item."},409);throw error;}
+  return json({ok:true,status:"pending"},201);
 }
-
+async function rentalRequests(env,user) {
+  if(!user.is_president)return json({error:"President access required."},403);
+  const rows=await env.DB.prepare(`SELECT r.id,r.gear_item_id,r.user_id,r.trip_id,r.status,r.created_at,g.name AS gear_name,g.asset_code,u.name AS member_name,u.email,t.title AS trip_title
+    FROM gear_rental_requests r JOIN gear_items g ON g.id=r.gear_item_id JOIN users u ON u.id=r.user_id JOIN trips t ON t.id=r.trip_id
+    WHERE r.status='pending' ORDER BY r.created_at`).all();
+  return json({requests:rows.results||[]});
+}
+async function decideRental(env,user,requestId,request) {
+  if(!user.is_president)return json({error:"President access required."},403);
+  let body;try{body=await request.json();}catch{return json({error:"Invalid JSON."},400)}
+  if(!["approved","declined"].includes(body.decision))return json({error:"Invalid decision."},400);
+  const r=await env.DB.prepare(`SELECT r.*,t.ends_at FROM gear_rental_requests r JOIN trips t ON t.id=r.trip_id WHERE r.id=? AND r.status='pending'`).bind(requestId).first();
+  if(!r)return json({error:"Pending request not found."},404);
+  if(body.decision==="approved"){
+    const out=await env.DB.prepare("SELECT id FROM gear_checkouts WHERE gear_item_id=? AND returned_at IS NULL").bind(r.gear_item_id).first();
+    if(out)return json({error:"Item already checked out. Decline this request or return the item first."},409);
+    try{
+      await env.DB.prepare(`INSERT INTO gear_checkouts(gear_item_id,user_id,trip_id,checked_out_by,due_at,notes)
+        SELECT ?,?,?,?,?,? WHERE NOT EXISTS(SELECT 1 FROM gear_checkouts WHERE gear_item_id=? AND returned_at IS NULL)`)
+        .bind(r.gear_item_id,r.user_id,r.trip_id,user.id,r.ends_at||null,"Approved request #"+r.id,r.gear_item_id).run();
+    }catch(error){if(String(error).toLowerCase().includes("unique"))return json({error:"Item no longer available."},409);throw error;}
+  }
+  await env.DB.prepare("UPDATE gear_rental_requests SET status=?,reviewed_by=?,reviewed_at=CURRENT_TIMESTAMP WHERE id=? AND status='pending'").bind(body.decision,user.id,requestId).run();
+  return json({ok:true,status:body.decision});
+}
 async function returnGear(env, user, checkoutId) {
   if (!user.is_president) return json({ error: "President access required." }, 403);
   const result = await env.DB.prepare(
@@ -852,6 +877,8 @@ export async function onRequest(context) {
       const tripId = intId(parts[2]);
       return tripId ? setTripLeader(env, user, tripId, request) : json({ error: "Invalid trip id." }, 400);
     }
+    if (method==="GET" && path==="admin/rental-requests") return rentalRequests(env,user);
+    if (method==="POST" && parts[0]==="admin" && parts[1]==="rental-requests" && parts[3]==="decision") return decideRental(env,user,intId(parts[2]),request);
     if (method === "POST" && path === "admin/gear") return createGearItem(env, user, request);
     if (method === "GET" && path === "admin/members") return adminMembers(env, user);
     if (method === "POST" && parts[0] === "admin" && parts[1] === "members" && parts[3] === "status") {
