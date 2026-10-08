@@ -20,7 +20,8 @@
     adminMembers: [],
     dashboardTripId: null,
     annualSupportCents: 0,
-    selectedTrip: null
+    selectedTrip: null,
+    tripFilter: 'all'
   };
 
   const tripData = {
@@ -332,6 +333,41 @@
     renderGear();
   }
 
+  function applyTripFilters() {
+    const tbody = document.querySelector('[data-view-panel="trips"] .table-card tbody');
+    if (!tbody) return;
+    const rows = [...tbody.querySelectorAll('[data-trip-row]')];
+    if (!rows.length) return;
+    const filter = state.tripFilter || 'all';
+    const q = (document.querySelector('[data-trip-search]')?.value || '').trim().toLowerCase();
+    let visible = 0;
+    rows.forEach(row => {
+      const matchesFilter = filter === 'all' || row.dataset.filter === filter;
+      const matchesSearch = !q || row.textContent.toLowerCase().includes(q);
+      row.hidden = !(matchesFilter && matchesSearch);
+      if (!row.hidden) visible += 1;
+    });
+    let empty = tbody.querySelector('[data-trip-filter-empty]');
+    if (!visible) {
+      if (!empty) {
+        empty = document.createElement('tr');
+        empty.dataset.tripFilterEmpty = '';
+        empty.innerHTML = '<td colspan="6"></td>';
+        tbody.appendChild(empty);
+      }
+      const message = q
+        ? 'No trips match your search.'
+        : filter === 'mine'
+          ? 'No trips are linked to your account yet. Trips you have applied to or are assigned to lead will appear here.'
+          : filter === 'open'
+            ? 'No trips are currently open for applications.'
+            : 'No trips match your search.';
+      empty.querySelector('td').textContent = message;
+    } else if (empty) {
+      empty.remove();
+    }
+  }
+
   function renderTripsTable(trips) {
     const tbody = document.querySelector('[data-view-panel="trips"] .table-card tbody');
     if (!tbody) return;
@@ -343,7 +379,10 @@
       const present = applicationPresentation(t.my_application_status, !!t.application_open);
       const leaders = (t.leaders || []).length ? t.leaders.map(l => escapeHtml(l.name)).join(' · ') : 'TBD';
       const status = t.my_application_status ? '<span class="status-pill ' + present.cls + '">' + escapeHtml(present.text) + '</span>' : 'Not applied';
-      return '<tr data-trip-row data-filter="' + (t.my_application_status === 'accepted' ? 'mine' : (t.application_open ? 'open' : 'all')) + '">' +
+      const isMine = !!t.my_application_status || (t.leaders || []).some(l =>
+        Number(l.user_id || l.id) === Number(state.user?.id)
+      );
+      return '<tr data-trip-row data-filter="' + (isMine ? 'mine' : (t.application_open ? 'open' : 'all')) + '">' +
         '<td><strong>' + escapeHtml(t.title) + '</strong><small>' + escapeHtml(t.category || 'MCA trip') + '</small></td>' +
         '<td>' + escapeHtml(formatDate(t.starts_at)) + '</td>' +
         '<td>' + leaders + '</td>' +
@@ -353,6 +392,7 @@
         '</tr>';
     }).join('');
     tbody.querySelectorAll('[data-trip]').forEach(button => button.addEventListener('click', () => openTripDetail(button.dataset.trip)));
+    applyTripFilters();
   }
 
   async function openTripDetail(slug) {
@@ -909,22 +949,13 @@
     button.addEventListener('click', () => {
       document.querySelectorAll('[data-trip-filter]').forEach(b => b.classList.remove('active'));
       button.classList.add('active');
-      const filter = button.dataset.tripFilter;
-      document.querySelectorAll('[data-trip-row]').forEach(row => {
-        row.hidden = filter !== 'all' && row.dataset.filter !== filter;
-      });
+      state.tripFilter = button.dataset.tripFilter;
+      applyTripFilters();
     });
   });
 
   const tripSearch = document.querySelector('[data-trip-search]');
-  if (tripSearch) {
-    tripSearch.addEventListener('input', () => {
-      const q = tripSearch.value.trim().toLowerCase();
-      document.querySelectorAll('[data-trip-row]').forEach(row => {
-        row.hidden = !!q && !row.textContent.toLowerCase().includes(q);
-      });
-    });
-  }
+  if (tripSearch) tripSearch.addEventListener('input', applyTripFilters);
 
   const gearSearch = document.querySelector('[data-gear-search]');
   if (gearSearch) {
