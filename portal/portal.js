@@ -15,6 +15,10 @@
   const state = {
     user: null,
     trips: {},
+    gear: [],
+    adminMembers: [],
+    dashboardTripId: null,
+    annualSupportCents: 0,
     selectedTrip: null
   };
 
@@ -151,15 +155,27 @@
 
   function hydrateIdentity(data) {
     state.user = data.user;
+    if (data.annual_support_cents != null) state.annualSupportCents = Number(data.annual_support_cents) || 0;
     const user = data.user;
-    const firstName = (user.name || 'member').split(/\s+/)[0];
+    const name = [user.profile_first_name, user.profile_last_name].filter(Boolean).join(' ') || user.name || 'Member';
+    const firstName = (user.profile_first_name || name).split(/\s+/)[0];
 
-    document.querySelectorAll('[data-member-name]').forEach(el => el.textContent = user.name || 'Member');
+    document.querySelectorAll('[data-member-name]').forEach(el => el.textContent = name);
     document.querySelectorAll('[data-member-first-name]').forEach(el => el.textContent = firstName);
-    document.querySelectorAll('[data-member-initials]').forEach(el => el.textContent = initials(user.name));
+    document.querySelectorAll('[data-member-initials]').forEach(el => el.textContent = initials(name));
     document.querySelectorAll('[data-member-status]').forEach(el => el.textContent = user.membership_status === 'distinguished' ? 'Distinguished Member' : 'Member');
     document.querySelectorAll('[data-member-email]').forEach(el => el.value = user.email || '');
-    document.querySelectorAll('[data-membership-name]').forEach(el => el.textContent = user.name || 'Member');
+    document.querySelectorAll('[data-membership-name]').forEach(el => el.textContent = name);
+
+    const profile = document.querySelector('[data-profile-form]');
+    if (profile) {
+      profile.querySelector('[data-profile-first-name]').value = user.profile_first_name || firstName;
+      profile.querySelector('[data-profile-last-name]').value = user.profile_last_name || name.split(/\s+/).slice(1).join(' ');
+      profile.querySelector('[data-profile-phone]').value = user.phone || '';
+      profile.querySelector('[data-profile-experience]').value = user.experience_summary || '';
+      profile.querySelector('[data-profile-interests]').value = user.primary_interests || '';
+      profile.querySelector('[data-profile-transportation]').value = user.transportation || '';
+    }
 
     const membershipPill = document.querySelector('[data-membership-pill]');
     if (membershipPill) {
@@ -176,12 +192,21 @@
       pills.innerHTML = values.map(v => '<span class="status-pill ' + v[1] + '">' + escapeHtml(v[0]) + '</span>').join('');
     }
 
+    const roleList = document.querySelector('[data-membership-roles]');
+    if (roleList) {
+      const roles = [['Member','MCA member account']];
+      if (user.is_trip_leader) roles.push(['Trip Leader','Assigned to one or more trips']);
+      if (user.is_president) roles.push(['President','Portal administration']);
+      else if (user.is_admin) roles.push(['Admin','Portal administration']);
+      roleList.innerHTML = roles.map(role => '<div><strong>' + escapeHtml(role[0]) + '</strong><span>' + escapeHtml(role[1]) + '</span></div>').join('');
+    }
+
     const leaderNav = document.querySelector('[data-trip-leader-nav]');
     const adminNav = document.querySelector('[data-admin-nav]');
     if (leaderNav) leaderNav.hidden = !user.is_trip_leader;
     if (adminNav) adminNav.hidden = !(user.is_admin || user.is_president);
 
-    const support = Number(data.annual_support_cents || 0) / 100;
+    const support = state.annualSupportCents / 100;
     document.querySelectorAll('.support-summary > strong').forEach(el => el.textContent = '$' + support.toLocaleString());
   }
 
@@ -249,6 +274,8 @@
         difficulty: t.difficulty || base.difficulty,
         capacity: t.capacity ? String(t.capacity) + ' participants' : base.capacity,
         leaders: (t.leaders || []).length ? t.leaders.map(l => l.name).join(' · ') : 'To be assigned',
+        leaderNames: t.leaders || [],
+        leaderIds: (t.leaders || []).map(l => Number(l.user_id || l.id)),
         rosterCount: Number(t.roster_count || 0),
         myApplicationStatus: t.my_application_status,
         applicationStatus: present.text,
@@ -261,7 +288,41 @@
       state.trips[t.slug] = base;
     });
 
+    if (state.user) {
+      state.user.is_trip_leader = trips.some(t => (t.leaders || []).some(l => Number(l.user_id || l.id) === Number(state.user.id)));
+      hydrateIdentity({ user: state.user });
+    }
     renderTripsTable(trips);
+    renderLeaderTrips(trips);
+    renderLeaderAssignmentControls();
+    const nextTrip = trips.filter(t => t.my_application_status === 'accepted')
+      .sort((a,b) => new Date(a.starts_at || '9999-12-31') - new Date(b.starts_at || '9999-12-31'))[0];
+    const dashboardTitle = document.querySelector('[data-dashboard-trip-title]');
+    const dashboardStatus = document.querySelector('[data-dashboard-trip-status]');
+    const dashboardDate = document.querySelector('[data-dashboard-trip-date]');
+    const dashboardRoster = document.querySelector('[data-dashboard-trip-roster]');
+    const dashboardLeaders = document.querySelector('[data-dashboard-trip-leaders]');
+    const dashboardButton = document.querySelector('[data-dashboard-trip-button]');
+    state.dashboardTripId = nextTrip?.id || null;
+    if (dashboardTitle) dashboardTitle.textContent = nextTrip?.title || 'No accepted trip yet';
+    if (dashboardStatus) {
+      dashboardStatus.textContent = nextTrip ? 'Accepted' : 'None';
+      dashboardStatus.className = 'status-pill' + (nextTrip ? ' status-success' : '');
+    }
+    if (dashboardDate) dashboardDate.textContent = nextTrip ? formatDate(nextTrip.starts_at) : '—';
+    if (dashboardRoster) dashboardRoster.textContent = nextTrip ? String(nextTrip.roster_count || 0) + ' members' : '—';
+    if (dashboardLeaders) dashboardLeaders.textContent = nextTrip && (nextTrip.leaders || []).length ? nextTrip.leaders.map(l => l.name).join(' · ') : 'To be assigned';
+    if (dashboardButton) {
+      dashboardButton.hidden = !nextTrip;
+      if (nextTrip) {
+        dashboardButton.dataset.trip = nextTrip.slug;
+        dashboardButton.onclick = () => openTripDetail(nextTrip.slug);
+      }
+      else dashboardButton.removeAttribute('data-trip');
+    }
+    const leaderLine = document.querySelector('[data-dashboard-trip-leaders]');
+    if (!nextTrip && leaderLine) leaderLine.textContent = 'To be assigned';
+    renderGear();
   }
 
   function renderTripsTable(trips) {
@@ -458,13 +519,22 @@
 
   async function syncGear() {
     const data = await apiJson('gear');
+    state.gear = data.gear || [];
+    renderGear();
+  }
+
+  function renderGear() {
     const tbody = document.querySelector('[data-gear-table]');
     if (!tbody) return;
-    const gear = data.gear || [];
+    const gear = state.gear;
     if (!gear.length) {
-      tbody.innerHTML = '<tr><td colspan="6">No gear has been added to the portal inventory yet.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7">No gear has been added to the portal inventory yet.</td></tr>';
+      updateGearSummary(gear);
       return;
     }
+    const reservableTrips = Object.values(state.trips).filter(t => t.id && (
+      t.myApplicationStatus === 'accepted' || (t.leaderIds || []).includes(Number(state.user?.id))
+    ));
     tbody.innerHTML = gear.map(g => {
       const out = !!g.checkout_id;
       return '<tr><td><strong>' + escapeHtml(g.asset_code + ' · ' + g.name) + '</strong></td>' +
@@ -472,8 +542,44 @@
         '<td><span class="status-pill ' + (out ? 'status-out' : 'status-available') + '">' + (out ? 'Checked out' : 'Available') + '</span></td>' +
         '<td>' + escapeHtml(g.holder || '—') + '</td>' +
         '<td>' + escapeHtml(g.trip_title || '—') + '</td>' +
-        '<td>' + escapeHtml(g.due_at ? formatDate(g.due_at) : '—') + '</td></tr>';
+        '<td>' + escapeHtml(g.due_at ? formatDate(g.due_at) : '—') + '</td>' +
+        '<td>' + (out ? (Number(g.user_id) === Number(state.user?.id) ? 'Checked out to you' : 'Unavailable') : (reservableTrips.length ?
+          '<label class="gear-rental-control"><span class="sr-only">Trip for ' + escapeHtml(g.name) + '</span><select data-rental-trip><option value="">Choose trip</option>' + reservableTrips.map(t => '<option value="' + t.id + '">' + escapeHtml(t.title) + '</option>').join('') + '</select><button class="small-button" type="button" data-reserve-gear="' + g.id + '">Rent</button></label>' : 'Accepted trip required')) + '</td></tr>';
     }).join('');
+
+    tbody.querySelectorAll('[data-reserve-gear]').forEach(button => button.addEventListener('click', async () => {
+      const row = button.closest('tr');
+      const tripId = row?.querySelector('[data-rental-trip]')?.value;
+      if (!tripId) { alert('Choose an accepted trip first.'); return; }
+      button.disabled = true;
+      try {
+        await apiJson('gear/' + button.dataset.reserveGear + '/reserve', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', 'accept': 'application/json' },
+          body: JSON.stringify({ trip_id: Number(tripId) })
+        });
+        await syncGear();
+      } catch (error) {
+        alert(error.message);
+        button.disabled = false;
+      }
+    }));
+    updateGearSummary(gear);
+  }
+
+  function updateGearSummary(gear) {
+    const active = gear.filter(g => !!g.checkout_id);
+    const mine = active.filter(g => Number(g.user_id) === Number(state.user?.id));
+    const available = gear.length - active.length;
+    document.querySelectorAll('[data-total-gear-count]').forEach(el => el.textContent = String(gear.length));
+    document.querySelectorAll('[data-available-gear-count]').forEach(el => el.textContent = String(available));
+    document.querySelectorAll('[data-checked-out-gear-count]').forEach(el => el.textContent = String(active.length));
+    document.querySelectorAll('[data-current-gear-count]').forEach(el => el.textContent = String(mine.length));
+    document.querySelectorAll('[data-user-gear-count]').forEach(el => el.textContent = mine.length + ' items');
+    const rows = mine.length ? mine.map(g => '<div class="compact-row static"><div><strong>' + escapeHtml(g.asset_code + ' · ' + g.name) + '</strong><span>' + escapeHtml((g.trip_title ? 'Trip: ' + g.trip_title : 'Club gear') + (g.due_at ? ' · Due ' + formatDate(g.due_at) : '')) + '</span></div></div>').join('') : '<p>No gear checked out to you.</p>';
+    document.querySelectorAll('[data-current-gear],[data-user-gear-list]').forEach(el => el.innerHTML = rows);
+    const dashboardGearCount = state.dashboardTripId ? mine.filter(g => Number(g.trip_id) === Number(state.dashboardTripId)).length : 0;
+    document.querySelectorAll('[data-dashboard-trip-gear]').forEach(el => el.textContent = dashboardGearCount + ' assigned items');
   }
 
   async function syncGrant() {
@@ -499,6 +605,8 @@
       const tbody = document.querySelector('[data-admin-members]');
       if (!tbody) return;
       const members = data.members || [];
+      state.adminMembers = members;
+      renderLeaderAssignmentControls();
       tbody.innerHTML = members.length ? members.map(m => {
         const statusClass = m.membership_status === 'distinguished' ? 'status-distinguished' : '';
         const roles = [];
@@ -566,6 +674,22 @@
         });
       });
     } catch {}
+  }
+
+  function renderLeaderAssignmentControls() {
+    const tripSelect = document.querySelector('[data-admin-leader-trip]');
+    const memberSelect = document.querySelector('[data-admin-leader-member]');
+    const leadersList = document.querySelector('[data-admin-trip-leaders]');
+    if (!tripSelect || !memberSelect) return;
+    const selectedTrip = tripSelect.value;
+    const selectedMember = memberSelect.value;
+    const trips = Object.values(state.trips).filter(t => t.id);
+    tripSelect.innerHTML = '<option value="">Choose a trip</option>' + trips.map(t => '<option value="' + t.id + '">' + escapeHtml(t.title) + '</option>').join('');
+    memberSelect.innerHTML = '<option value="">Choose a member</option>' + state.adminMembers.map(m => '<option value="' + m.id + '">' + escapeHtml(m.name + ' · ' + m.email) + '</option>').join('');
+    if (trips.some(t => String(t.id) === selectedTrip)) tripSelect.value = selectedTrip;
+    if (state.adminMembers.some(m => String(m.id) === selectedMember)) memberSelect.value = selectedMember;
+    const trip = trips.find(t => String(t.id) === tripSelect.value);
+    if (leadersList) leadersList.innerHTML = trip && trip.leaderNames.length ? trip.leaderNames.map(l => '<div class="compact-row static"><div><strong>' + escapeHtml(l.name) + '</strong><span>Assigned leader · ' + escapeHtml(l.membership_status === 'distinguished' ? 'Distinguished Member' : 'Member') + '</span></div></div>').join('') : '<p>' + (trip ? 'No leaders assigned yet.' : 'Choose a trip to see its current leaders.') + '</p>';
   }
 
   document.querySelectorAll('[data-view]').forEach(button => {
@@ -777,12 +901,57 @@
     });
   }
 
+  const adminLeaderForm = document.querySelector('[data-admin-leader-form]');
+  if (adminLeaderForm) {
+    document.querySelector('[data-admin-leader-trip]')?.addEventListener('change', renderLeaderAssignmentControls);
+    adminLeaderForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const body = Object.fromEntries(new FormData(adminLeaderForm).entries());
+      const status = adminLeaderForm.querySelector('[data-admin-leader-status]');
+      const submit = adminLeaderForm.querySelector('button[type="submit"]');
+      if (!body.trip_id || !body.user_id) return;
+      submit.disabled = true;
+      if (status) status.textContent = 'Saving assignment…';
+      try {
+        await apiJson('admin/trips/' + body.trip_id + '/leaders', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', 'accept': 'application/json' },
+          body: JSON.stringify({ user_id: Number(body.user_id), action: body.action })
+        });
+        if (status) status.textContent = 'Trip leader assignment saved.';
+        await syncTrips();
+        await syncAdmin();
+      } catch (error) {
+        if (status) status.textContent = error.message;
+      } finally {
+        submit.disabled = false;
+      }
+    });
+  }
+
   const profileForm = document.querySelector('[data-profile-form]');
   if (profileForm) {
-    profileForm.addEventListener('submit', event => {
+    profileForm.addEventListener('submit', async event => {
       event.preventDefault();
       const status = profileForm.querySelector('[data-profile-status]');
-      if (status) status.textContent = 'Basic profile editing will save here once the editable profile fields are connected to the API.';
+      const submit = profileForm.querySelector('button[type="submit"]');
+      const body = Object.fromEntries(new FormData(profileForm).entries());
+      submit.disabled = true;
+      if (status) status.textContent = 'Saving…';
+      try {
+        const data = await apiJson('profile', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', 'accept': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        state.user = data.user;
+        hydrateIdentity({ user: data.user });
+        if (status) status.textContent = 'Profile saved.';
+      } catch (error) {
+        if (status) status.textContent = error.message;
+      } finally {
+        submit.disabled = false;
+      }
     });
   }
 
@@ -830,3 +999,4 @@
   showView(titles[initial] ? initial : 'dashboard', false);
   initializeAuth();
 })();
+

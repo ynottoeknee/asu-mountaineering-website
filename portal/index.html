@@ -36,13 +36,13 @@
           <span>Dashboard</span>
         </button>
         <button class="portal-nav-link" type="button" data-view="trips">
-          <span>Trips</span><span class="nav-count">3</span>
+          <span>Trips</span>
         </button>
         <button class="portal-nav-link" type="button" data-view="applications">
-          <span>My Applications</span><span class="nav-count">2</span>
+          <span>My Applications</span>
         </button>
         <button class="portal-nav-link" type="button" data-view="gear">
-          <span>Gear</span><span class="nav-count">2</span>
+          <span>Gear</span>
         </button>
         <button class="portal-nav-link" type="button" data-view="grant">
           <span>Grant</span>
@@ -58,14 +58,14 @@
         </button>
       </nav>
 
-      <div class="portal-role-block">
+      <div class="portal-role-block" data-trip-leader-nav hidden>
         <div class="portal-nav-label">Trip leader</div>
         <button class="portal-nav-link" type="button" data-view="leader">
-          <span>Manage Trips</span><span class="nav-count">1</span>
+          <span>Manage Trips</span>
         </button>
       </div>
 
-      <div class="portal-role-block">
+      <div class="portal-role-block" data-admin-nav hidden>
         <div class="portal-nav-label">Administration</div>
         <button class="portal-nav-link" type="button" data-view="admin">
           <span>Admin</span>
@@ -107,11 +107,7 @@
               <h1>Welcome back, <span data-member-first-name>member</span>.</h1>
               <p class="page-lede">Everything that needs your attention across MCA, in one place.</p>
             </div>
-            <div class="status-stack">
-              <span class="status-pill status-distinguished">Distinguished Member</span>
-              <span class="status-pill">Trip Leader</span>
-              <span class="status-pill">Admin</span>
-            </div>
+            <div class="status-stack" data-role-pills><span class="status-pill">Member</span></div>
           </div>
 
           <div class="notice-bar">
@@ -127,18 +123,18 @@
               <div class="card-header">
                 <div>
                   <p class="card-kicker">Next adventure</p>
-                  <h2>Joshua Tree</h2>
+                  <h2 data-dashboard-trip-title>No accepted trip yet</h2>
                 </div>
-                <span class="status-pill status-success">Accepted</span>
+                <span class="status-pill" data-dashboard-trip-status>None</span>
               </div>
               <div class="trip-summary-grid">
-                <div><span>Date</span><strong>Oct. 12–13</strong></div>
-                <div><span>Leaders</span><strong>Charlie · Sienna</strong></div>
-                <div><span>Roster</span><strong>8 members</strong></div>
-                <div><span>Your gear</span><strong>2 assigned items</strong></div>
+                <div><span>Date</span><strong data-dashboard-trip-date>—</strong></div>
+                <div><span>Leaders</span><strong data-dashboard-trip-leaders>To be assigned</strong></div>
+                <div><span>Roster</span><strong data-dashboard-trip-roster>—</strong></div>
+                <div><span>Your gear</span><strong data-dashboard-trip-gear>0 assigned items</strong></div>
               </div>
               <div class="card-actions">
-                <button class="primary-button" type="button" data-trip="joshua-tree">View trip</button>
+                <button class="primary-button" type="button" data-dashboard-trip-button hidden>View trip</button>
                 <button class="secondary-button" type="button" data-view="gear">View gear</button>
               </div>
             </section>
@@ -182,17 +178,10 @@
               <div class="card-header">
                 <div>
                   <p class="card-kicker">Your gear</p>
-                  <h2>2 items out</h2>
+                  <h2><span data-user-gear-count>0 items</span> out</h2>
                 </div>
               </div>
-              <div class="compact-list">
-                <div class="compact-row static">
-                  <div><strong>Mammut 70m Rope #02</strong><span>Joshua Tree</span></div>
-                </div>
-                <div class="compact-row static">
-                  <div><strong>Black Diamond Helmet #07</strong><span>Joshua Tree</span></div>
-                </div>
-              </div>
+              <div class="compact-list" data-user-gear-list><p>No gear checked out to you.</p></div>
               <button class="secondary-button full-button" type="button" data-view="gear">Open gear</button>
             </section>
 
@@ -234,38 +223,7 @@
               <table>
                 <thead><tr><th>Trip</th><th>Date</th><th>Leader</th><th>Application</th><th>Your status</th><th></th></tr></thead>
                 <tbody>
-                  <tr data-trip-row data-filter="mine">
-                    <td><strong>Joshua Tree</strong><small>Rock climbing</small></td>
-                    <td>Oct. 12–13</td>
-                    <td>Charlie · Sienna</td>
-                    <td><span class="status-pill status-closed">Closed</span></td>
-                    <td><span class="status-pill status-success">Accepted</span></td>
-                    <td><button class="table-action" type="button" data-trip="joshua-tree">View</button></td>
-                  </tr>
-                  <tr data-trip-row data-filter="open">
-                    <td><strong>Four Peaks Traverse</strong><small>Mountaineering / hiking</small></td>
-                    <td>Oct. 31</td>
-                    <td>TBD</td>
-                    <td><span class="status-pill status-open">Open</span></td>
-                    <td>Not applied</td>
-                    <td><button class="table-action" type="button" data-trip="four-peaks">Apply</button></td>
-                  </tr>
-                  <tr data-trip-row data-filter="open">
-                    <td><strong>Cactus to Clouds</strong><small>Endurance objective</small></td>
-                    <td>Nov. 7–8</td>
-                    <td>TBD</td>
-                    <td><span class="status-pill status-open">Open</span></td>
-                    <td>Not applied</td>
-                    <td><button class="table-action" type="button" data-trip="cactus-to-clouds">Apply</button></td>
-                  </tr>
-                  <tr data-trip-row data-filter="open">
-                    <td><strong>Spring Sierra Week</strong><small>Ice · ski mountaineering · technical climbing</small></td>
-                    <td>Spring Break</td>
-                    <td>TBD</td>
-                    <td><span class="status-pill status-open">Open</span></td>
-                    <td><span class="status-pill status-review">Under review</span></td>
-                    <td><button class="table-action" type="button" data-trip="sierras">View</button></td>
-                  </tr>
+                  <tr><td colspan="6">Loading trips…</td></tr>
                 </tbody>
               </table>
             </div>
@@ -338,10 +296,7 @@
             <div class="table-scroll">
               <table>
                 <thead><tr><th>Trip</th><th>Submitted</th><th>Status</th><th>Decision</th><th></th></tr></thead>
-                <tbody>
-                  <tr><td><strong>Joshua Tree</strong></td><td>Oct. 5</td><td><span class="status-pill status-success">Accepted</span></td><td>Oct. 7</td><td><button class="table-action" data-trip="joshua-tree" type="button">View trip</button></td></tr>
-                  <tr><td><strong>Spring Sierra Week</strong></td><td>Oct. 7</td><td><span class="status-pill status-review">Under review</span></td><td>—</td><td><button class="table-action" data-trip="sierras" type="button">View trip</button></td></tr>
-                </tbody>
+                <tbody><tr><td colspan="5">Loading your applications…</td></tr></tbody>
               </table>
             </div>
           </div>
@@ -355,18 +310,15 @@
           <div class="dashboard-grid">
             <section class="portal-card">
               <p class="card-kicker">Checked out to you</p>
-              <h2>2 items</h2>
-              <div class="compact-list">
-                <div class="compact-row static"><div><strong>Mammut 70m Rope #02</strong><span>Trip: Joshua Tree · Due Oct. 14</span></div></div>
-                <div class="compact-row static"><div><strong>Black Diamond Helmet #07</strong><span>Trip: Joshua Tree · Due Oct. 14</span></div></div>
-              </div>
+              <h2><span data-current-gear-count>0</span> items</h2>
+              <div class="compact-list" data-current-gear><p>No gear checked out to you.</p></div>
             </section>
             <section class="portal-card">
               <p class="card-kicker">Inventory status</p>
-              <h2>24 tracked items</h2>
+              <h2><span data-total-gear-count>0</span> tracked items</h2>
               <div class="inventory-summary">
-                <div><strong>17</strong><span>Available</span></div>
-                <div><strong>7</strong><span>Checked out</span></div>
+                <div><strong data-available-gear-count>0</strong><span>Available</span></div>
+                <div><strong data-checked-out-gear-count>0</strong><span>Checked out</span></div>
               </div>
             </section>
           </div>
@@ -375,14 +327,8 @@
             <div class="table-title"><div><h2>Inventory</h2><p>Member-visible checkout directory</p></div><label class="search-field">Search<input type="search" placeholder="Rope, helmet, tent..." data-gear-search></label></div>
             <div class="table-scroll">
               <table>
-                <thead><tr><th>Item</th><th>Category</th><th>Status</th><th>Holder</th><th>Trip</th><th>Due</th></tr></thead>
-                <tbody data-gear-table>
-                  <tr><td><strong>Mammut 70m Rope #02</strong></td><td>Rope</td><td><span class="status-pill status-out">Checked out</span></td><td>Member</td><td>Joshua Tree</td><td>Oct. 14</td></tr>
-                  <tr><td><strong>Black Diamond Helmet #07</strong></td><td>Helmet</td><td><span class="status-pill status-out">Checked out</span></td><td>Member</td><td>Joshua Tree</td><td>Oct. 14</td></tr>
-                  <tr><td><strong>Crash Pad #01</strong></td><td>Bouldering</td><td><span class="status-pill status-out">Checked out</span></td><td>Member B</td><td>Joshua Tree</td><td>Oct. 14</td></tr>
-                  <tr><td><strong>60m Rope #01</strong></td><td>Rope</td><td><span class="status-pill status-available">Available</span></td><td>—</td><td>—</td><td>—</td></tr>
-                  <tr><td><strong>Four-person Tent #03</strong></td><td>Shelter</td><td><span class="status-pill status-available">Available</span></td><td>—</td><td>—</td><td>—</td></tr>
-                </tbody>
+                <thead><tr><th>Item</th><th>Category</th><th>Status</th><th>Holder</th><th>Trip</th><th>Due</th><th>Rental</th></tr></thead>
+                <tbody data-gear-table><tr><td colspan="7">Loading inventory…</td></tr></tbody>
               </table>
             </div>
           </div>
@@ -434,7 +380,7 @@
               <p class="card-kicker">Club status</p>
               <div class="membership-banner">
                 <div>
-                  <span class="status-pill status-distinguished">Distinguished Member</span>
+                  <span class="status-pill" data-membership-pill>Member</span>
                   <h2>Member</h2>
                   <p>Distinguished Member status is currently granted at the President’s discretion.</p>
                 </div>
@@ -442,10 +388,7 @@
             </section>
             <section class="portal-card">
               <p class="card-kicker">Responsibilities</p>
-              <div class="role-list">
-                <div><strong>Trip Leader</strong><span>Active for assigned trips</span></div>
-                <div><strong>Admin</strong><span>Portal administration</span></div>
-              </div>
+              <div class="role-list" data-membership-roles><div><strong>Member</strong><span>MCA member account</span></div></div>
             </section>
             <section class="portal-card portal-card-wide">
               <p class="card-kicker">Member support</p>
@@ -496,18 +439,18 @@
             <div class="form-section">
               <h2>Basic information</h2>
               <div class="form-grid">
-                <label>First name<input type="text" value="Tony"></label>
-                <label>Last name<input type="text" value="Fisher"></label>
+                <label>First name<input type="text" name="first_name" data-profile-first-name autocomplete="given-name" required></label>
+                <label>Last name<input type="text" name="last_name" data-profile-last-name autocomplete="family-name"></label>
                 <label>Email<input type="email" value="" data-member-email readonly></label>
-                <label>Phone<input type="tel" placeholder="Add phone"></label>
+                <label>Phone<input type="tel" name="phone" data-profile-phone autocomplete="tel" placeholder="Add phone"></label>
               </div>
             </div>
             <div class="form-section">
               <h2>Outdoor profile</h2>
               <div class="form-grid">
-                <label class="full-field">Experience summary<textarea rows="5" placeholder="Climbing, backpacking, mountaineering, skiing, service, leadership..."></textarea></label>
-                <label>Primary interests<select><option>Mountaineering</option><option>Rock climbing</option><option>Ice climbing</option><option>Ski mountaineering</option><option>Stewardship</option></select></label>
-                <label>Transportation<select><option>Can drive</option><option>Need a ride</option><option>Varies</option></select></label>
+                <label class="full-field">Experience summary<textarea name="experience_summary" data-profile-experience rows="5" placeholder="Climbing, backpacking, mountaineering, skiing, service, leadership..."></textarea></label>
+                <label>Primary interests<input type="text" name="primary_interests" data-profile-interests placeholder="Mountaineering, rock climbing, stewardship"></label>
+                <label>Transportation<select name="transportation" data-profile-transportation><option value="">Choose one</option><option value="Can drive">Can drive</option><option value="Need a ride">Need a ride</option><option value="Varies">Varies</option></select></label>
               </div>
             </div>
             <div class="form-actions"><button class="primary-button" type="submit">Save profile</button><span data-profile-status></span></div>
@@ -537,6 +480,18 @@
                   <tbody data-admin-members><tr><td colspan="4">Loading members…</td></tr></tbody>
                 </table>
               </div>
+            </section>
+
+            <section class="portal-card admin-card">
+              <div class="card-header"><div><p class="card-kicker">Trip leadership</p><h2>Assign trip leaders</h2></div></div>
+              <form class="admin-mini-form" data-admin-leader-form>
+                <label>Trip<select name="trip_id" data-admin-leader-trip required><option value="">Choose a trip</option></select></label>
+                <label>Member<select name="user_id" data-admin-leader-member required><option value="">Choose a member</option></select></label>
+                <label>Action<select name="action"><option value="add">Assign as leader</option><option value="remove">Remove leader</option></select></label>
+                <button class="primary-button" type="submit">Save assignment</button>
+                <p class="form-status" data-admin-leader-status aria-live="polite"></p>
+              </form>
+              <div class="compact-list" data-admin-trip-leaders><p>Choose a trip to see its current leaders.</p></div>
             </section>
 
             <section class="portal-card admin-card">
@@ -584,6 +539,6 @@
 
   </div>
 
-  <script src="/portal/portal.js?v=20261008-1"></script>
+  <script src="/portal/portal.js?v=20261008-2"></script>
 </body>
 </html>

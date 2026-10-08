@@ -16,10 +16,13 @@ Apply these SQL files in order:
 
 1. `migrations/0001_portal.sql`
 2. `migrations/0002_seed_current_trips.sql`
+3. `migrations/0003_profile_and_unique_rentals.sql`
 
 The first migration creates members, sessions, trips, applications, rosters, gear, grant submissions, supporter records, and settings.
 
 The second migration creates the current Joshua Tree, Four Peaks Traverse, and Cactus to Clouds trip records.
+
+The third migration adds separate member profile details and a database constraint that prevents the same physical gear item from having more than one active rental. The API also prepares these additions on first use so the portal can finish setup when the migration has not yet been applied.
 
 ## 2. Cloudflare R2
 
@@ -147,3 +150,4 @@ Member chooses PDF
 → private R2 object
 → D1 application record
 ```
+

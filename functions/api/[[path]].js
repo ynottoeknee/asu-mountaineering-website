@@ -1,6 +1,7 @@
 const SESSION_COOKIE = "mca_session";
 const STATE_COOKIE = "mca_oauth_state";
 const SESSION_DAYS = 30;
+let portalSchemaReady = false;
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -56,15 +57,40 @@ function requireBinding(env, name) {
   return env[name];
 }
 
+async function ensurePortalAdditions(env) {
+  if (portalSchemaReady) return;
+  await env.DB.prepare(
+    `CREATE TABLE IF NOT EXISTS member_profiles (
+      user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+      first_name TEXT NOT NULL,
+      last_name TEXT,
+      phone TEXT,
+      experience_summary TEXT,
+      primary_interests TEXT,
+      transportation TEXT,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`
+  ).run();
+  try {
+    await env.DB.prepare(
+      "CREATE UNIQUE INDEX IF NOT EXISTS idx_gear_checkouts_one_open_item ON gear_checkouts(gear_item_id) WHERE returned_at IS NULL"
+    ).run();
+  } catch (error) {
+    console.warn("Could not add unique active rental index; preserving current checkout records.", error);
+  }
+  portalSchemaReady = true;
+}
+
 async function currentUser(env, request) {
   if (!env.DB) return null;
   const token = parseCookies(request)[SESSION_COOKIE];
   if (!token) return null;
   const hash = await sha256Hex(token);
   const row = await env.DB.prepare(
-    `SELECT u.id,u.email,u.name,u.avatar_url,u.membership_status,u.is_admin,u.is_president,s.expires_at
+    `SELECT u.id,u.email,u.name,p.first_name AS profile_first_name,p.last_name AS profile_last_name,p.phone,p.experience_summary,p.primary_interests,p.transportation,u.avatar_url,u.membership_status,u.is_admin,u.is_president,s.expires_at
      FROM sessions s
      JOIN users u ON u.id=s.user_id
+     LEFT JOIN member_profiles p ON p.user_id=u.id
      WHERE s.token_hash=? AND datetime(s.expires_at) > datetime('now')`
   ).bind(hash).first();
   if (!row) return null;
@@ -78,6 +104,12 @@ async function currentUser(env, request) {
     id: row.id,
     email: row.email,
     name: row.name,
+    profile_first_name: row.profile_first_name,
+    profile_last_name: row.profile_last_name,
+    phone: row.phone,
+    experience_summary: row.experience_summary,
+    primary_interests: row.primary_interests,
+    transportation: row.transportation,
     avatar_url: row.avatar_url,
     membership_status: row.membership_status,
     is_admin: !!row.is_admin,
@@ -224,6 +256,34 @@ async function handleMe(env, user) {
        AND date(contribution_date) < date('2027-07-01')`
   ).bind(user.id).first();
   return json({ user, annual_support_cents: Number(support?.cents || 0) });
+}
+
+async function updateProfile(env, user, request) {
+  let body;
+  try { body = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
+  const first = String(body.first_name || "").trim().slice(0, 80);
+  const last = String(body.last_name || "").trim().slice(0, 80);
+  if (!first) return json({ error: "First name is required." }, 400);
+  const phone = String(body.phone || "").trim().slice(0, 40) || null;
+  const experience = String(body.experience_summary || "").trim().slice(0, 2000) || null;
+  const interests = String(body.primary_interests || "").trim().slice(0, 240) || null;
+  const transportation = String(body.transportation || "").trim();
+  if (transportation && !["Can drive","Need a ride","Varies"].includes(transportation)) {
+    return json({ error: "Choose a valid transportation option." }, 400);
+  }
+  const name = cleanName([first,last].filter(Boolean).join(" "));
+  await env.DB.prepare(
+    `INSERT INTO member_profiles (user_id,first_name,last_name,phone,experience_summary,primary_interests,transportation)
+     VALUES (?,?,?,?,?,?,?)
+     ON CONFLICT(user_id) DO UPDATE SET first_name=excluded.first_name,last_name=excluded.last_name,
+       phone=excluded.phone,experience_summary=excluded.experience_summary,primary_interests=excluded.primary_interests,
+       transportation=excluded.transportation,updated_at=CURRENT_TIMESTAMP`
+  ).bind(user.id,first,last || null,phone,experience,interests,transportation || null).run();
+  const updated = await env.DB.prepare(
+    `SELECT u.id,u.email,u.name,p.first_name AS profile_first_name,p.last_name AS profile_last_name,p.phone,p.experience_summary,p.primary_interests,p.transportation,u.avatar_url,u.membership_status,u.is_admin,u.is_president
+     FROM users u LEFT JOIN member_profiles p ON p.user_id=u.id WHERE u.id=?`
+  ).bind(user.id).first();
+  return json({ ok: true, user: { ...updated, is_admin: !!updated.is_admin, is_president: !!updated.is_president, is_trip_leader: user.is_trip_leader } });
 }
 
 async function listTrips(env, user) {
@@ -593,10 +653,46 @@ async function checkoutGear(env, user, gearId, request) {
   ).bind(gearId).first();
   if (existing) return json({ error: "That item is already checked out." }, 409);
 
-  await env.DB.prepare(
-    `INSERT INTO gear_checkouts (gear_item_id,user_id,trip_id,checked_out_by,due_at,notes)
-     VALUES (?,?,?,?,?,?)`
-  ).bind(gearId, memberId, tripId, user.id, body.due_at || null, String(body.notes || "").slice(0, 500) || null).run();
+  try {
+    const result = await env.DB.prepare(
+      `INSERT INTO gear_checkouts (gear_item_id,user_id,trip_id,checked_out_by,due_at,notes)
+       SELECT ?,?,?,?,?,? WHERE NOT EXISTS (
+         SELECT 1 FROM gear_checkouts WHERE gear_item_id=? AND returned_at IS NULL
+       )`
+    ).bind(gearId, memberId, tripId, user.id, body.due_at || null, String(body.notes || "").slice(0, 500) || null, gearId).run();
+    if (!result.meta?.changes) return json({ error: "That item is already checked out." }, 409);
+  } catch (error) {
+    if (String(error).toLowerCase().includes("unique")) return json({ error: "That item has just been rented by someone else." }, 409);
+    throw error;
+  }
+  return json({ ok: true }, 201);
+}
+
+async function reserveGear(env, user, gearId, request) {
+  let body;
+  try { body = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
+  const tripId = intId(body.trip_id);
+  if (!tripId) return json({ error: "Choose an accepted trip." }, 400);
+  const trip = await env.DB.prepare("SELECT id,status,ends_at FROM trips WHERE id=?").bind(tripId).first();
+  if (!trip || trip.status !== "published") return json({ error: "That trip is not available." }, 404);
+  const participation = await env.DB.prepare(
+    "SELECT 1 AS ok FROM trip_participants WHERE trip_id=? AND user_id=? UNION SELECT 1 AS ok FROM trip_leaders WHERE trip_id=? AND user_id=? LIMIT 1"
+  ).bind(tripId,user.id,tripId,user.id).first();
+  if (!participation) return json({ error: "Gear can only be rented for a trip you are accepted on or leading." }, 403);
+  const item = await env.DB.prepare("SELECT id FROM gear_items WHERE id=? AND active=1").bind(gearId).first();
+  if (!item) return json({ error: "Gear item not found." }, 404);
+  try {
+    const result = await env.DB.prepare(
+      `INSERT INTO gear_checkouts (gear_item_id,user_id,trip_id,checked_out_by,due_at)
+       SELECT ?,?,?,?,? WHERE NOT EXISTS (
+         SELECT 1 FROM gear_checkouts WHERE gear_item_id=? AND returned_at IS NULL
+       )`
+    ).bind(gearId,user.id,tripId,user.id,trip.ends_at || null,gearId).run();
+    if (!result.meta?.changes) return json({ error: "That item has already been rented. Choose another available item." }, 409);
+  } catch (error) {
+    if (String(error).toLowerCase().includes("unique")) return json({ error: "That item has already been rented. Choose another available item." }, 409);
+    throw error;
+  }
   return json({ ok: true }, 201);
 }
 
@@ -623,10 +719,12 @@ export async function onRequest(context) {
     if (method === "POST" && path === "auth/logout") return handleLogout(context);
 
     if (!env.DB) return json({ error: "Portal database is not configured yet." }, 503);
+    await ensurePortalAdditions(env);
     const user = await currentUser(env, request);
     if (!user) return json({ error: "Authentication required.", login_url: "/api/auth/login" }, 401);
 
     if (method === "GET" && path === "me") return handleMe(env, user);
+    if (method === "POST" && path === "profile") return updateProfile(env, user, request);
     if (method === "GET" && path === "trips") return listTrips(env, user);
     if (method === "GET" && parts[0] === "trips" && parts.length === 2) {
       const tripId = intId(parts[1]);
@@ -671,6 +769,10 @@ export async function onRequest(context) {
       const gearId = intId(parts[1]);
       return gearId ? checkoutGear(env, user, gearId, request) : json({ error: "Invalid gear id." }, 400);
     }
+    if (method === "POST" && parts[0] === "gear" && parts[2] === "reserve") {
+      const gearId = intId(parts[1]);
+      return gearId ? reserveGear(env, user, gearId, request) : json({ error: "Invalid gear id." }, 400);
+    }
     if (method === "POST" && parts[0] === "gear" && parts[1] === "checkouts" && parts[3] === "return") {
       const checkoutId = intId(parts[2]);
       return checkoutId ? returnGear(env, user, checkoutId) : json({ error: "Invalid checkout id." }, 400);
@@ -682,3 +784,4 @@ export async function onRequest(context) {
     return json({ error: "Portal request failed.", detail: String(error?.message || error) }, 500);
   }
 }
+
