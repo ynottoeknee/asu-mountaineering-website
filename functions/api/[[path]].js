@@ -660,12 +660,13 @@ async function leaderApplications(env, user, tripId) {
 }
 
 async function recommendApplication(env, user, applicationId, request) {
-  const app = await env.DB.prepare("SELECT id,trip_id FROM trip_applications WHERE id=?").bind(applicationId).first();
+  const app = await env.DB.prepare("SELECT id,trip_id,president_decision FROM trip_applications WHERE id=?").bind(applicationId).first();
   if (!app) return json({ error: "Application not found." }, 404);
   if (!(await canManageTrip(env, user, app.trip_id))) return json({ error: "Trip leader access required." }, 403);
   let body;
   try { body = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
   if (!["accept","waitlist","decline"].includes(body.recommendation)) return json({ error: "Invalid recommendation." }, 400);
+  if (app.president_decision) return json({ error: "The President has already made a final decision." }, 409);
   await env.DB.prepare(
     `UPDATE trip_applications
      SET leader_recommendation=?,leader_reviewed_by=?,leader_reviewed_at=CURRENT_TIMESTAMP,
@@ -673,6 +674,50 @@ async function recommendApplication(env, user, applicationId, request) {
      WHERE id=?`
   ).bind(body.recommendation, user.id, applicationId).run();
   return json({ ok: true });
+}
+
+async function decideApplicationByLeader(env, user, applicationId, request) {
+  const app = await env.DB.prepare(
+    "SELECT id,trip_id,user_id,president_decision,status FROM trip_applications WHERE id=?"
+  ).bind(applicationId).first();
+  if (!app) return json({ error: "Application not found." }, 404);
+  if (!(await canManageTrip(env, user, app.trip_id))) return json({ error: "Trip leader access required." }, 403);
+  let body;
+  try { body = await request.json(); } catch { return json({ error: "Invalid JSON." }, 400); }
+  if (body.decision !== "accepted") return json({ error: "Trip leaders can directly accept applicants. Use a recommendation for other outcomes." }, 400);
+  if (app.president_decision) return json({ error: "The President has already made a final decision." }, 409);
+  await env.DB.batch([
+    env.DB.prepare(
+      `UPDATE trip_applications
+       SET leader_recommendation='accept',leader_reviewed_by=?,leader_reviewed_at=CURRENT_TIMESTAMP,
+           status='accepted',updated_at=CURRENT_TIMESTAMP WHERE id=?`
+    ).bind(user.id, applicationId),
+    env.DB.prepare(
+      "INSERT OR IGNORE INTO trip_participants (trip_id,user_id,application_id) VALUES (?,?,?)"
+    ).bind(app.trip_id, app.user_id, app.id)
+  ]);
+  return json({ ok: true, status: "accepted" });
+}
+
+async function removeTripParticipant(env, user, tripId, participantId) {
+  if (!user.is_president) return json({ error: "Only the President can remove accepted participants." }, 403);
+  const participant = await env.DB.prepare(
+    "SELECT application_id FROM trip_participants WHERE trip_id=? AND user_id=?"
+  ).bind(tripId, participantId).first();
+  if (!participant) return json({ error: "Participant is not on this trip roster." }, 404);
+  const statements = [
+    env.DB.prepare("DELETE FROM trip_participants WHERE trip_id=? AND user_id=?").bind(tripId, participantId)
+  ];
+  if (participant.application_id) {
+    statements.push(env.DB.prepare(
+      `UPDATE trip_applications
+       SET status='declined',president_decision='declined',president_reviewed_by=?,
+           president_reviewed_at=CURRENT_TIMESTAMP,updated_at=CURRENT_TIMESTAMP
+       WHERE id=?`
+    ).bind(user.id, participant.application_id));
+  }
+  await env.DB.batch(statements);
+  return json({ ok: true, status: "removed" });
 }
 
 async function presidentApplications(env, user) {
@@ -938,6 +983,17 @@ export async function onRequest(context) {
     if (method === "POST" && parts[0] === "leader" && parts[1] === "applications" && parts[3] === "recommend") {
       const appId = intId(parts[2]);
       return appId ? recommendApplication(env, user, appId, request) : json({ error: "Invalid application id." }, 400);
+    }
+    if (method === "POST" && parts[0] === "leader" && parts[1] === "applications" && parts[3] === "decision") {
+      const appId = intId(parts[2]);
+      return appId ? decideApplicationByLeader(env, user, appId, request) : json({ error: "Invalid application id." }, 400);
+    }
+    if (method === "POST" && parts[0] === "president" && parts[1] === "trips" && parts[3] === "participants" && parts[5] === "remove") {
+      const tripId = intId(parts[2]);
+      const participantId = intId(parts[4]);
+      return tripId && participantId
+        ? removeTripParticipant(env, user, tripId, participantId)
+        : json({ error: "Invalid trip or participant id." }, 400);
     }
     if (method === "GET" && path === "president/applications") return presidentApplications(env, user);
     if (method === "POST" && parts[0] === "president" && parts[1] === "applications" && parts[3] === "decision") {
