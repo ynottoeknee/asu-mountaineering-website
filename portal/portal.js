@@ -196,7 +196,7 @@
       document.body.classList.remove('portal-auth-loading', 'portal-auth-error');
       document.body.classList.add('portal-authenticated');
       if (gate) gate.hidden = true;
-      await Promise.allSettled([syncTrips(), syncGear(), syncGrant(), syncApplications(), syncAdmin()]);
+      await Promise.allSettled([syncPublicSettings(), syncTrips(), syncGear(), syncGrant(), syncApplications(), syncAdmin()]);
     } catch (error) {
       document.body.classList.remove('portal-auth-loading');
       document.body.classList.add('portal-auth-error');
@@ -207,6 +207,19 @@
       }
       if (login) login.hidden = error.status === 503;
     }
+  }
+
+  async function syncPublicSettings() {
+    try {
+      const data = await apiJson('public/settings');
+      const url = data.settings && data.settings.foundation_giving_url;
+      const button = document.querySelector('[data-member-donate]');
+      if (button && url) {
+        button.disabled = false;
+        button.textContent = 'Continue to ASU Foundation';
+        button.addEventListener('click', () => window.open(url, '_blank', 'noopener'));
+      }
+    } catch {}
   }
 
   async function syncTrips() {
