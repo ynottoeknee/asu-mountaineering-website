@@ -937,6 +937,9 @@ export async function onRequest(context) {
     if (method === "POST" && path === "auth/logout") return handleLogout(context);
 
     if (!env.DB) return json({ error: "Portal database is not configured yet." }, 503);
+    if (!parseCookies(request)[SESSION_COOKIE]) {
+      return json({ error: "Authentication required.", login_url: "/api/auth/login" }, 401);
+    }
     await ensurePortalAdditions(env);
     const user = await currentUser(env, request);
     if (!user) return json({ error: "Authentication required.", login_url: "/api/auth/login" }, 401);
