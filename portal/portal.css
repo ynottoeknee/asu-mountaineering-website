@@ -484,7 +484,8 @@ td select{border:1px solid var(--line);border-radius:7px;background:#fff;padding
 }
 
 /* Flexible member support */
-.member-giving-card{display:grid;gap:24px}
+.member-giving-card{display:grid;gap:24px;background:#A85F48;color:#fff}
+.member-giving-card h2,.member-giving-card p,.member-giving-card .card-kicker{color:#fff}
 .member-giving-card>div:first-child{max-width:760px}
 .member-giving-card h2{font-size:clamp(1.6rem,3vw,2.35rem)}
 .member-giving-options{display:grid;grid-template-columns:160px 160px minmax(220px,320px);gap:12px;align-items:stretch}
