@@ -255,18 +255,8 @@
                 <p data-trip-application-copy></p>
                 <button class="primary-button full-button" type="button" data-apply-trip>Start application</button>
                 <form class="trip-application-form" data-trip-application-form hidden>
-                  <label>Why do you want to join this trip?
-                    <textarea rows="3" name="motivation" required></textarea>
-                  </label>
-                  <label>Relevant experience
-                    <textarea rows="3" name="experience" placeholder="Hiking, climbing, camping, mountaineering, fitness, or related experience." required></textarea>
-                  </label>
-                  <label>Preparation
-                    <textarea rows="3" name="preparation" placeholder="How are you preparing for this objective?" required></textarea>
-                  </label>
-                  <label>Transportation, gear, or other needs
-                    <textarea rows="3" name="needs" placeholder="Anything leaders should plan around."></textarea>
-                  </label>
+                  <div data-dynamic-trip-form></div>
+                  <div data-trip-pdf-link></div>
                   <div class="form-actions">
                     <button class="primary-button" type="submit">Submit application</button>
                     <button class="secondary-button" type="button" data-cancel-trip-application>Cancel</button>
