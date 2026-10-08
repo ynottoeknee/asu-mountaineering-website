@@ -540,3 +540,17 @@ body:not(.portal-authenticated) .portal-app{display:none}
 }
 .trip-application-form textarea:focus{border-color:#777}
 .form-status{font-size:.76rem!important;margin:0!important;color:var(--muted)!important}
+
+
+.admin-mini-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 16px}
+.admin-mini-form label{display:grid;gap:6px;font-size:.69rem;font-weight:800;color:#555}
+.admin-mini-form input,.admin-mini-form textarea,.admin-mini-form select{
+  width:100%;border:1px solid var(--line);border-radius:8px;background:#fff;padding:9px 10px;outline:none
+}
+.admin-mini-form input:focus,.admin-mini-form textarea:focus,.admin-mini-form select:focus{border-color:#777}
+.admin-mini-form .primary-button,.admin-mini-form .form-status{align-self:end}
+.decision-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.leader-live-card{margin-bottom:18px}
+@media(max-width:620px){
+  .admin-mini-form{grid-template-columns:1fr}
+}
