@@ -600,3 +600,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
   .auth-gate{padding:18px;background-position:center center}
   .auth-card{padding:26px}
 }
+
+
+/* Keep role-gated navigation and controls hidden when requested. */
+[hidden]{display:none!important}
