@@ -710,6 +710,60 @@
     document.querySelectorAll('[data-support-amount]').forEach(b => b.classList.remove('active'));
   });
 
+  const adminGearForm = document.querySelector('[data-admin-gear-form]');
+  if (adminGearForm) {
+    adminGearForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const status = adminGearForm.querySelector('[data-admin-gear-status]');
+      const submit = adminGearForm.querySelector('button[type="submit"]');
+      const body = Object.fromEntries(new FormData(adminGearForm).entries());
+      submit.disabled = true;
+      if (status) status.textContent = 'Adding item…';
+      try {
+        await apiJson('admin/gear', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', 'accept': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        adminGearForm.reset();
+        if (status) status.textContent = 'Gear item added.';
+        await syncGear();
+      } catch (error) {
+        if (status) status.textContent = error.message;
+      } finally {
+        submit.disabled = false;
+      }
+    });
+  }
+
+  const adminTripForm = document.querySelector('[data-admin-trip-form]');
+  if (adminTripForm) {
+    adminTripForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const status = adminTripForm.querySelector('[data-admin-trip-status]');
+      const submit = adminTripForm.querySelector('button[type="submit"]');
+      const body = Object.fromEntries(new FormData(adminTripForm).entries());
+      if (body.starts_at) body.starts_at = new Date(body.starts_at).toISOString();
+      if (body.capacity === '') delete body.capacity;
+      submit.disabled = true;
+      if (status) status.textContent = 'Creating trip…';
+      try {
+        await apiJson('admin/trips', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', 'accept': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        adminTripForm.reset();
+        if (status) status.textContent = 'Trip created.';
+        await syncTrips();
+      } catch (error) {
+        if (status) status.textContent = error.message;
+      } finally {
+        submit.disabled = false;
+      }
+    });
+  }
+
   const profileForm = document.querySelector('[data-profile-form]');
   if (profileForm) {
     profileForm.addEventListener('submit', event => {
