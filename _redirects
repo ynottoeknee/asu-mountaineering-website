@@ -2,6 +2,32 @@
 # Example:
 # /old-page  /  301
 
+# Public page routes load the shared site app while preserving the selected page URL.
+/about/ /about 301
+/about /index.html 200
+/adventures/ /adventures 301
+/adventures /index.html 200
+/calendar/ /calendar 301
+/calendar /index.html 200
+/community/ /community 301
+/community /index.html 200
+/between-peaks/ /between-peaks 301
+/between-peaks /index.html 200
+/resources/ /resources 301
+/resources /index.html 200
+/support/ /support 301
+/support /index.html 200
+/join/ /join 301
+/join /index.html 200
+/adaptive-ascents/ /adaptive-ascents 301
+/adaptive-ascents /index.html 200
+/partner/ /partner 301
+/partner /index.html 200
+/leadership/ /leadership 301
+/leadership /index.html 200
+/bring-an-idea/ /bring-an-idea 301
+/bring-an-idea /index.html 200
+
 # Member portal routes load the portal app and keep the selected page URL.
 /portal/dashboard /portal/index.html 200
 /portal/dashboard/ /portal/index.html 200

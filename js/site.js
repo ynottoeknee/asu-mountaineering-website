@@ -1,11 +1,46 @@
 /* Mountaineering Club at ASU — navigation, calendar, and Hearts game */
 
 const navLinks=[...document.querySelectorAll('.nav-link')],pages=[...document.querySelectorAll('.page')];
-function showPage(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));navLinks.forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});window.setTimeout(()=>initializeCalendlyInPage(id),100)}
-navLinks.forEach(b=>b.addEventListener('click',()=>{
-  if(b.dataset.page==='community') openCommunityTab('overview');
-  showPage(b.dataset.page);
-}));
+const publicPagePaths={
+  home:'/',
+  about:'/about',
+  adventures:'/adventures',
+  calendar:'/calendar',
+  community:'/community',
+  between:'/between-peaks',
+  resources:'/resources',
+  support:'/support',
+  join:'/join',
+  adaptive:'/adaptive-ascents',
+  partner:'/partner',
+  leadership:'/leadership',
+  launchpad:'/bring-an-idea'
+};
+const pageIdsByPath=Object.fromEntries(Object.entries(publicPagePaths).map(([id,path])=>[path,id]));
+function normalizePagePath(path){return path.replace(/\\/+$/,'')||'/'}
+function showPage(id,{push=true,scroll=true}={}){
+  if(!pages.some(page=>page.id===id))return;
+  pages.forEach(page=>page.classList.toggle('active',page.id===id));
+  navLinks.forEach(button=>button.classList.toggle('active',button.dataset.page===id));
+  if(id==='community')openCommunityTab('overview');
+  const path=publicPagePaths[id];
+  if(push&&path&&normalizePagePath(window.location.pathname)!==path)window.history.pushState({page:id},'',path);
+  if(scroll)window.scrollTo({top:0,behavior:'smooth'});
+  window.setTimeout(()=>initializeCalendlyInPage(id),100);
+}
+function syncPageFromUrl(){
+  const path=normalizePagePath(window.location.pathname);
+  const id=pageIdsByPath[path];
+  if(!id){
+    if(path!=='/')window.history.replaceState({page:'home'},'','/');
+    showPage('home',{push:false,scroll:false});
+    return;
+  }
+  showPage(id,{push:false,scroll:false});
+}
+navLinks.forEach(button=>button.addEventListener('click',()=>showPage(button.dataset.page)));
+window.addEventListener('popstate',syncPageFromUrl);
+syncPageFromUrl();
 const rm=document.getElementById('readMoreBtn'),pc=document.getElementById('philosophyCopy');rm.addEventListener('click',()=>{const c=pc.classList.toggle('collapsed');pc.style.maxHeight=c?'420px':'none';rm.textContent=c?'Read More':'Read Less'});
 const suits=[['S','♠',0],['H','♥',1],['D','♦',1],['C','♣',0]],ranks=[['2',2],['3',3],['4',4],['5',5],['6',6],['7',7],['8',8],['9',9],['10',10],['J',11],['Q',12],['K',13],['A',14]],members=[['Anabelle','Team Member','assets/images/team/anabelle.jpg'],['Zahrah','Team Member','assets/images/team/zahrah.jpg'],['David Jacobs','Advisor','assets/images/team/david-jacobs.jpg'],['Louis','Team Member','assets/images/team/louis.jpg'],['Patt','Team Member','assets/images/team/patt.jpg'],['Ani','Team Member','assets/images/team/ani.jpg'],['Sienna','Vice President','assets/images/team/sienna.jpg'],['Tony','President','assets/images/team/tony-whitney.webp'],['Tydan','Team Member',''],['Preccious','Team Member',''],['Charlie','Team Member',''],['Kira','Team Member',''],['Riley','Team Member',''],['Arnab','Team Member',''],['Sam','Team Member','']];
 let g={totalYou:0,totalCpu:0,roundYou:0,roundCpu:0,dealer:'computer',deck:[],player:[],cpu:[],playerCap:[],cpuCap:[],leader:'player',trick:[],phase:'idle',selected:new Set(),forced:false};
