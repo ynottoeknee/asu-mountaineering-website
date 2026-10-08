@@ -482,3 +482,31 @@ td select{border:1px solid var(--line);border-radius:7px;background:#fff;padding
   .prototype-bar{font-size:.66rem;display:block}
   .prototype-bar strong{display:block;margin-bottom:2px}
 }
+
+/* Flexible member support */
+.member-giving-card{display:grid;gap:24px}
+.member-giving-card>div:first-child{max-width:760px}
+.member-giving-card h2{font-size:clamp(1.6rem,3vw,2.35rem)}
+.member-giving-options{display:grid;grid-template-columns:160px 160px minmax(220px,320px);gap:12px;align-items:stretch}
+.giving-amount,.custom-giving{
+  min-height:86px;border:1.5px solid var(--line-dark);border-radius:10px;background:#fff
+}
+.giving-amount{font-size:1.45rem;font-weight:850}
+.giving-amount:hover,.giving-amount.active{background:var(--ink);color:#fff}
+.custom-giving{display:grid;gap:6px;padding:10px 12px}
+.custom-giving span{font-size:.67rem;text-transform:uppercase;letter-spacing:.09em;font-weight:850;color:var(--muted)}
+.custom-giving input{width:100%;border:0;border-bottom:1px solid var(--line);padding:6px 0;font-size:1rem;outline:none;background:transparent}
+.expedition-circle-note{
+  display:grid;grid-template-columns:auto auto 1fr;gap:14px;align-items:center;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0
+}
+.expedition-circle-note>span{font-size:.72rem;font-weight:850;text-transform:uppercase;letter-spacing:.08em}
+.expedition-circle-note>strong{font-size:1rem}
+.expedition-circle-note>p{margin:0!important;font-size:.78rem}
+.support-payment-button{width:max-content}
+@media(max-width:720px){
+  .member-giving-options{grid-template-columns:1fr 1fr}
+  .custom-giving{grid-column:1/-1}
+  .expedition-circle-note{grid-template-columns:1fr}
+  .support-payment-button{width:100%}
+}
