@@ -283,7 +283,7 @@
     if (state.tripMap) { state.tripMap.remove(); state.tripMap=null; }
     node.innerHTML='';
     const now=Date.now();
-    const upcoming=(trips||[]).filter(t=>t.status!=='cancelled'&&t.starts_at&&new Date(t.ends_at||t.starts_at).getTime()>=now&&Number.isFinite(Number(t.map_lat))&&Number.isFinite(Number(t.map_lng)));
+    const upcoming=(trips||[]).filter(t=>t.status!=='cancelled'&&t.starts_at&&new Date(t.ends_at||t.starts_at).getTime()>=now&&t.map_lat!=null&&t.map_lng!=null&&Number.isFinite(Number(t.map_lat))&&Number.isFinite(Number(t.map_lng)));
     if (!window.L || !upcoming.length) {
       node.hidden=true;
       if (empty) { empty.hidden=false; empty.textContent=window.L?'No upcoming trips with a location are on the map yet.':'The trip map is temporarily unavailable.'; }
