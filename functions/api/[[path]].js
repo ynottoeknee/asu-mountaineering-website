@@ -112,6 +112,25 @@ async function ensurePortalAdditions(env) {
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
   )`).run();
   await env.DB.prepare("CREATE UNIQUE INDEX IF NOT EXISTS idx_one_pending_rental_request ON gear_rental_requests(gear_item_id) WHERE status='pending'").run();
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS trip_photos (
+    trip_id INTEGER PRIMARY KEY REFERENCES trips(id) ON DELETE CASCADE,
+    r2_key TEXT NOT NULL,
+    content_type TEXT NOT NULL,
+    original_file_name TEXT NOT NULL,
+    uploaded_by INTEGER REFERENCES users(id),
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+  )`).run();
+  try { await env.DB.prepare("ALTER TABLE users ADD COLUMN dashboard_seen_at TEXT").run(); }
+  catch (error) { if (!String(error).toLowerCase().includes("duplicate column")) throw error; }
+  for (const column of ["map_lat REAL", "map_lng REAL"]) {
+    try { await env.DB.prepare("ALTER TABLE trips ADD COLUMN " + column).run(); }
+    catch (error) { if (!String(error).toLowerCase().includes("duplicate column")) throw error; }
+  }
+  await env.DB.batch([
+    env.DB.prepare("UPDATE trips SET location=COALESCE(NULLIF(location,''),'Four Peaks Wilderness, Arizona'),map_lat=33.67,map_lng=-111.34 WHERE slug='four-peaks'"),
+    env.DB.prepare("UPDATE trips SET location=COALESCE(NULLIF(location,''),'Palm Springs, California'),map_lat=33.81,map_lng=-116.54 WHERE slug='cactus-to-clouds'"),
+    env.DB.prepare("UPDATE trips SET location=COALESCE(NULLIF(location,''),'Joshua Tree National Park, California'),map_lat=34.01,map_lng=-116.17 WHERE slug='joshua-tree'")
+  ]);
   portalSchemaReady = true;
 }
 
@@ -132,7 +151,7 @@ async function currentUser(env, request) {
     `SELECT COUNT(*) AS count
      FROM trip_leaders tl
      JOIN trips t ON t.id=tl.trip_id
-     WHERE tl.user_id=? AND t.status='published'`
+     WHERE tl.user_id=? AND t.status IN ('published','completed')`
   ).bind(row.id).first();
   const presidentEmail = String(env.PRESIDENT_EMAIL || "").trim().toLowerCase();
   const email = String(row.email || "").trim().toLowerCase();
@@ -296,12 +315,16 @@ async function handleLogout(context) {
 
 async function handleMe(env, user) {
   const support = await env.DB.prepare(
-    `SELECT COALESCE(SUM(amount_cents),0) AS cents
-     FROM support_records
+    `SELECT COALESCE(SUM(amount_cents),0) AS cents FROM support_records
      WHERE user_id=? AND date(contribution_date) >= date('2026-07-01')
        AND date(contribution_date) < date('2027-07-01')`
   ).bind(user.id).first();
-  return json({ user, annual_support_cents: Number(support?.cents || 0) });
+  const seen = await env.DB.prepare("SELECT dashboard_seen_at FROM users WHERE id=?").bind(user.id).first();
+  const firstDashboardVisit = !seen?.dashboard_seen_at;
+  if (firstDashboardVisit) {
+    await env.DB.prepare("UPDATE users SET dashboard_seen_at=CURRENT_TIMESTAMP WHERE id=? AND dashboard_seen_at IS NULL").bind(user.id).run();
+  }
+  return json({ user, annual_support_cents: Number(support?.cents || 0), first_dashboard_visit: firstDashboardVisit });
 }
 
 async function updateProfile(env, user, request) {
@@ -400,6 +423,67 @@ async function tripDetail(env, user, tripId) {
     roster: roster.results || [],
     gear: gear.results || []
   });
+}
+
+
+async function leaderTrips(env, user) {
+  const rows = user.is_president
+    ? await env.DB.prepare(`SELECT t.*,EXISTS(SELECT 1 FROM trip_photos p WHERE p.trip_id=t.id) AS has_photo
+        FROM trips t WHERE t.status IN ('published','completed')
+        ORDER BY CASE WHEN t.starts_at IS NULL THEN 1 ELSE 0 END,t.starts_at,t.title`).all()
+    : await env.DB.prepare(`SELECT t.*,EXISTS(SELECT 1 FROM trip_photos p WHERE p.trip_id=t.id) AS has_photo
+        FROM trips t JOIN trip_leaders tl ON tl.trip_id=t.id
+        WHERE tl.user_id=? AND t.status IN ('published','completed')
+        ORDER BY CASE WHEN t.starts_at IS NULL THEN 1 ELSE 0 END,t.starts_at,t.title`).bind(user.id).all();
+  return json({trips: rows.results || []});
+}
+
+async function tripMemories(env, user) {
+  const rows = await env.DB.prepare(`SELECT t.id AS trip_id,t.title,t.starts_at,t.ends_at
+    FROM trip_participants tp JOIN trips t ON t.id=tp.trip_id JOIN trip_photos p ON p.trip_id=t.id
+    WHERE tp.user_id=? AND datetime(COALESCE(t.ends_at,t.starts_at,'9999-12-31')) < datetime('now')
+    ORDER BY COALESCE(t.starts_at,'') DESC`).bind(user.id).all();
+  return json({memories: rows.results || []});
+}
+
+async function getTripPhoto(env, user, tripId) {
+  if (!tripId || !env.GRANT_FILES) return json({error:"Photo unavailable."},404);
+  const allowed = await env.DB.prepare(`SELECT 1 AS ok FROM trip_participants WHERE trip_id=? AND user_id=?
+    UNION SELECT 1 AS ok FROM trip_leaders WHERE trip_id=? AND user_id=? LIMIT 1`).bind(tripId,user.id,tripId,user.id).first();
+  if (!allowed && !user.is_president) return json({error:"Trip participant access required."},403);
+  const photo = await env.DB.prepare("SELECT r2_key,content_type FROM trip_photos WHERE trip_id=?").bind(tripId).first();
+  if (!photo) return json({error:"Photo unavailable."},404);
+  const object = await env.GRANT_FILES.get(photo.r2_key);
+  if (!object) return json({error:"Photo unavailable."},404);
+  return new Response(object.body,{headers:{"content-type":photo.content_type,"cache-control":"private, no-store","x-content-type-options":"nosniff"}});
+}
+
+async function uploadTripPhoto(env, user, tripId, request) {
+  if (!tripId || !env.GRANT_FILES) return json({error:"Photo storage is unavailable."},503);
+  if (!(await canManageTrip(env,user,tripId))) return json({error:"Assigned trip leader access required."},403);
+  const trip=await env.DB.prepare("SELECT status,starts_at,ends_at FROM trips WHERE id=?").bind(tripId).first();
+  const tripHasPassed=trip && new Date(trip.ends_at || trip.starts_at || 0).getTime()<Date.now();
+  if (!trip || (trip.status!=="completed"&&!tripHasPassed)) return json({error:"Photos can be added only to past trips."},409);
+  const data=await request.formData(), file=data.get("file");
+  if (!file || typeof file.arrayBuffer!=="function" || !file.size) return json({error:"Choose an image to upload."},400);
+  if (file.size>8*1024*1024) return json({error:"Image must be 8 MB or smaller."},413);
+  const buf=await file.arrayBuffer(), bytes=new Uint8Array(buf);
+  const type=String(file.type||"").toLowerCase();
+  const signatures={
+    "image/jpeg": bytes[0]===0xff&&bytes[1]===0xd8&&bytes[2]===0xff,
+    "image/png": bytes[0]===0x89&&bytes[1]===0x50&&bytes[2]===0x4e&&bytes[3]===0x47,
+    "image/webp": String.fromCharCode(...bytes.slice(0,4))==="RIFF"&&String.fromCharCode(...bytes.slice(8,12))==="WEBP"
+  };
+  if (!signatures[type]) return json({error:"Use a JPEG, PNG, or WebP image."},400);
+  const old=await env.DB.prepare("SELECT r2_key FROM trip_photos WHERE trip_id=?").bind(tripId).first();
+  const key="trip-photos/"+tripId+"/"+crypto.randomUUID();
+  await env.GRANT_FILES.put(key,buf,{httpMetadata:{contentType:type}});
+  await env.DB.prepare(`INSERT INTO trip_photos(trip_id,r2_key,content_type,original_file_name,uploaded_by)
+    VALUES(?,?,?,?,?) ON CONFLICT(trip_id) DO UPDATE SET r2_key=excluded.r2_key,content_type=excluded.content_type,
+    original_file_name=excluded.original_file_name,uploaded_by=excluded.uploaded_by,updated_at=CURRENT_TIMESTAMP`)
+    .bind(tripId,key,type,String(file.name||"trip-photo").slice(0,150),user.id).run();
+  if (old?.r2_key) await env.GRANT_FILES.delete(old.r2_key);
+  return json({ok:true});
 }
 
 async function applyToTrip(env, user, tripId, request) {
@@ -948,6 +1032,14 @@ export async function onRequest(context) {
     if (method === "POST" && path === "profile") return updateProfile(env, user, request);
     if (method === "GET" && path === "community/members") return communityMembers(env);
     if (method === "GET" && path === "trips") return listTrips(env, user);
+    if (method === "GET" && path === "memories") return tripMemories(env,user);
+    if (method === "GET" && path === "leader/trips") return leaderTrips(env,user);
+    if (method === "GET" && parts[0] === "trips" && parts[2] === "photo" && parts.length === 3) {
+      const tripId=intId(parts[1]); return tripId ? getTripPhoto(env,user,tripId) : json({error:"Invalid trip id."},400);
+    }
+    if (method === "POST" && parts[0] === "leader" && parts[1] === "trips" && parts[3] === "photo") {
+      const tripId=intId(parts[2]); return tripId ? uploadTripPhoto(env,user,tripId,request) : json({error:"Invalid trip id."},400);
+    }
     if (method === "GET" && parts[0] === "trips" && parts.length === 2) {
       const tripId = intId(parts[1]);
       return tripId ? tripDetail(env, user, tripId) : json({ error: "Invalid trip id." }, 400);

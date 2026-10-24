@@ -604,3 +604,26 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 
 /* Keep role-gated navigation and controls hidden when requested. */
 [hidden]{display:none!important}
+
+
+/* Focused dashboard: greeting, trip map, and attended-trip memories */
+.dashboard-welcome{margin:4px 0 22px}
+.dashboard-welcome h1{margin:0;font-size:clamp(2rem,4vw,3rem);letter-spacing:-.045em}
+.dashboard-map-card{padding:20px;margin-bottom:26px}
+.dashboard-trip-map{width:100%;height:min(58vh,540px);min-height:340px;border-radius:14px;overflow:hidden;background:#e8e5df;z-index:0}
+.map-key{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.82rem}
+.map-key span{width:10px;height:10px;border-radius:50%;background:#b25f49;display:inline-block}
+.map-empty{padding:28px 18px;text-align:center;color:var(--muted);background:#f4f1eb;border-radius:12px}
+.dashboard-memories{margin-top:24px}
+.dashboard-memory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.dashboard-memory-card{overflow:hidden;border:1px solid var(--line,#e5e1da);border-radius:16px;background:#fff}
+.dashboard-memory-card img{display:block;width:100%;height:210px;object-fit:cover;background:#eee}
+.dashboard-memory-card>div{padding:13px 15px}
+.dashboard-memory-card h3{margin:0 0 4px;font-size:1rem}
+.dashboard-memory-card p,.muted-copy{margin:0;color:var(--muted);font-size:.88rem}
+.trip-photo-upload{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0;padding:14px;background:#f7f5f1;border-radius:12px}
+.trip-photo-upload label{font-size:.84rem;font-weight:700}
+.trip-photo-upload input{display:block;margin-top:6px;max-width:100%;font-weight:400}
+.trip-photo-upload span{color:var(--muted);font-size:.84rem}
+.leader-photo-preview{width:86px;height:64px;border-radius:8px;object-fit:cover}
+@media(max-width:620px){.dashboard-trip-map{height:55vh;min-height:300px}.dashboard-map-card{padding:14px}.dashboard-memory-grid{grid-template-columns:1fr}}

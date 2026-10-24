@@ -8,7 +8,9 @@
   <meta name="theme-color" content="#151515">
   <meta name="robots" content="noindex,nofollow">
   <link rel="icon" type="image/png" href="/mca-favicon.png?v=3">
-  <link rel="stylesheet" href="/portal/portal.css?v=20261008-7">
+  <link rel="stylesheet" href="/portal/portal.css?v=20261024-dashboard-1">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 </head>
 <body class="portal-auth-loading">
   <section class="auth-gate" data-auth-gate>
@@ -104,106 +106,31 @@
       <main class="portal-content">
 
         <section class="portal-view active" data-view-panel="dashboard">
-          <div class="page-heading">
-            <div>
-              <p class="eyebrow">Member dashboard</p>
-              <h1>Welcome back, <span data-member-first-name>member</span>.</h1>
-              <p class="page-lede">Everything that needs your attention across MCA, in one place.</p>
-            </div>
-            <div class="status-stack" data-role-pills><span class="status-pill">Member</span></div>
-          </div>
+  <div class="dashboard-welcome">
+    <p class="eyebrow">Member dashboard</p>
+    <h1><span data-dashboard-greeting-prefix>Welcome back,</span> <span data-member-first-name>member</span>.</h1>
+  </div>
 
-          <div class="notice-bar">
-            <div>
-              <strong>Adventure &amp; Stewardship Grant applications are open.</strong>
-              <span>Submit one PDF by March 29, 2027.</span>
-            </div>
-            <button type="button" class="text-button" data-view="grant">View grant</button>
-          </div>
+  <section class="portal-card dashboard-map-card">
+    <div class="card-header">
+      <div><p class="card-kicker">MCA trips</p><h2>Where we’re headed</h2></div>
+      <span class="map-key"><span></span> Upcoming trips</span>
+    </div>
+    <div class="dashboard-trip-map" data-trip-map role="region" aria-label="Interactive map of upcoming MCA trips"></div>
+    <p class="map-empty" data-trip-map-empty hidden>No upcoming trips with a location are on the map yet.</p>
+  </section>
 
-          <div class="dashboard-grid">
-            <section class="portal-card portal-card-wide">
-              <div class="card-header">
-                <div>
-                  <p class="card-kicker">Next adventure</p>
-                  <h2 data-dashboard-trip-title>No accepted trip yet</h2>
-                </div>
-                <span class="status-pill" data-dashboard-trip-status>None</span>
-              </div>
-              <div class="trip-summary-grid">
-                <div><span>Date</span><strong data-dashboard-trip-date>—</strong></div>
-                <div><span>Leaders</span><strong data-dashboard-trip-leaders>To be assigned</strong></div>
-                <div><span>Roster</span><strong data-dashboard-trip-roster>—</strong></div>
-                <div><span>Your gear</span><strong data-dashboard-trip-gear>0 assigned items</strong></div>
-              </div>
-              <div class="card-actions">
-                <button class="primary-button" type="button" data-dashboard-trip-button hidden>View trip</button>
-                <button class="secondary-button" type="button" data-view="gear">View gear</button>
-              </div>
-            </section>
+  <section class="dashboard-memories" aria-labelledby="dashboard-memories-title">
+    <div class="card-header">
+      <div><p class="card-kicker">Your past trips</p><h2 id="dashboard-memories-title">Trip memories</h2></div>
+    </div>
+    <div class="dashboard-memory-grid" data-trip-memories>
+      <p class="muted-copy">Photos from your past MCA trips will appear here.</p>
+    </div>
+  </section>
+</section>
 
-            <section class="portal-card">
-              <div class="card-header">
-                <div>
-                  <p class="card-kicker">Support MCA</p>
-                  <h2>Help build the club.</h2>
-                </div>
-              </div>
-              <p>Member giving is optional and flexible. Choose an amount that works for you and talk with MCA leaders about gear and other supporter perks.</p>
-              <button class="secondary-button full-button" type="button" data-view="support">Support your club</button>
-            </section>
-
-            <section class="portal-card portal-card-wide">
-              <div class="card-header">
-                <div>
-                  <p class="card-kicker">Trips open for application</p>
-                  <h2>Choose your next objective</h2>
-                </div>
-                <button class="text-button" type="button" data-view="trips">All trips</button>
-              </div>
-              <div class="compact-list">
-                <article class="compact-row">
-                  <div><strong>Four Peaks Traverse</strong><span>Oct. 31 · Strenuous</span></div>
-                  <button class="small-button" type="button" data-trip="four-peaks">Apply</button>
-                </article>
-                <article class="compact-row">
-                  <div><strong>Cactus to Clouds</strong><span>Nov. 7–8 · Very strenuous</span></div>
-                  <button class="small-button" type="button" data-trip="cactus-to-clouds">Apply</button>
-                </article>
-                <article class="compact-row">
-                  <div><strong>Spring Sierra Week</strong><span>Spring Break · Technical options</span></div>
-                  <button class="small-button" type="button" data-trip="sierras">Apply</button>
-                </article>
-              </div>
-            </section>
-
-            <section class="portal-card">
-              <div class="card-header">
-                <div>
-                  <p class="card-kicker">Your gear</p>
-                  <h2><span data-user-gear-count>0 items</span> out</h2>
-                </div>
-              </div>
-              <div class="compact-list" data-user-gear-list><p>No gear checked out to you.</p></div>
-              <button class="secondary-button full-button" type="button" data-view="gear">Open gear</button>
-            </section>
-
-            <section class="portal-card portal-card-wide">
-              <div class="card-header">
-                <div>
-                  <p class="card-kicker">Grant</p>
-                  <h2>MCA Adventure &amp; Stewardship Grant</h2>
-                </div>
-                <span class="status-pill status-open">Open</span>
-              </div>
-              <p>Funding for member adventures and service projects. The application prompt will be published separately; applications are submitted as a single PDF.</p>
-              <div class="deadline-line"><span>Application deadline</span><strong>March 29, 2027</strong></div>
-              <button class="primary-button" type="button" data-view="grant">Go to application</button>
-            </section>
-          </div>
-        </section>
-
-        <section class="portal-view" data-view-panel="trips">
+<section class="portal-view" data-view-panel="trips">
           <div class="page-heading">
             <div>
               <p class="eyebrow">Trips</p>

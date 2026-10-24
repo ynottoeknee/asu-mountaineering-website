@@ -238,11 +238,13 @@
     try {
       const data = await apiJson('me', { signal: controller.signal });
       hydrateIdentity(data);
+      const greeting = document.querySelector('[data-dashboard-greeting-prefix]');
+      if (greeting) greeting.textContent = data.first_dashboard_visit ? 'Welcome to MCA,' : 'Welcome back,';
       showView(viewFromUrl(), false);
       document.body.classList.remove('portal-auth-loading', 'portal-auth-error');
       document.body.classList.add('portal-authenticated');
       if (gate) gate.hidden = true;
-      await Promise.allSettled([syncPublicSettings(), syncTrips(), syncGear(), syncGrant(), syncApplications(), syncAdmin(), syncCommunity()]);
+      await Promise.allSettled([syncPublicSettings(), syncTrips(), syncMemories(), syncGear(), syncGrant(), syncApplications(), syncAdmin(), syncCommunity()]);
     } catch (error) {
       document.body.classList.remove('portal-auth-loading');
       document.body.classList.add('portal-auth-error');
@@ -273,7 +275,47 @@
     } catch {}
   }
 
-  async function syncTrips() {
+
+  function drawTripMap(trips) {
+    const node=document.querySelector('[data-trip-map]');
+    const empty=document.querySelector('[data-trip-map-empty]');
+    if (!node) return;
+    if (state.tripMap) { state.tripMap.remove(); state.tripMap=null; }
+    node.innerHTML='';
+    const now=Date.now();
+    const upcoming=(trips||[]).filter(t=>t.status!=='cancelled'&&t.starts_at&&new Date(t.ends_at||t.starts_at).getTime()>=now&&Number.isFinite(Number(t.map_lat))&&Number.isFinite(Number(t.map_lng)));
+    if (!window.L || !upcoming.length) {
+      node.hidden=true;
+      if (empty) { empty.hidden=false; empty.textContent=window.L?'No upcoming trips with a location are on the map yet.':'The trip map is temporarily unavailable.'; }
+      return;
+    }
+    node.hidden=false;
+    if (empty) empty.hidden=true;
+    state.tripMap=window.L.map(node,{scrollWheelZoom:false}).setView([35.2,-112.2],5);
+    window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      maxZoom:18,attribution:'&copy; OpenStreetMap contributors'
+    }).addTo(state.tripMap);
+    const bounds=[];
+    upcoming.forEach(t=>{
+      const point=[Number(t.map_lat),Number(t.map_lng)];
+      bounds.push(point);
+      window.L.marker(point).addTo(state.tripMap).bindPopup('<strong>'+escapeHtml(t.title)+'</strong><br>'+escapeHtml(formatDate(t.starts_at))+'<br>'+escapeHtml(t.location||'Location to be announced'));
+    });
+    if (bounds.length>1) state.tripMap.fitBounds(bounds,{padding:[36,36],maxZoom:7});
+    setTimeout(()=>state.tripMap?.invalidateSize(),0);
+  }
+
+  async function syncMemories() {
+    const wrap=document.querySelector('[data-trip-memories]');
+    if (!wrap) return;
+    try {
+      const data=await apiJson('memories');
+      const memories=data.memories||[];
+      wrap.innerHTML=memories.length?memories.map(m=>'<article class="dashboard-memory-card"><img src="/api/trips/'+Number(m.trip_id)+'/photo" alt="'+escapeHtml(m.title)+' trip photo" loading="lazy"><div><h3>'+escapeHtml(m.title)+'</h3><p>'+escapeHtml(formatDate(m.starts_at))+'</p></div></article>').join(''):'<p class="muted-copy">Photos from your past MCA trips will appear here.</p>';
+    } catch { wrap.innerHTML='<p class="muted-copy">Trip memories are unavailable right now.</p>'; }
+  }
+
+    async function syncTrips() {
     const data = await apiJson('trips');
     const trips = data.trips || [];
     trips.forEach(t => {
@@ -315,39 +357,21 @@
     });
 
     if (state.user) {
-      state.user.is_trip_leader = trips.some(t => (t.leaders || []).some(l => Number(l.user_id || l.id) === Number(state.user.id)));
+      state.user.is_trip_leader = state.user.is_trip_leader || trips.some(t => (t.leaders || []).some(l => Number(l.user_id || l.id) === Number(state.user.id)));
       hydrateIdentity({ user: state.user });
     }
     renderTripsTable(trips);
-    renderLeaderTrips(trips);
+    if (state.user?.is_trip_leader || state.user?.is_president) {
+      try {
+        const leaderData = await apiJson('leader/trips');
+        const leaderTrips = leaderData.trips || [];
+        state.user.is_trip_leader = state.user.is_trip_leader || leaderTrips.length > 0;
+        hydrateIdentity({user:state.user});
+        renderLeaderTrips(leaderTrips);
+      } catch { renderLeaderTrips([]); }
+    }
     renderLeaderAssignmentControls();
-    const nextTrip = trips.filter(t => t.my_application_status === 'accepted')
-      .sort((a,b) => new Date(a.starts_at || '9999-12-31') - new Date(b.starts_at || '9999-12-31'))[0];
-    const dashboardTitle = document.querySelector('[data-dashboard-trip-title]');
-    const dashboardStatus = document.querySelector('[data-dashboard-trip-status]');
-    const dashboardDate = document.querySelector('[data-dashboard-trip-date]');
-    const dashboardRoster = document.querySelector('[data-dashboard-trip-roster]');
-    const dashboardLeaders = document.querySelector('[data-dashboard-trip-leaders]');
-    const dashboardButton = document.querySelector('[data-dashboard-trip-button]');
-    state.dashboardTripId = nextTrip?.id || null;
-    if (dashboardTitle) dashboardTitle.textContent = nextTrip?.title || 'No accepted trip yet';
-    if (dashboardStatus) {
-      dashboardStatus.textContent = nextTrip ? 'Accepted' : 'None';
-      dashboardStatus.className = 'status-pill' + (nextTrip ? ' status-success' : '');
-    }
-    if (dashboardDate) dashboardDate.textContent = nextTrip ? formatDate(nextTrip.starts_at) : '—';
-    if (dashboardRoster) dashboardRoster.textContent = nextTrip ? String(nextTrip.roster_count || 0) + ' members' : '—';
-    if (dashboardLeaders) dashboardLeaders.textContent = nextTrip && (nextTrip.leaders || []).length ? nextTrip.leaders.map(l => l.name).join(' · ') : 'To be assigned';
-    if (dashboardButton) {
-      dashboardButton.hidden = !nextTrip;
-      if (nextTrip) {
-        dashboardButton.dataset.trip = nextTrip.slug;
-        dashboardButton.onclick = () => openTripDetail(nextTrip.slug);
-      }
-      else dashboardButton.removeAttribute('data-trip');
-    }
-    const leaderLine = document.querySelector('[data-dashboard-trip-leaders]');
-    if (!nextTrip && leaderLine) leaderLine.textContent = 'To be assigned';
+    drawTripMap(trips);
     renderGear();
   }
 
@@ -561,7 +585,7 @@
   function renderLeaderTrips(trips) {
     const wrap = document.querySelector('[data-leader-trips]');
     if (!wrap || !state.user || (!state.user.is_trip_leader && !state.user.is_president)) return;
-    const mine = (trips || []).filter(t => state.user.is_president || (t.leaders || []).some(l => Number(l.user_id) === Number(state.user.id)));
+    const mine = trips || [];
     if (!mine.length) {
       wrap.innerHTML = '<section class="portal-card"><p>No published trips are currently assigned to you.</p></section>';
       return;
@@ -570,11 +594,22 @@
       '<section class="portal-card leader-live-card">' +
         '<div class="card-header"><div><p class="card-kicker">Assigned trip</p><h2>' + escapeHtml(t.title) + '</h2></div>' +
         '<div><button class="secondary-button" type="button" data-build-form="'+t.id+'">Edit application</button> <button class="secondary-button" type="button" data-load-leader-apps="' + t.id + '">Review applications</button></div></div>' +
+        ((t.status === 'completed' || new Date(t.ends_at || t.starts_at || 0).getTime() < Date.now()) ? '<div class="trip-photo-upload"><label>One trip photo<input type="file" accept="image/jpeg,image/png,image/webp" data-leader-photo-file="' + t.id + '"></label><button class="small-button" type="button" data-upload-trip-photo="' + t.id + '">' + (t.has_photo ? 'Replace photo' : 'Upload photo') + '</button><span data-leader-photo-status="' + t.id + '"></span>' + (t.has_photo ? '<img class="leader-photo-preview" src="/api/trips/' + t.id + '/photo" alt="Current trip photo" loading="lazy">' : '') + '</div>' : '') +
         '<div data-form-builder-for="' + t.id + '"></div>' +
         '<div data-leader-apps-for="' + t.id + '"><p>Load applications to review participant requests.</p></div>' +
       '</section>'
     ).join('');
 
+    wrap.querySelectorAll('[data-upload-trip-photo]').forEach(button=>button.addEventListener('click',async()=>{
+      const tripId=Number(button.dataset.uploadTripPhoto), file=wrap.querySelector('[data-leader-photo-file="'+tripId+'"]')?.files?.[0];
+      const status=wrap.querySelector('[data-leader-photo-status="'+tripId+'"]');
+      if(!file){if(status)status.textContent='Choose a photo first.';return;}
+      const body=new FormData();body.append('file',file);
+      button.disabled=true;if(status)status.textContent='Uploading…';
+      try{await apiJson('leader/trips/'+tripId+'/photo',{method:'POST',body});if(status)status.textContent='Trip photo saved.';await Promise.allSettled([syncMemories(),syncTrips()]);}
+      catch(error){if(status)status.textContent=error.message;}
+      finally{button.disabled=false;}
+    }));
     wrap.querySelectorAll('[data-build-form]').forEach(button=>button.addEventListener('click',()=>{
       const id=Number(button.dataset.buildForm),target=wrap.querySelector('[data-form-builder-for="'+id+'"]');
       renderTripFormBuilder(id,target);button.disabled=true;
