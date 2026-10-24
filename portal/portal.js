@@ -146,6 +146,7 @@
   function showView(view, updateHistory) {
     if (updateHistory === undefined) updateHistory = true;
     if (!titles[view]) view = 'dashboard';
+    if (state.user?.is_warm_fire_guest) view = 'dashboard';
     if (state.user && view === 'admin' && !state.user.is_president) view = 'dashboard';
     if (state.user && view === 'leader' && !state.user.is_trip_leader && !state.user.is_president) view = 'dashboard';
 
@@ -223,6 +224,9 @@
     const adminNav = document.querySelector('[data-admin-nav]');
     if (leaderNav) leaderNav.hidden = !user.is_trip_leader && !user.is_president;
     if (adminNav) adminNav.hidden = !user.is_president;
+    document.querySelectorAll('.portal-nav-link[data-view]').forEach(link => {
+      if (link.dataset.view !== 'dashboard') link.hidden = !!user.is_warm_fire_guest;
+    });
 
     const support = state.annualSupportCents / 100;
     document.querySelectorAll('.support-summary > strong').forEach(el => el.textContent = '$' + support.toLocaleString());
@@ -244,7 +248,12 @@
       document.body.classList.remove('portal-auth-loading', 'portal-auth-error');
       document.body.classList.add('portal-authenticated');
       if (gate) gate.hidden = true;
-      await Promise.allSettled([syncPublicSettings(), syncTrips(), syncMemories(), syncGear(), syncGrant(), syncApplications(), syncAdmin(), syncCommunity()]);
+      if (data.user.is_warm_fire_guest) {
+        await Promise.allSettled([syncTrips(), syncMemories()]);
+        showView('dashboard', false);
+      } else {
+        await Promise.allSettled([syncPublicSettings(), syncTrips(), syncMemories(), syncGear(), syncGrant(), syncApplications(), syncAdmin(), syncCommunity()]);
+      }
     } catch (error) {
       document.body.classList.remove('portal-auth-loading');
       document.body.classList.add('portal-auth-error');

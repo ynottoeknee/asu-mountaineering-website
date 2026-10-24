@@ -1,7 +1,30 @@
 const SESSION_COOKIE = "mca_session";
 const STATE_COOKIE = "mca_oauth_state";
 const SESSION_DAYS = 30;
+const WARM_FIRE_VIEWER_HASHES = new Set([
+  "eeaf51485d77345033ec572538ea6fe5a88ec49bc7e6933231972243f7de6588",
+  "cadc787b921c65e4d54b27d4264797f21dc482bb20fd241b8535d34eeedc6023",
+  "06a3c26113ff4371829dc0a69464bcdc4de89627f92be043e3988835e7174c1f",
+  "b6cff770e8d3ca4121ba1411ee3a67b7179137779d35c396c170b28eeaafb765",
+  "b1a881d82f227ad06a89730f45d4233016cc8c986df7acd5bc21c815f40f0488",
+  "1652353c4b8bff421118dd7f99202a8970ac526527e93bbb6cc4838d2eff0a5f",
+  "3528c51e0794dcebc0582d55405b909dd8c5617f657d272834bacf1f072e40f9"
+]);
 let portalSchemaReady = false;
+
+async function isWarmFireViewerEmail(email) {
+  const normalized = String(email || "").trim().toLowerCase();
+  return WARM_FIRE_VIEWER_HASHES.has(await sha256Hex("mca-warm-fire-2026:" + normalized));
+}
+
+async function ensureWarmFireMembership(env, user) {
+  if (!user.is_president && !(await isWarmFireViewerEmail(user.email))) return;
+  const trip = await env.DB.prepare("SELECT id FROM trips WHERE slug='warm-fire-restoration'").first();
+  if (!trip) return;
+  await env.DB.prepare(
+    "INSERT OR IGNORE INTO trip_participants (trip_id,user_id,application_id) VALUES (?,?,NULL)"
+  ).bind(trip.id, user.id).run();
+}
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -126,6 +149,11 @@ async function ensurePortalAdditions(env) {
     try { await env.DB.prepare("ALTER TABLE trips ADD COLUMN " + column).run(); }
     catch (error) { if (!String(error).toLowerCase().includes("duplicate column")) throw error; }
   }
+  await env.DB.prepare(
+    `INSERT OR IGNORE INTO trips
+      (slug,title,category,starts_at,ends_at,location,difficulty,capacity,description,application_open,application_opens_at,application_closes_at,status,created_by)
+     VALUES ('warm-fire-restoration','Warm Fire Restoration','Stewardship',NULL,NULL,NULL,NULL,NULL,'MCA Warm Fire Restoration trip photo.',0,NULL,NULL,'completed',NULL)`
+  ).run();
   await env.DB.batch([
     env.DB.prepare("UPDATE trips SET location=COALESCE(NULLIF(location,''),'Four Peaks Wilderness, Arizona'),map_lat=33.67,map_lng=-111.34 WHERE slug='four-peaks'"),
     env.DB.prepare("UPDATE trips SET location=COALESCE(NULLIF(location,''),'Palm Springs, California'),map_lat=33.81,map_lng=-116.54 WHERE slug='cactus-to-clouds'"),
@@ -156,7 +184,8 @@ async function currentUser(env, request) {
   const presidentEmail = String(env.PRESIDENT_EMAIL || "").trim().toLowerCase();
   const email = String(row.email || "").trim().toLowerCase();
   const isPresident = !!presidentEmail && email === presidentEmail;
-  if (!isPresident && !email.endsWith("@asu.edu")) return null;
+  const isWarmFireViewer = await isWarmFireViewerEmail(email);
+  if (!isPresident && !email.endsWith("@asu.edu") && !isWarmFireViewer) return null;
   return {
     id: row.id,
     email: row.email,
@@ -175,6 +204,7 @@ async function currentUser(env, request) {
     membership_status: row.membership_status,
     is_admin: isPresident,
     is_president: isPresident,
+    is_warm_fire_guest: !isPresident && !email.endsWith("@asu.edu") && isWarmFireViewer,
     is_trip_leader: Number(leader?.count || 0) > 0
   };
 }
@@ -263,7 +293,8 @@ async function handleCallback(context) {
   const email = String(profile.email).trim().toLowerCase();
   const presidentEmail = String(env.PRESIDENT_EMAIL || "").trim().toLowerCase();
   const isPresident = !!presidentEmail && email === presidentEmail;
-  if (!isPresident && !email.endsWith("@asu.edu")) {
+  const isWarmFireViewer = await isWarmFireViewerEmail(email);
+  if (!isPresident && !email.endsWith("@asu.edu") && !isWarmFireViewer) {
     return redirect("/portal/?auth=asu_email_required", {
       "set-cookie": cookie(STATE_COOKIE, "", { maxAge: 0 })
     });
@@ -1025,6 +1056,15 @@ export async function onRequest(context) {
     await ensurePortalAdditions(env);
     const user = await currentUser(env, request);
     if (!user) return json({ error: "Authentication required.", login_url: "/api/auth/login" }, 401);
+    await ensureWarmFireMembership(env, user);
+    if (user.is_warm_fire_guest) {
+      const isWarmFirePhoto = method === "GET" && parts[0] === "trips" && parts[2] === "photo"
+        && parts.length === 3
+        && !!(await env.DB.prepare("SELECT 1 FROM trips WHERE id=? AND slug='warm-fire-restoration'").bind(intId(parts[1])).first());
+      if (!(method === "GET" && ["me","memories","trips"].includes(path)) && !isWarmFirePhoto) {
+        return json({ error: "This account only has access to its Warm Fire Restoration dashboard photo." }, 403);
+      }
+    }
 
     if (method === "GET" && path === "me") return handleMe(env, user);
     if (method === "POST" && path === "profile") return updateProfile(env, user, request);
