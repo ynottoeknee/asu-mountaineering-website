@@ -440,16 +440,19 @@ async function leaderTrips(env, user) {
 
 async function tripMemories(env, user) {
   const rows = await env.DB.prepare(`SELECT t.id AS trip_id,t.title,t.starts_at,t.ends_at
-    FROM trip_participants tp JOIN trips t ON t.id=tp.trip_id JOIN trip_photos p ON p.trip_id=t.id
-    WHERE tp.user_id=? AND datetime(COALESCE(t.ends_at,t.starts_at,'9999-12-31')) < datetime('now')
-    ORDER BY COALESCE(t.starts_at,'') DESC`).bind(user.id).all();
+    FROM trips t JOIN trip_photos p ON p.trip_id=t.id
+    WHERE EXISTS(SELECT 1 FROM trip_participants tp WHERE tp.trip_id=t.id AND tp.user_id=?)
+       OR EXISTS(SELECT 1 FROM trip_applications ta WHERE ta.trip_id=t.id AND ta.user_id=?
+         AND ta.status IN ('submitted','under_review','accepted','waitlisted'))
+    ORDER BY COALESCE(t.starts_at,'') DESC`).bind(user.id,user.id).all();
   return json({memories: rows.results || []});
 }
 
 async function getTripPhoto(env, user, tripId) {
   if (!tripId || !env.GRANT_FILES) return json({error:"Photo unavailable."},404);
   const allowed = await env.DB.prepare(`SELECT 1 AS ok FROM trip_participants WHERE trip_id=? AND user_id=?
-    UNION SELECT 1 AS ok FROM trip_leaders WHERE trip_id=? AND user_id=? LIMIT 1`).bind(tripId,user.id,tripId,user.id).first();
+    UNION SELECT 1 AS ok FROM trip_applications WHERE trip_id=? AND user_id=? AND status IN ('submitted','under_review','accepted','waitlisted')
+    UNION SELECT 1 AS ok FROM trip_leaders WHERE trip_id=? AND user_id=? LIMIT 1`).bind(tripId,user.id,tripId,user.id,tripId,user.id).first();
   if (!allowed && !user.is_president) return json({error:"Trip participant access required."},403);
   const photo = await env.DB.prepare("SELECT r2_key,content_type FROM trip_photos WHERE trip_id=?").bind(tripId).first();
   if (!photo) return json({error:"Photo unavailable."},404);
@@ -461,9 +464,8 @@ async function getTripPhoto(env, user, tripId) {
 async function uploadTripPhoto(env, user, tripId, request) {
   if (!tripId || !env.GRANT_FILES) return json({error:"Photo storage is unavailable."},503);
   if (!(await canManageTrip(env,user,tripId))) return json({error:"Assigned trip leader access required."},403);
-  const trip=await env.DB.prepare("SELECT status,starts_at,ends_at FROM trips WHERE id=?").bind(tripId).first();
-  const tripHasPassed=trip && new Date(trip.ends_at || trip.starts_at || 0).getTime()<Date.now();
-  if (!trip || (trip.status!=="completed"&&!tripHasPassed)) return json({error:"Photos can be added only to past trips."},409);
+  const trip=await env.DB.prepare("SELECT status FROM trips WHERE id=?").bind(tripId).first();
+  if (!trip || !["published","completed"].includes(trip.status)) return json({error:"Photos can be added only to active or completed trips."},409);
   const data=await request.formData(), file=data.get("file");
   if (!file || typeof file.arrayBuffer!=="function" || !file.size) return json({error:"Choose an image to upload."},400);
   if (file.size>8*1024*1024) return json({error:"Image must be 8 MB or smaller."},413);
