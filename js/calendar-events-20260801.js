@@ -102,6 +102,12 @@
   };
 
   additions.push({
+    date:'2026-11-14',title:'Four Peaks Saguaro Planting',time:'Time TBD',
+    description:'Saguaro planting and desert restoration at Four Peaks, Arizona. Meeting location and schedule will be shared with volunteers.',
+    category:'stewardship'
+  });
+
+  additions.push({
     date:'2026-11-17',title:'Knot-Tying Workshop',time:'Time TBD',
     description:'Tuesday knot-tying session. Location and exact time will be shared with members.',
     category:'community'
