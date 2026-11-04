@@ -143,9 +143,12 @@
     return titles[candidate] ? candidate : 'dashboard';
   }
 
+  // Temporarily hide the grant application without removing its implementation.
+  const grantApplicationsVisible = false;
   function showView(view, updateHistory) {
     if (updateHistory === undefined) updateHistory = true;
     if (!titles[view]) view = 'dashboard';
+    if (!grantApplicationsVisible && view === 'grant') view = 'dashboard';
     if (state.user?.is_warm_fire_guest) view = 'dashboard';
     if (state.user && view === 'admin' && !state.user.is_president) view = 'dashboard';
     if (state.user && view === 'leader' && !state.user.is_trip_leader && !state.user.is_president) view = 'dashboard';
