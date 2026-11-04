@@ -11,6 +11,12 @@
   <link rel="stylesheet" href="/portal/portal.css?v=20261024-dashboard-1">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <!-- Grant application paused; leave its markup and backend intact for reactivation. -->
+  <style>
+    .portal-nav-link[data-view="grant"],
+    .portal-view[data-view-panel="grant"],
+    .admin-card[data-paused-grant-review] { display: none !important; }
+  </style>
 </head>
 <body class="portal-auth-loading">
   <section class="auth-gate" data-auth-gate>
@@ -434,7 +440,7 @@
               <div class="compact-list" data-admin-trip-decisions><p>Trip decisions will appear here when applications are submitted and reviewed by leaders.</p></div>
             </section>
 
-            <section class="portal-card admin-card">
+            <section class="portal-card admin-card" data-paused-grant-review>
               <div class="card-header"><div><p class="card-kicker">Grant</p><h2>Application review</h2></div><span class="status-pill status-open">Open to Mar. 29</span></div>
               <p>Grant submissions are stored privately and can be reviewed by authorized administrators.</p>
               <button class="secondary-button" type="button" data-view="grant">Open grant area</button>
@@ -474,6 +480,6 @@
 
   </div>
 
-  <script src="/portal/portal.js?v=20261024-warm-fire-1"></script>
+  <script src="/portal/portal.js?v=20261104-grant-pause-1"></script>
 </body>
 </html>
