@@ -313,3 +313,11 @@
   #home .home-photo-insert{width:calc(100% - 30px);margin-top:28px}
   #home .home-photo-insert--closing{margin-top:36px;margin-bottom:34px}
 }
+
+/* Outside training is a separate category from MCA-hosted events. */
+#calendar .calendar-event-training {
+  border-left-color: #9750ad;
+  background: rgba(151, 80, 173, .13);
+  color: #302c32;
+}
+.calendar-legend-swatch.training { background: #9750ad; }
