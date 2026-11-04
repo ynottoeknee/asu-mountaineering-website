@@ -86,19 +86,67 @@
     {date:'2026-10-31',title:'Four Peaks Traverse',time:'All day',description:'MCA Four Peaks Traverse on Halloween.',category:'community'},
     {date:'2026-11-07',title:'Cactus to Clouds',time:'Overnight trip · Day 1',description:'MCA Cactus to Clouds trip, November 7–8.',category:'community'},
     {date:'2026-11-08',title:'Cactus to Clouds',time:'Overnight trip · Day 2',description:'MCA Cactus to Clouds trip, November 7–8.',category:'community'},
-    {date:'2026-10-15',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
-    {date:'2026-10-22',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
-    {date:'2026-10-29',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
-    {date:'2026-11-05',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
-    {date:'2026-11-12',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
-    {date:'2026-11-19',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
-    {date:'2026-11-26',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
-    {date:'2026-12-03',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
-    {date:'2026-12-10',title:'Club Workout',time:'6:00 AM',description:'Weekly Thursday morning club workout. Meet location shared with members.',category:'community'},
     {date:'2026-10-17',title:'Bouldering',time:'Time TBD',description:'MCA bouldering meetup. Time and location details will be shared with members.',category:'community'},
     {date:'2026-10-25',title:'Papago Park Restoration',time:'Time TBD',description:'Restoration work at Papago Park. Details will be shared with volunteers.',category:'stewardship'},
 
   ];
+
+
+  // MCA club dates and outside training opportunities — winter 2026–27.
+  // Keep outside courses distinct from MCA-hosted events.
+  const addRange=(start,end,title,time,description,category='community')=>{
+    const first=new Date(start+'T12:00:00Z'),last=new Date(end+'T12:00:00Z');
+    for(let date=new Date(first);date<=last;date.setUTCDate(date.getUTCDate()+1)){
+      additions.push({date:date.toISOString().slice(0,10),title,time,description,category});
+    }
+  };
+
+  additions.push({
+    date:'2026-11-17',title:'Knot-Tying Workshop',time:'Time TBD',
+    description:'Tuesday knot-tying session. Location and exact time will be shared with members.',
+    category:'community'
+  });
+
+  // Weekly MCA workouts: Friday 6:30 AM, through the end of the spring semester.
+  for(let date=new Date('2026-11-06T12:00:00Z');date<=new Date('2027-05-28T12:00:00Z');date.setUTCDate(date.getUTCDate()+7)){
+    additions.push({
+      date:date.toISOString().slice(0,10),title:'Club Workout',time:'6:30 AM',
+      description:'Weekly Friday morning MCA workout. Meeting location shared with members.',
+      category:'community'
+    });
+  }
+
+  addRange('2027-01-09','2027-01-10','WFA Training','Time TBD',
+    'Wilderness First Aid training, January 9–10, in Grand Junction, Colorado. Exact times and organizer details to follow.');
+
+  addRange('2027-01-22','2027-01-23','MCA Team Tryouts','Time TBD',
+    'MCA team tryouts, January 22–23. Times and location to be announced.');
+
+  addRange('2027-01-26','2027-01-30','MCA Ouray Ice Festival Trip','Jan 26–30 · Schedule TBD',
+    'Planned MCA Ouray travel window, January 26–30. The official Ouray Ice Festival is January 28–31. Club itinerary to be confirmed.');
+
+  addRange('2027-01-28','2027-01-31','Ouray Ice Festival (Official)','Jan 28–31',
+    'External event at Ouray Ice Park, Ouray, Colorado. Official festival dates are January 28–31, 2027. Details: ourayicepark.com/festival/about.',
+    'training');
+
+  // Kachina Peaks Avalanche Center offerings at Arizona Gondola,
+  // Arizona Snowbowl, Flagstaff, AZ (from the published course list).
+  const azGondola='Outside training offered by Kachina Peaks Avalanche Center, Arizona Gondola, Flagstaff, AZ. Verify eligibility, registration, and current details with the organizer.';
+  addRange('2027-01-09','2027-01-09','Avalanche Level I Refresher','8:00 AM–5:00 PM',azGondola,'training');
+  addRange('2027-01-10','2027-01-10','Avalanche Rescue','8:00 AM–5:00 PM',azGondola,'training');
+  addRange('2027-01-22','2027-01-24','Avalanche Training Level I (Jan 22–24)','Jan 22–24',
+    azGondola+' Friday 6:30 PM kickoff; weekend field days approximately 8 AM–5 PM.','training');
+  addRange('2027-01-23','2027-01-23','CCSO SAR Avalanche Rescue','8:00 AM–5:00 PM',
+    azGondola+' CCSO SAR-specific course; verify attendee eligibility.','training');
+  addRange('2027-01-29','2027-01-31','Avalanche Training Level I (Jan 29–31)','Jan 29–31',azGondola,'training');
+  addRange('2027-02-05','2027-02-07','NAU PRM225 Avalanche Training','Feb 5–7',
+    azGondola+' NAU PRM225 session; verify eligibility.','training');
+  addRange('2027-02-05','2027-02-07','Avalanche Training Level I (Feb 5–7)','Feb 5–7',azGondola,'training');
+  addRange('2027-02-10','2027-02-12','Avalanche Training Level I (Feb 10–12)','Feb 10–12',azGondola,'training');
+  addRange('2027-02-12','2027-02-15','Avalanche Training Level II (Feb 12–15)','Feb 12–15',azGondola,'training');
+  addRange('2027-02-19','2027-02-21','Avalanche Training Level I (Feb 19–21)','Feb 19–21',azGondola,'training');
+  addRange('2027-02-26','2027-02-28','Avalanche Training Level I (Feb 26–28)','Feb 26–28',azGondola,'training');
+  addRange('2027-02-26','2027-02-28',"Women's Avalanche Training Level I (Feb 26–28)",'Feb 26–28',azGondola,'training');
 
   additions.forEach(addition=>{
     const alreadyListed = calendarEvents.some(event=>
@@ -283,7 +331,7 @@
     }
     return `${shortDate(dates[0])} · ${time}`;
   };
-  const labels={stewardship:'SERVICE',community:'CLUB',adaptive:'ADAPTIVE',club:'CLUB'};
+  const labels={stewardship:'SERVICE',community:'CLUB',adaptive:'ADAPTIVE',club:'CLUB',training:'EXTERNAL'};
   [...groups.values()].sort((a,b)=>a.events[0].date.localeCompare(b.events[0].date)).forEach(group=>{
     group.events.sort((a,b)=>a.date.localeCompare(b.date));
     const card=document.createElement('article');
