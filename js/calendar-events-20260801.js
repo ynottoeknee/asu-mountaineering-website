@@ -122,6 +122,14 @@
     });
   }
 
+  // Tentative winter trips — gauging member interest, not yet confirmed.
+  addRange('2026-12-13','2026-12-14','Humphreys Trip — Gauging Interest','Dec 13–14 · Time TBD',
+    'Potential trip to Humphreys Peak, Arizona, December 13–14. Gauging interest only; itinerary and participation are not yet confirmed.',
+    'community');
+  addRange('2026-12-15','2026-12-19','Sierras Trip — Gauging Interest','Dec 15–19 · Time TBD',
+    'Potential Eastern Sierra trip, December 15–19. Gauging interest only; itinerary, activities, and participation are not yet confirmed.',
+    'community');
+
   addRange('2027-01-09','2027-01-10','WFA Training','Time TBD',
     'Wilderness First Aid training, January 9–10, in Grand Junction, Colorado. Exact times and organizer details to follow.');
 
