@@ -219,11 +219,34 @@ function ensureFarmersMarketForMonth(year, month){
   });
 }
 
+// Recurring Tuesday climbing sessions (5 PM); keep the event calendar open-ended.
+function ensureTuesdayClimbingForMonth(year, month){
+  const firstTuesday = 1 + ((2 - new Date(year, month, 1).getDay() + 7) % 7);
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  for(let day = firstTuesday; day <= daysInMonth; day += 7){
+    const date = [
+      year,
+      String(month + 1).padStart(2, '0'),
+      String(day).padStart(2, '0')
+    ].join('-');
+    if(date < '2026-11-04') continue;
+    if(calendarEvents.some(event => event.date === date && event.title === 'Climbing')) continue;
+    calendarEvents.push({
+      date,
+      title:'Climbing',
+      time:'5:00 PM',
+      description:'Weekly Tuesday climbing meetup. Location to be announced.',
+      category:'community'
+    });
+  }
+}
+
 // Rolling 18-month window keeps upcoming markets visible on the home page.
 const farmersMarketNow = new Date();
 for(let offset = 0; offset < 18; offset++){
   const monthDate = new Date(farmersMarketNow.getFullYear(), farmersMarketNow.getMonth() + offset, 1);
   ensureFarmersMarketForMonth(monthDate.getFullYear(), monthDate.getMonth());
+  ensureTuesdayClimbingForMonth(monthDate.getFullYear(), monthDate.getMonth());
 }
 
 function renderCalendar(){
@@ -234,6 +257,7 @@ function renderCalendar(){
   const year = calendarView.getFullYear();
   const month = calendarView.getMonth();
   ensureFarmersMarketForMonth(year, month);
+  ensureTuesdayClimbingForMonth(year, month);
   calendarMonthLabel.textContent = calendarView.toLocaleDateString(undefined, {
     month:'long',
     year:'numeric'
