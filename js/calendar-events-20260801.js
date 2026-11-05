@@ -128,9 +128,6 @@
   addRange('2027-01-22','2027-01-23','MCA Team Tryouts','Time TBD',
     'MCA team tryouts, January 22–23. Times and location to be announced.');
 
-  addRange('2027-01-26','2027-01-30','MCA Ouray Ice Festival Trip','Jan 26–30 · Schedule TBD',
-    'Planned MCA Ouray travel window, January 26–30. The official Ouray Ice Festival is January 28–31. Club itinerary to be confirmed.');
-
   addRange('2027-01-28','2027-01-31','Ouray Ice Festival (Official)','Jan 28–31',
     'External event at Ouray Ice Park, Ouray, Colorado. Official festival dates are January 28–31, 2027. Details: ourayicepark.com/festival/about.',
     'training');
@@ -323,6 +320,7 @@
   const shortDate=value=>date(value).toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase();
   const scheduleLabel=(events,title)=>{
     if(title==='Farmers Market')return 'FIRST SUNDAY MONTHLY · 8:00–11:00 AM';
+    if(title==='Climbing')return 'TUESDAYS · 5:00 PM';
     const dates=events.map(event=>event.date).sort();
     const first=date(dates[0]),last=date(dates[dates.length-1]);
     const time=(events[0].time||'Time TBD').replace(/ · Day \d+$/,'');
