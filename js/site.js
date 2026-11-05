@@ -199,6 +199,33 @@ const today = new Date();
 let calendarView = new Date(today.getFullYear(), today.getMonth(), 1);
 const calendarEvents = [];
 
+// First Sunday of every month — recurring MCA farmers market.
+// Populate upcoming dates for the home events carousel, and any month viewed in the calendar.
+function ensureFarmersMarketForMonth(year, month){
+  const firstSunday = 1 + ((7 - new Date(year, month, 1).getDay()) % 7);
+  const date = [
+    year,
+    String(month + 1).padStart(2, '0'),
+    String(firstSunday).padStart(2, '0')
+  ].join('-');
+  if(date < '2026-11-04') return; // Do not backfill the already-past November market.
+  if(calendarEvents.some(event => event.date === date && event.title === 'Farmers Market')) return;
+  calendarEvents.push({
+    date,
+    title:'Farmers Market',
+    time:'8:00–11:00 AM',
+    description:'At Climb Max. First Sunday of every month.',
+    category:'community'
+  });
+}
+
+// Rolling 18-month window keeps upcoming markets visible on the home page.
+const farmersMarketNow = new Date();
+for(let offset = 0; offset < 18; offset++){
+  const monthDate = new Date(farmersMarketNow.getFullYear(), farmersMarketNow.getMonth() + offset, 1);
+  ensureFarmersMarketForMonth(monthDate.getFullYear(), monthDate.getMonth());
+}
+
 function renderCalendar(){
   if(!calendarGrid) return;
 
@@ -206,6 +233,7 @@ function renderCalendar(){
 
   const year = calendarView.getFullYear();
   const month = calendarView.getMonth();
+  ensureFarmersMarketForMonth(year, month);
   calendarMonthLabel.textContent = calendarView.toLocaleDateString(undefined, {
     month:'long',
     year:'numeric'
