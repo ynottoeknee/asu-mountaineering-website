@@ -321,7 +321,8 @@
   });
   const date=value=>new Date(value+'T12:00:00');
   const shortDate=value=>date(value).toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase();
-  const scheduleLabel=events=>{
+  const scheduleLabel=(events,title)=>{
+    if(title==='Farmers Market')return 'FIRST SUNDAY MONTHLY · 8:00–11:00 AM';
     const dates=events.map(event=>event.date).sort();
     const first=date(dates[0]),last=date(dates[dates.length-1]);
     const time=(events[0].time||'Time TBD').replace(/ · Day \d+$/,'');
@@ -352,7 +353,7 @@
     const copy=document.createElement('div');
     copy.className='event-card-copy';
     const meta=document.createElement('small');
-    meta.textContent=`${labels[group.category]||'CLUB'} · ${scheduleLabel(group.events)}`;
+    meta.textContent=`${labels[group.category]||'CLUB'} · ${scheduleLabel(group.events,group.title)}`;
     const title=document.createElement('h3');
     title.textContent=group.title;
     const description=document.createElement('p');
